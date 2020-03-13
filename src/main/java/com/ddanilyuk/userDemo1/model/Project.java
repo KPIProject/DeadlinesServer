@@ -27,7 +27,7 @@ public class Project {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Transient
+//    @Transient
     @NotNull
     private int userOwnerID;
 
@@ -47,6 +47,14 @@ public class Project {
         this.projectDescription = projectDescription;
         this.user = user;
         this.userOwnerID = user.getUserId();
+    }
+
+    public int getUserOwnerID() {
+        return userOwnerID;
+    }
+
+    public void setUserOwnerID(int userOwnerID) {
+        this.userOwnerID = userOwnerID;
     }
 
     public User getUser() {
