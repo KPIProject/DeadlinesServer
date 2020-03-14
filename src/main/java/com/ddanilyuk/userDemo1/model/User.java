@@ -1,5 +1,9 @@
 package com.ddanilyuk.userDemo1.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,21 +15,31 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.defaultView.class)
     private int userId;
 
+    @JsonView(Views.defaultView.class)
     private String userFirstName;
 
+    @JsonView(Views.defaultView.class)
     private String userSecondName;
 
+    @JsonView(Views.defaultView.class)
     private String username;
 
+//    @JsonView(Views.defaultView.class)
     private String password;
 
     @Column(name = "uuid", updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
+
+    @JsonView(Views.defaultView.class)
     private UUID uuid;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonView(Views.usersView.class)
     private List<Project> projects = new ArrayList<>();
+
+
 
     public User() {
     }

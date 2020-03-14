@@ -1,6 +1,7 @@
 package com.ddanilyuk.userDemo1.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -15,24 +16,26 @@ public class Deadline {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.deadlinesView.class)
     private int deadlineId;
 
+    @JsonView(Views.deadlinesView.class)
     private String deadlineName;
 
+    @JsonView(Views.deadlinesView.class)
     private String deadlineDescription;
-
-    // поля которые не храянться в БД
-    // @Transient
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @NotNull
+    @JsonView(Views.deadlinesView.class)
     private int deadlineProjectId;
 
     @Column
     @ElementCollection(targetClass=UUID.class)
+    @JsonView(Views.deadlinesView.class)
     private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
 
     public Deadline() {

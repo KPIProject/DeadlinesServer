@@ -4,14 +4,21 @@ import com.ddanilyuk.userDemo1.extensions.UserExtension;
 import com.ddanilyuk.userDemo1.model.Deadline;
 import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
+import com.ddanilyuk.userDemo1.model.Views;
 import com.ddanilyuk.userDemo1.repositories.DeadlineRepository;
 import com.ddanilyuk.userDemo1.repositories.ProjectRepository;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
+
+//import com.monitorjbl.json.JsonView;
+import static com.monitorjbl.json.Match.match;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.monitorjbl.json.Match.match;
 
 @RestController
 @RequestMapping
@@ -28,13 +35,15 @@ public class ProjectController {
 
 
     @GetMapping("{uuid}/allProjects")
-    public List<Project> index(@PathVariable String uuid) {
+    @JsonView(Views.projectView.class)
+    public List<Project> allProjects(@PathVariable String uuid) {
         User user = userRepository.findUserByUuid(UUID.fromString(uuid));
         return user.getProjects();
     }
 
 
     @PostMapping("{uuid}/createProject")
+    @JsonView(Views.projectView.class)
     public Project createProject(@PathVariable String uuid, @RequestBody Map<String, String> body) {
 
         UUID stringUUID = UUID.fromString(uuid);
@@ -51,6 +60,7 @@ public class ProjectController {
     }
 
     @PostMapping("{uuidOwner}/{projectID}/addUserToProject/{uuidUserToAdd}")
+    @JsonView(Views.projectView.class)
     public Project newUserToProject(@PathVariable String uuidOwner, @PathVariable String uuidUserToAdd, @PathVariable String projectID, @RequestBody Map<String, String> body) {
 
         User userToAdd = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
@@ -62,7 +72,10 @@ public class ProjectController {
 
         if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
 
-            project.getProjectActiveUsersId().add(userToAdd.getUuid());
+            project.getProjectActiveUsersUuid().add(userToAdd.getUuid());
+
+//            project.getProjectUsers().add(userToAdd);
+
             List<Project> projects = userToAdd.getProjects();
             projects.add(project);
             userToAdd.setProjects(projects);

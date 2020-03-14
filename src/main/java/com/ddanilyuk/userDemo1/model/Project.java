@@ -1,7 +1,10 @@
 package com.ddanilyuk.userDemo1.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -11,34 +14,45 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "project")
-@JsonIgnoreProperties("user")
+//@JsonIgnoreProperties("user")
 
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.defaultView.class)
     private int projectId;
 
+    @JsonView(Views.defaultView.class)
     private String projectName;
 
+    @JsonView(Views.defaultView.class)
     private String projectDescription;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+//    @JsonBackReference
+//    @JsonManagedReference
+//    @JsonView(Views.projectView.class)
+    @JsonView(Views.projectView.class)
     private User user;
 
 //    @Transient
     @NotNull
+    @JsonView(Views.defaultView.class)
     private UUID projectCreatorUuid;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonView(Views.defaultView.class)
     private List<Deadline> deadlines = new ArrayList<>();
 
-    // Todo maybe use User not userIds
+
+//    @JsonView(Views.projectUsersView.class)
 //    private List<User> projectUsers = new ArrayList<>();
 
     @Column
     @ElementCollection(targetClass=UUID.class)
+//    @JsonView(Views.userWithoutProjectsAndPassword.class)
     private List<UUID> projectActiveUsersUuid = new ArrayList<>();
 
 
@@ -58,11 +72,19 @@ public class Project {
 //        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
     }
 
-    public List<UUID> getProjectActiveUsersId() {
+//    public List<User> getProjectUsers() {
+//        return projectUsers;
+//    }
+//
+//    public void setProjectUsers(List<User> projectUsers) {
+//        this.projectUsers = projectUsers;
+//    }
+
+    public List<UUID> getProjectActiveUsersUuid() {
         return projectActiveUsersUuid;
     }
 
-    public void setProjectActiveUsersId(List<UUID> projectActiveUsersId) {
+    public void setProjectActiveUsersUuid(List<UUID> projectActiveUsersId) {
         this.projectActiveUsersUuid = projectActiveUsersId;
     }
 

@@ -4,7 +4,9 @@ package com.ddanilyuk.userDemo1.controllers;
 import com.ddanilyuk.userDemo1.extensions.UserExtension;
 import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
+import com.ddanilyuk.userDemo1.model.Views;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,13 +38,15 @@ public class UserController {
 
     // Test request
     @GetMapping("/all")
+    @JsonView(Views.usersView.class)
     public List<User> index() {
-
         return userRepository.findAll();
     }
 
 
     @PostMapping("/registration")
+//    @JsonView(Views.userWithoutProjectsAndPassword.class)
+    @JsonView(Views.usersView.class)
     public User newUser(@RequestBody Map<String, String> body) {
         String userFirstName = body.get("user_first_name");
         String userSecondName = body.get("user_second_name");
@@ -69,6 +73,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @JsonView(Views.usersView.class)
     public String loginUser(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
@@ -96,6 +101,7 @@ public class UserController {
     }
 
     @GetMapping("{uuid}/details")
+    @JsonView(Views.usersView.class)
     public User index(@PathVariable String uuid) {
         return userRepository.findUserByUuid(UUID.fromString(uuid));
     }
