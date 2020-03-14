@@ -1,8 +1,5 @@
 package com.ddanilyuk.userDemo1.extensions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 //package com.ddanilyuk.userDemo1.extensions;
 //
 ////public class UserExtension {

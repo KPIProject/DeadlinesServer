@@ -1,8 +1,6 @@
 package com.ddanilyuk.userDemo1.controllers;
 
-//import com.ddanilyuk.userDemo1.extensions.UserExtension;
 import com.ddanilyuk.userDemo1.extensions.UserExtension;
-import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
 import com.ddanilyuk.userDemo1.model.Views;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
@@ -19,7 +17,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-//@RequestMapping("/main")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -65,9 +62,7 @@ public class UserController {
 //            return String.valueOf(user.getUuid());
             return userRepository.save(user);
         } else {
-//            return "User is already exist";
             throw new UserExtension("User is already exist");
-//            return null;
 
         }
     }

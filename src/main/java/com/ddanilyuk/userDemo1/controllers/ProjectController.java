@@ -9,18 +9,12 @@ import com.ddanilyuk.userDemo1.repositories.DeadlineRepository;
 import com.ddanilyuk.userDemo1.repositories.ProjectRepository;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
-
-//import com.monitorjbl.json.JsonView;
-import static com.monitorjbl.json.Match.match;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
-import static com.monitorjbl.json.Match.match;
 
 @RestController
 @RequestMapping
@@ -109,7 +103,7 @@ public class ProjectController {
                 userRepository.save(userToAdd);
 
                 return projectRepository.save(project);
-            } else  {
+            } else {
                 throw new UserExtension("Invalid project owner");
             }
         }
@@ -147,28 +141,6 @@ public class ProjectController {
             }
         }
 
-//        if (userOptional.isPresent()) {
-//            User user = userOptional.get();
-//
-//            Project projectToAdd = projectRepository.findByProjectId(Integer.parseInt(projectID));
-//
-//            if (projectToAdd.getProjectCreatorUuid().equals(user.getUuid())) {
-//                String deadline_name = body.get("deadline_name");
-//                String deadline_description = body.get("deadline_description");
-//                Deadline deadline = new Deadline(deadline_name, deadline_description);
-//                deadline.setProject(projectToAdd);
-//                deadline.setDeadlineProjectId(projectToAdd.getProjectId());
-//                projectToAdd.getDeadlines().add(deadline);
-//                return projectRepository.save(projectToAdd);
-//            }
-//
-//            throw new UserExtension("Project not found");
-//
-//        } else {
-//            throw new UserExtension("User not found");
-//        }
-
-
     }
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}")
@@ -177,28 +149,6 @@ public class ProjectController {
                                         @PathVariable String projectID,
                                         @PathVariable String deadlineId,
                                         @PathVariable String uuidUserToAdd) {
-
-//        User userToAdd = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
-//        User userOwner = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
-//
-//        Project project = projectRepository.findByProjectId(Integer.parseInt(projectID));
-//
-//        if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
-//
-//            List<Deadline> projectDeadlines = project.getDeadlines();
-//            for (Deadline deadline : projectDeadlines) {
-//                if (deadline.getDeadlineId() == Integer.parseInt(deadlineId)) {
-//                    deadline.getDeadlineExecutorsUuid().add(userToAdd.getUuid());
-//                    return projectRepository.save(project);
-//                }
-//            }
-//            throw new UserExtension("Deadline not found");
-////            return null;
-//
-//        }
-//        throw new UserExtension("User owner not found");
-//        return null;
-
 
         Optional<User> userToAddOptional = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
         Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
