@@ -12,4 +12,6 @@ public final class Views {
 
 
     public interface deadlinesView {}
+
+    public interface deadlinesDetailView extends defaultView, deadlinesView {}
 }

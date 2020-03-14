@@ -1,9 +1,6 @@
 package com.ddanilyuk.userDemo1.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
@@ -35,7 +32,7 @@ public class Project {
 //    @JsonManagedReference
 //    @JsonView(Views.projectView.class)
     @JsonView(Views.projectView.class)
-    private User user;
+    private User projectOwner;
 
 //    @Transient
     @NotNull
@@ -47,11 +44,15 @@ public class Project {
     private List<Deadline> deadlines = new ArrayList<>();
 
 
-//    @JsonView(Views.projectUsersView.class)
-//    private List<User> projectUsers = new ArrayList<>();
+    @Column
+    @JsonView(Views.projectView.class)
+    @ElementCollection(targetClass=User.class)
+    @ManyToMany(mappedBy = "projectsAppended")
+    private List<User> projectUsers = new ArrayList<>();
 
     @Column
     @ElementCollection(targetClass=UUID.class)
+    @JsonView(Views.usersView.class)
 //    @JsonView(Views.userWithoutProjectsAndPassword.class)
     private List<UUID> projectActiveUsersUuid = new ArrayList<>();
 
@@ -67,18 +68,18 @@ public class Project {
     public Project(String projectName, String projectDescription, User userOwner) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
-        this.user = userOwner;
-        this.projectCreatorUuid = user.getUuid();
+        this.projectOwner = userOwner;
+        this.projectCreatorUuid = projectOwner.getUuid();
 //        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
     }
 
-//    public List<User> getProjectUsers() {
-//        return projectUsers;
-//    }
-//
-//    public void setProjectUsers(List<User> projectUsers) {
-//        this.projectUsers = projectUsers;
-//    }
+    public List<User> getProjectUsers() {
+        return projectUsers;
+    }
+
+    public void setProjectUsers(List<User> projectUsers) {
+        this.projectUsers = projectUsers;
+    }
 
     public List<UUID> getProjectActiveUsersUuid() {
         return projectActiveUsersUuid;
@@ -96,12 +97,12 @@ public class Project {
         this.projectCreatorUuid = projectCreatorUuid;
     }
 
-    public User getUser() {
-        return user;
+    public User getProjectOwner() {
+        return projectOwner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setProjectOwner(User projectOwner) {
+        this.projectOwner = projectOwner;
     }
 
     public int getProjectId() {

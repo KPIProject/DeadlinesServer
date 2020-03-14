@@ -35,9 +35,16 @@ public class User {
     @JsonView(Views.defaultView.class)
     private UUID uuid;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JsonView(Views.usersView.class)
-    private List<Project> projects = new ArrayList<>();
+    private List<Project> projectsCreated = new ArrayList<>();
+
+    @Column
+    @ElementCollection(targetClass=Project.class)
+    @JsonView(Views.usersView.class)
+    @ManyToMany(mappedBy = "projectUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Project> projectsAppended = new ArrayList<>();
+
 
 
 
@@ -62,15 +69,30 @@ public class User {
         this.userSecondName = userSecondName;
         this.username = username;
         this.password = password;
-        this.projects = projects;
+        this.projectsCreated = projects;
     }
 
     public User(String userFirstName, String userSecondName, List<Project> projects) {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
-        this.projects = projects;
+        this.projectsCreated = projects;
     }
 
+    public List<Project> getProjectsCreated() {
+        return projectsCreated;
+    }
+
+    public void setProjectsCreated(List<Project> projectsCreated) {
+        this.projectsCreated = projectsCreated;
+    }
+
+    public List<Project> getProjectsAppended() {
+        return projectsAppended;
+    }
+
+    public void setProjectsAppended(List<Project> projectsAppended) {
+        this.projectsAppended = projectsAppended;
+    }
 
     public UUID getUuid() {
         return uuid;
@@ -120,13 +142,6 @@ public class User {
         this.userSecondName = userSecondName;
     }
 
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
 
     @Override
     public String toString() {
@@ -137,7 +152,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", uuid=" + uuid +
-                ", projects=" + projects +
+                ", projects=" + projectsCreated +
                 '}';
     }
 }

@@ -94,7 +94,7 @@ public class UserController {
             }
         } else {
 //            return "User is not exist";
-            throw new UserExtension("User is not exist");
+            throw new UserExtension("User not found");
 //            return null;
 
         }
@@ -103,7 +103,12 @@ public class UserController {
     @GetMapping("{uuid}/details")
     @JsonView(Views.usersView.class)
     public User index(@PathVariable String uuid) {
-        return userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<User> optionalUser = userRepository.findUserByUuid(UUID.fromString(uuid));
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            throw new UserExtension("User not found");
+        }
     }
 
 

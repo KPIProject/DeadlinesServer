@@ -38,6 +38,10 @@ public class Deadline {
     @JsonView(Views.deadlinesView.class)
     private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
 
+    @Transient
+    @JsonView(Views.deadlinesDetailView.class)
+    private List<User> deadlineExecutors = new ArrayList<>();
+
     public Deadline() {
 
     }
@@ -60,6 +64,23 @@ public class Deadline {
 
     public void setDeadlineExecutorsUuid(List<UUID> deadlineExecutorsUuid) {
         this.deadlineExecutorsUuid = deadlineExecutorsUuid;
+    }
+
+    public List<User> getDeadlineExecutors() {
+        List<User> usersAll = project.getProjectUsers();
+        List<User> deadlineExecutors = new ArrayList<>();
+
+        for (User user: usersAll) {
+            if (deadlineExecutorsUuid.contains(user.getUuid())) {
+                deadlineExecutors.add(user);
+            }
+        }
+
+        return deadlineExecutors;
+    }
+
+    public void setDeadlineExecutors(List<User> deadlineExecutors) {
+        this.deadlineExecutors = deadlineExecutors;
     }
 
     public int getDeadlineProjectId() {
