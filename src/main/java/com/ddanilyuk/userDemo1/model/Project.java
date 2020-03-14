@@ -6,9 +6,8 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "project")
@@ -30,7 +29,7 @@ public class Project {
 
 //    @Transient
     @NotNull
-    private int userOwnerID;
+    private UUID projectCreatorUuid;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Deadline> deadlines = new ArrayList<>();
@@ -39,8 +38,8 @@ public class Project {
 //    private List<User> projectUsers = new ArrayList<>();
 
     @Column
-    @ElementCollection(targetClass=Integer.class)
-    private List<Integer> projectActiveUsersId = new ArrayList<>();
+    @ElementCollection(targetClass=UUID.class)
+    private List<UUID> projectActiveUsersUuid = new ArrayList<>();
 
 
     public Project() {
@@ -55,24 +54,24 @@ public class Project {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.user = userOwner;
-        this.userOwnerID = user.getUserId();
+        this.projectCreatorUuid = user.getUuid();
 //        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
     }
 
-    public List<Integer> getProjectActiveUsersId() {
-        return projectActiveUsersId;
+    public List<UUID> getProjectActiveUsersId() {
+        return projectActiveUsersUuid;
     }
 
-    public void setProjectActiveUsersId(List<Integer> projectActiveUsersId) {
-        this.projectActiveUsersId = projectActiveUsersId;
+    public void setProjectActiveUsersId(List<UUID> projectActiveUsersId) {
+        this.projectActiveUsersUuid = projectActiveUsersId;
     }
 
-    public int getUserOwnerID() {
-        return userOwnerID;
+    public UUID getProjectCreatorUuid() {
+        return projectCreatorUuid;
     }
 
-    public void setUserOwnerID(int userOwnerID) {
-        this.userOwnerID = userOwnerID;
+    public void setProjectCreatorUuid(UUID projectCreatorUuid) {
+        this.projectCreatorUuid = projectCreatorUuid;
     }
 
     public User getUser() {

@@ -3,9 +3,9 @@ package com.ddanilyuk.userDemo1.controllers;
 import com.ddanilyuk.userDemo1.model.Deadline;
 import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
+import com.ddanilyuk.userDemo1.repositories.DeadlineRepository;
 import com.ddanilyuk.userDemo1.repositories.ProjectRepository;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,31 +49,38 @@ public class ProjectController {
         return projectRepository.save(project);
     }
 
-    @PostMapping("{uuid}/addUserToProject/{projectID}")
-    public Project newUser(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Map<String, String> body) {
+    @PostMapping("{uuidOwner}/{projectID}/addUserToProject/{uuidUserToAdd}")
+    public Project newUserToProject(@PathVariable String uuidOwner, @PathVariable String uuidUserToAdd, @PathVariable String projectID, @RequestBody Map<String, String> body) {
 
-        UUID stringUUID = UUID.fromString(uuid);
+        User userToAdd = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
+        User userOwner = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
 
-        User userToAdd = userRepository.findUserByUuid(stringUUID);
+//        List<Project> userOwnerProjects = userOwner.getProjects();
 
         Project project = projectRepository.findByProjectId(Integer.parseInt(projectID));
 
-        project.getProjectActiveUsersId().add(userToAdd.getUserId());
+        if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
 
-        return projectRepository.save(project);
+            project.getProjectActiveUsersId().add(userToAdd.getUuid());
+            userToAdd.getProjects().add(project);
+
+            return projectRepository.save(project);
+        }
+
+        return null;
     }
 
     @PostMapping("{uuid}/{projectID}/addDeadline")
-    public Project newDeadline(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Map<String, String> body) {
+    public Project newDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Map<String, String> body) {
 
         UUID stringUUID = UUID.fromString(uuid);
         User user = userRepository.findUserByUuid(stringUUID);
 
-        List<Project> projects = user.getProjects();
+//        List<Project> projects = user.getProjects();
 
         Project projectToAdd = projectRepository.findByProjectId(Integer.parseInt(projectID));
 
-        if (projects.contains(projectToAdd)) {
+        if (projectToAdd.getProjectCreatorUuid().equals(user.getUuid())) {
             String deadline_name = body.get("deadline_name");
             String deadline_description = body.get("deadline_description");
             Deadline deadline = new Deadline(deadline_name, deadline_description);
@@ -81,6 +88,33 @@ public class ProjectController {
             deadline.setDeadlineProjectId(projectToAdd.getProjectId());
             projectToAdd.getDeadlines().add(deadline);
             return projectRepository.save(projectToAdd);
+        }
+
+        return null;
+    }
+
+    @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}")
+    public Project addExecutorToProject(@PathVariable String uuidOwner,
+                                        @PathVariable String projectID,
+                                        @PathVariable String deadlineId,
+                                        @PathVariable String uuidUserToAdd,
+                                        @RequestBody Map<String, String> body) {
+
+        User userToAdd = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
+        User userOwner = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
+
+        Project project = projectRepository.findByProjectId(Integer.parseInt(projectID));
+
+        if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
+
+            List<Deadline> projectDeadlines = project.getDeadlines();
+            for (Deadline deadline : projectDeadlines) {
+                if (deadline.getDeadlineId() == Integer.parseInt(deadlineId)) {
+                    deadline.getDeadlineExecutorsUuid().add(userToAdd.getUuid());
+                    return projectRepository.save(project);
+                }
+            }
+
         }
 
         return null;

@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/main")
+//@RequestMapping("/main")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -77,7 +77,6 @@ public class UserController {
         } else {
             return "User is not exist";
         }
-
     }
 
     @GetMapping("{uuid}/details")

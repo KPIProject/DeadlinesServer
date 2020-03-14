@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "deadline")
@@ -19,15 +22,18 @@ public class Deadline {
     private String deadlineDescription;
 
     // поля которые не храянться в БД
-//    @Transient
+    // @Transient
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
-//    @JsonManagedReference
     private Project project;
 
     @NotNull
     private int deadlineProjectId;
+
+    @Column
+    @ElementCollection(targetClass=UUID.class)
+    private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
 
     public Deadline() {
 
@@ -43,6 +49,14 @@ public class Deadline {
         this.deadlineDescription = deadlineDescription;
         this.project = project;
         this.deadlineProjectId = project.getProjectId();
+    }
+
+    public List<UUID> getDeadlineExecutorsUuid() {
+        return deadlineExecutorsUuid;
+    }
+
+    public void setDeadlineExecutorsUuid(List<UUID> deadlineExecutorsUuid) {
+        this.deadlineExecutorsUuid = deadlineExecutorsUuid;
     }
 
     public int getDeadlineProjectId() {
