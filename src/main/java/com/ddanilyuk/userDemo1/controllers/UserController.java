@@ -1,5 +1,7 @@
 package com.ddanilyuk.userDemo1.controllers;
 
+//import com.ddanilyuk.userDemo1.extensions.UserExtension;
+import com.ddanilyuk.userDemo1.extensions.UserExtension;
 import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
@@ -35,17 +37,19 @@ public class UserController {
     // Test request
     @GetMapping("/all")
     public List<User> index() {
+
         return userRepository.findAll();
     }
 
 
     @PostMapping("/registration")
-    public String newUser(@RequestBody Map<String, String> body) {
+    public User newUser(@RequestBody Map<String, String> body) {
         String userFirstName = body.get("user_first_name");
         String userSecondName = body.get("user_second_name");
         String username = body.get("username");
         String password = body.get("password");
 
+//        Optional<User> isExistUser = userRepository.findByUsername(username).orElseThrow(() -> new UserExtension(username));
         Optional<User> isExistUser = userRepository.findByUsername(username);
 
         if (!isExistUser.isPresent()) {
@@ -53,10 +57,14 @@ public class UserController {
 
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-            userRepository.save(user);
-            return String.valueOf(user.getUuid());
+//            userRepository.save(user);
+//            return String.valueOf(user.getUuid());
+            return userRepository.save(user);
         } else {
-            return "User is already exist";
+//            return "User is already exist";
+            throw new UserExtension("User is already exist");
+//            return null;
+
         }
     }
 
@@ -72,10 +80,18 @@ public class UserController {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return String.valueOf(user.getUuid());
             } else {
-                return "Password is wrong";
+//                return "Password is wrong";
+
+                throw new UserExtension("Password is wrong");
+
+//                return null;
+
             }
         } else {
-            return "User is not exist";
+//            return "User is not exist";
+            throw new UserExtension("User is not exist");
+//            return null;
+
         }
     }
 

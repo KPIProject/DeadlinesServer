@@ -1,5 +1,6 @@
 package com.ddanilyuk.userDemo1.controllers;
 
+import com.ddanilyuk.userDemo1.extensions.UserExtension;
 import com.ddanilyuk.userDemo1.model.Deadline;
 import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
@@ -62,12 +63,18 @@ public class ProjectController {
         if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
 
             project.getProjectActiveUsersId().add(userToAdd.getUuid());
-            userToAdd.getProjects().add(project);
+            List<Project> projects = userToAdd.getProjects();
+            projects.add(project);
+            userToAdd.setProjects(projects);
+            userRepository.save(userToAdd);
 
             return projectRepository.save(project);
         }
 
-        return null;
+        throw new UserExtension("User owner not found");
+//        return null;
+
+
     }
 
     @PostMapping("{uuid}/{projectID}/addDeadline")
@@ -75,8 +82,6 @@ public class ProjectController {
 
         UUID stringUUID = UUID.fromString(uuid);
         User user = userRepository.findUserByUuid(stringUUID);
-
-//        List<Project> projects = user.getProjects();
 
         Project projectToAdd = projectRepository.findByProjectId(Integer.parseInt(projectID));
 
@@ -90,15 +95,19 @@ public class ProjectController {
             return projectRepository.save(projectToAdd);
         }
 
-        return null;
+
+        throw new UserExtension("Deadline not found");
+
+//        return null;
+
+
     }
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}")
     public Project addExecutorToProject(@PathVariable String uuidOwner,
                                         @PathVariable String projectID,
                                         @PathVariable String deadlineId,
-                                        @PathVariable String uuidUserToAdd,
-                                        @RequestBody Map<String, String> body) {
+                                        @PathVariable String uuidUserToAdd) {
 
         User userToAdd = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
         User userOwner = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
@@ -114,10 +123,14 @@ public class ProjectController {
                     return projectRepository.save(project);
                 }
             }
+            throw new UserExtension("Deadline not found");
+//            return null;
 
         }
+        throw new UserExtension("User owner not found");
+//        return null;
 
-        return null;
+
     }
 
 
