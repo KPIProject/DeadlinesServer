@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +35,14 @@ public class Project {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Deadline> deadlines = new ArrayList<>();
 
+    // Todo maybe use User not userIds
+//    private List<User> projectUsers = new ArrayList<>();
+
+    @Column
+    @ElementCollection(targetClass=Integer.class)
+    private List<Integer> projectActiveUsersId = new ArrayList<>();
+
+
     public Project() {
     }
 
@@ -42,11 +51,20 @@ public class Project {
         this.projectDescription = projectDescription;
     }
 
-    public Project(String projectName, String projectDescription, User user) {
+    public Project(String projectName, String projectDescription, User userOwner) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
-        this.user = user;
+        this.user = userOwner;
         this.userOwnerID = user.getUserId();
+//        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
+    }
+
+    public List<Integer> getProjectActiveUsersId() {
+        return projectActiveUsersId;
+    }
+
+    public void setProjectActiveUsersId(List<Integer> projectActiveUsersId) {
+        this.projectActiveUsersId = projectActiveUsersId;
     }
 
     public int getUserOwnerID() {

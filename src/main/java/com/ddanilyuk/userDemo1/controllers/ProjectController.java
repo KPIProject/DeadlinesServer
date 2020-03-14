@@ -33,12 +33,10 @@ public class ProjectController {
     }
 
 
-    @PostMapping("{uuid}/addProject")
-    public Project newUser(@PathVariable String uuid, @RequestBody Map<String, String> body) {
+    @PostMapping("{uuid}/createProject")
+    public Project createProject(@PathVariable String uuid, @RequestBody Map<String, String> body) {
 
         UUID stringUUID = UUID.fromString(uuid);
-
-        System.out.println(userRepository.findAll());
 
         User user = userRepository.findUserByUuid(stringUUID);
 
@@ -47,6 +45,20 @@ public class ProjectController {
         String project_description = body.get("project_description");
 
         Project project = new Project(project_name, project_description, user);
+
+        return projectRepository.save(project);
+    }
+
+    @PostMapping("{uuid}/addUserToProject/{projectID}")
+    public Project newUser(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Map<String, String> body) {
+
+        UUID stringUUID = UUID.fromString(uuid);
+
+        User userToAdd = userRepository.findUserByUuid(stringUUID);
+
+        Project project = projectRepository.findByProjectId(Integer.parseInt(projectID));
+
+        project.getProjectActiveUsersId().add(userToAdd.getUserId());
 
         return projectRepository.save(project);
     }
@@ -66,11 +78,12 @@ public class ProjectController {
             String deadline_description = body.get("deadline_description");
             Deadline deadline = new Deadline(deadline_name, deadline_description);
             deadline.setProject(projectToAdd);
+            deadline.setDeadlineProjectId(projectToAdd.getProjectId());
             projectToAdd.getDeadlines().add(deadline);
             return projectRepository.save(projectToAdd);
         }
-        return null;
 
+        return null;
     }
 
 

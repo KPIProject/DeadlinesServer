@@ -21,10 +21,8 @@ public class User {
 
     private String password;
 
-    @Column(name = "uuid", updatable = false, nullable = false, unique=true, columnDefinition = "BINARY(16)")
+    @Column(name = "uuid", updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID uuid;
-
-
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Project> projects = new ArrayList<>();
@@ -58,14 +56,6 @@ public class User {
         this.userSecondName = userSecondName;
         this.projects = projects;
     }
-
-//    public String getConfirmPassword() {
-//        return confirmPassword;
-//    }
-//
-//    public void setConfirmPassword(String confirmPassword) {
-//        this.confirmPassword = confirmPassword;
-//    }
 
 
     public UUID getUuid() {

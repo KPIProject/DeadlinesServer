@@ -1,5 +1,6 @@
 package com.ddanilyuk.userDemo1.controllers;
 
+import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,12 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    // Test request
     @GetMapping("/all")
     public List<User> index() {
         return userRepository.findAll();
     }
 
-//    @GetMapping("/{id}")
-//    public List<User> userFromId(@PathVariable String id) {
-//
-//        return user.getPassword().de;
-//    }
 
     @PostMapping("/registration")
     public String newUser(@RequestBody Map<String, String> body) {
@@ -81,19 +78,11 @@ public class UserController {
             return "User is not exist";
         }
 
-//        String pass = String.valueOf(user.get());
+    }
 
-//        Optional<User> isExist = userRepository.findByUsername(username);
-//        if (!isExist.isPresent()) {
-//            User user = new User(userFirstName, userSecondName, username, password);
-//
-//            user.setPassword(passwordEncoder.encode(user.getPassword()));
-//
-//            userRepository.save(user);
-//            return String.valueOf(user.getUuid());
-//        } else {
-//            return "User is already exist";
-//        }
+    @GetMapping("{uuid}/details")
+    public User index(@PathVariable String uuid) {
+        return userRepository.findUserByUuid(UUID.fromString(uuid));
     }
 
 
