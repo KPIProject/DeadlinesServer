@@ -1,17 +1,28 @@
 package com.ddanilyuk.userDemo1.model;
 
 
+@SuppressWarnings("ALL")
 public final class Views {
-    public interface defaultView {}
 
-    public interface usersView extends defaultView, deadlinesView {}
+    // Default output
+    public interface defaultView {
+    }
 
-    public interface projectView extends defaultView, deadlinesView {}
+    // Output with List<Project> projectsCreated, List<Project> projectsAppended in User
+    // UUID projectOwnerUuid, List<UUID> projectActiveUsersUuid in Project
+    public interface usersView extends defaultView, deadlinesView {
+    }
 
-    public interface projectUsersView {}
+    // Output with User projectOwner, List<User> projectUsers in Project
+    public interface projectView extends defaultView, deadlinesView {
+    }
 
+    // All deadlines field without project and List<User> deadlineExecutors
+    public interface deadlinesView {
+    }
 
-    public interface deadlinesView {}
-
-    public interface deadlinesDetailView extends defaultView, deadlinesView {}
+    // With List<User> deadlineExecutors
+    // Calls in deadlineDetails
+    public interface deadlinesDetailView extends defaultView, deadlinesView {
+    }
 }

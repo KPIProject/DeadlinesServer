@@ -9,8 +9,10 @@ import com.ddanilyuk.userDemo1.repositories.DeadlineRepository;
 import com.ddanilyuk.userDemo1.repositories.ProjectRepository;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,30 +50,55 @@ public class ProjectController {
     }
 
 
+//    @PostMapping("{uuid}/createProject")
+//    @JsonView(Views.projectView.class)
+//    public Project createProject(@PathVariable String uuid, @RequestBody Map<String, String> body) {
+//
+//        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+//
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//
+//            Optional<String> projectNameOptional = Optional.ofNullable(body.get("project_name"));
+//            String project_description = body.get("project_description");
+//
+//            if (!projectNameOptional.isPresent()) {
+//                throw new UserExtension("Project name is not valid");
+//            } else {
+//                String projectName = projectNameOptional.get();
+//                Project project = new Project(projectName, project_description, user);
+//                return projectRepository.save(project);
+//            }
+//        } else {
+//            throw new UserExtension("User is not found");
+//        }
+//
+//    }
+
+
     @PostMapping("{uuid}/createProject")
     @JsonView(Views.projectView.class)
-    public Project createProject(@PathVariable String uuid, @RequestBody Map<String, String> body) {
+    public Project createProject(@PathVariable String uuid, @Valid @RequestBody Project project) {
 
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            String project_name = body.get("project_name");
-            String project_description = body.get("project_description");
-
-            Project project = new Project(project_name, project_description, user);
-
-            return projectRepository.save(project);
-        } else {
+        if (!userOptional.isPresent()) {
             throw new UserExtension("User is not found");
+        } else if (project.getProjectDescription() == null) {
+            throw new UserExtension("Invalid projectDescription");
+        } else if (project.getProjectName() == null || project.getProjectName().equals("")) {
+            throw new UserExtension("Invalid projectName");
+        } else  {
+            project.setProjectOwner(userOptional.get());
+//            project.setProjectOwnerUuid(userOptional.get().getUuid());
+            return projectRepository.save(project);
         }
-
     }
+
 
     @PostMapping("{uuidOwner}/{projectID}/addUserToProject/{uuidUserToAdd}")
     @JsonView({Views.projectView.class})
-    public Project newUserToProject(@PathVariable String uuidOwner, @PathVariable String uuidUserToAdd, @PathVariable String projectID, @RequestBody Map<String, String> body) {
+    public Project addUserToProject(@PathVariable String uuidOwner, @PathVariable String uuidUserToAdd, @PathVariable String projectID) {
 
         Optional<User> userToAddOptional = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
         Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
@@ -88,7 +115,7 @@ public class ProjectController {
             User userOwner = userOwnerOptional.get();
             Project project = projectOptional.get();
 
-            if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
+            if (project.getProjectOwnerUuid().equals(userOwner.getUuid())) {
 
                 if (project.getProjectUsers().contains(userToAdd)) {
                     throw new UserExtension("User is already in this project");
@@ -111,9 +138,41 @@ public class ProjectController {
 
     }
 
+//    @PostMapping("{uuid}/{projectID}/addDeadline")
+//    @JsonView({Views.projectView.class})
+//    public Project newDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Map<String, String> body) {
+//
+//        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+//
+//        Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
+//
+//        if (!userOptional.isPresent()) {
+//            throw new UserExtension("User not found");
+//        } else if (!projectToAddOptional.isPresent()) {
+//            throw new UserExtension("Project not found");
+//        } else {
+//            User user = userOptional.get();
+//
+//            Project projectToAdd = projectToAddOptional.get();
+//
+//            if (projectToAdd.getProjectOwnerUuid().equals(user.getUuid())) {
+//                String deadline_name = body.get("deadline_name");
+//                String deadline_description = body.get("deadline_description");
+//                Deadline deadline = new Deadline(deadline_name, deadline_description);
+//                deadline.setProject(projectToAdd);
+//                deadline.setDeadlineProjectId(projectToAdd.getProjectId());
+//                projectToAdd.getDeadlines().add(deadline);
+//                return projectRepository.save(projectToAdd);
+//            } else {
+//                throw new UserExtension("Invalid project owner");
+//            }
+//        }
+//    }
+
+
     @PostMapping("{uuid}/{projectID}/addDeadline")
     @JsonView({Views.projectView.class})
-    public Project newDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Map<String, String> body) {
+    public Project newDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Deadline deadline){
 
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
 
@@ -123,15 +182,16 @@ public class ProjectController {
             throw new UserExtension("User not found");
         } else if (!projectToAddOptional.isPresent()) {
             throw new UserExtension("Project not found");
+        } else if (deadline.getDeadlineName() == null || deadline.getDeadlineName().equals("")) {
+            throw new UserExtension("Invalid deadlineName");
+        } else if (deadline.getDeadlineDescription() == null) {
+            throw new UserExtension("Invalid deadlineDescription");
         } else {
-            User user = userOptional.get();
 
+            User user = userOptional.get();
             Project projectToAdd = projectToAddOptional.get();
 
-            if (projectToAdd.getProjectCreatorUuid().equals(user.getUuid())) {
-                String deadline_name = body.get("deadline_name");
-                String deadline_description = body.get("deadline_description");
-                Deadline deadline = new Deadline(deadline_name, deadline_description);
+            if (projectToAdd.getProjectOwnerUuid().equals(user.getUuid())) {
                 deadline.setProject(projectToAdd);
                 deadline.setDeadlineProjectId(projectToAdd.getProjectId());
                 projectToAdd.getDeadlines().add(deadline);
@@ -142,6 +202,7 @@ public class ProjectController {
         }
 
     }
+
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}")
     @JsonView({Views.projectView.class})
@@ -165,7 +226,7 @@ public class ProjectController {
             User userOwner = userOwnerOptional.get();
             Project project = projectOptional.get();
 
-            if (project.getProjectCreatorUuid().equals(userOwner.getUuid())) {
+            if (project.getProjectOwnerUuid().equals(userOwner.getUuid())) {
 
                 if (project.getProjectUsers().contains(userToAdd)) {
                     List<Deadline> projectDeadlines = project.getDeadlines();
@@ -188,6 +249,7 @@ public class ProjectController {
 
     }
 
+
     @GetMapping("deadlineDetail/{id}")
     @JsonView({Views.deadlinesDetailView.class})
     public Deadline findDeadline(@PathVariable String id) {
@@ -197,9 +259,22 @@ public class ProjectController {
 
             return deadlineOptional.get();
         } else {
-            throw new UserExtension("Deadline is not found");
+            throw new UserExtension("Deadline not found");
         }
     }
 
+
+    @GetMapping("projectDetail/{id}")
+    @JsonView({Views.deadlinesDetailView.class})
+    public Project findProject(@PathVariable String id) {
+        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(id));
+
+        if (projectOptional.isPresent()) {
+
+            return projectOptional.get();
+        } else {
+            throw new UserExtension("Project not found");
+        }
+    }
 
 }

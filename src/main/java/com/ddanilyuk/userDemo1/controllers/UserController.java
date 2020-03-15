@@ -29,11 +29,13 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // Test request
+
+    // Test request (Delete with release)
     @GetMapping("/all")
     @JsonView(Views.usersView.class)
     public List<User> index() {
@@ -42,58 +44,61 @@ public class UserController {
 
 
     @PostMapping("/registration")
-//    @JsonView(Views.userWithoutProjectsAndPassword.class)
     @JsonView(Views.usersView.class)
     public User newUser(@RequestBody Map<String, String> body) {
-        String userFirstName = body.get("user_first_name");
-        String userSecondName = body.get("user_second_name");
+        String userFirstName = body.get("userFirstName");
+        String userSecondName = body.get("userSecondName");
         String username = body.get("username");
         String password = body.get("password");
 
-//        Optional<User> isExistUser = userRepository.findByUsername(username).orElseThrow(() -> new UserExtension(username));
-        Optional<User> isExistUser = userRepository.findByUsername(username);
-
-        if (!isExistUser.isPresent()) {
-            User user = new User(userFirstName, userSecondName, username, password);
-
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-//            userRepository.save(user);
-//            return String.valueOf(user.getUuid());
-            return userRepository.save(user);
+        if (userFirstName == null || userFirstName.equals("")) {
+            throw new UserExtension("Invalid userFirstName");
+        } else if (userSecondName == null || userSecondName.equals("")) {
+            throw new UserExtension("Invalid userSecondName");
+        } else if (username == null || username.equals("")) {
+            throw new UserExtension("Invalid username");
+        } else if (password == null || password.equals("")) {
+            throw new UserExtension("Invalid password");
         } else {
-            throw new UserExtension("User is already exist");
+            Optional<User> isExistUser = userRepository.findByUsername(username);
 
+            if (!isExistUser.isPresent()) {
+                User user = new User(userFirstName, userSecondName, username, password);
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                return userRepository.save(user);
+            } else {
+                throw new UserExtension("User is already exist");
+            }
         }
     }
+
 
     @PostMapping("/login")
     @JsonView(Views.usersView.class)
-    public String loginUser(@RequestBody Map<String, String> body) {
+    public User loginUser(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
 
-        Optional<User> userOptional = userRepository.findByUsername(username);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return String.valueOf(user.getUuid());
-            } else {
-//                return "Password is wrong";
-
-                throw new UserExtension("Password is wrong");
-
-//                return null;
-
-            }
+        if (username == null || username.equals("")) {
+            throw new UserExtension("Invalid username");
+        } else if (password == null || password.equals("")) {
+            throw new UserExtension("Invalid password");
         } else {
-//            return "User is not exist";
-            throw new UserExtension("User not found");
-//            return null;
+            Optional<User> userOptional = userRepository.findByUsername(username);
 
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (passwordEncoder.matches(password, user.getPassword())) {
+                    return user;
+                } else {
+                    throw new UserExtension("Password is wrong");
+                }
+            } else {
+                throw new UserExtension("User not found");
+            }
         }
     }
+
 
     @GetMapping("{uuid}/details")
     @JsonView(Views.usersView.class)
@@ -107,4 +112,21 @@ public class UserController {
     }
 
 
+    @GetMapping("findByUsername/{username}")
+    @JsonView(Views.defaultView.class)
+    public List<User> findByUsername(@PathVariable String username) {
+        Optional<List<User>> optionalUsers = userRepository.findAllByUsername(username);
+        if (optionalUsers.isPresent()) {
+            return optionalUsers.get();
+        } else {
+            throw new UserExtension("Users not found");
+        }
+    }
+
+
+    @GetMapping("/getAllUsers")
+    @JsonView(Views.defaultView.class)
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }

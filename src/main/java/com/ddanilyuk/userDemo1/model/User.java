@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "usr")
 public class User {
@@ -25,25 +26,25 @@ public class User {
     @JsonView(Views.defaultView.class)
     private String username;
 
-//    @JsonView(Views.defaultView.class)
+
     private String password;
 
-    @Column(name = "uuid", updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
 
+    @Column(name = "uuid", updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
     @JsonView(Views.defaultView.class)
     private UUID uuid;
+
 
     @OneToMany(mappedBy = "projectOwner", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JsonView(Views.usersView.class)
     private List<Project> projectsCreated = new ArrayList<>();
 
+
     @Column
-    @ElementCollection(targetClass=Project.class)
+    @ElementCollection(targetClass = Project.class)
     @JsonView(Views.usersView.class)
     @ManyToMany(mappedBy = "projectUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Project> projectsAppended = new ArrayList<>();
-
-
 
 
     public User() {

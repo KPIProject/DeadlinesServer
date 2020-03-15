@@ -1,6 +1,5 @@
 package com.ddanilyuk.userDemo1.model;
 
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
@@ -9,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "project")
-//@JsonIgnoreProperties("user")
-
 public class Project {
 
     @Id
@@ -26,34 +25,33 @@ public class Project {
     @JsonView(Views.defaultView.class)
     private String projectDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-//    @JsonBackReference
-//    @JsonManagedReference
-//    @JsonView(Views.projectView.class)
-    @JsonView(Views.projectView.class)
-    private User projectOwner;
-
-//    @Transient
-    @NotNull
-    @JsonView(Views.defaultView.class)
-    private UUID projectCreatorUuid;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonView(Views.defaultView.class)
     private List<Deadline> deadlines = new ArrayList<>();
 
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonView(Views.projectView.class)
+    private User projectOwner;
+
+
+    @NotNull
+    @JsonView(Views.usersView.class)
+    private UUID projectOwnerUuid;
+
+
     @Column
     @JsonView(Views.projectView.class)
-    @ElementCollection(targetClass=User.class)
+    @ElementCollection(targetClass = User.class)
     @ManyToMany(mappedBy = "projectsAppended")
     private List<User> projectUsers = new ArrayList<>();
 
+
     @Column
-    @ElementCollection(targetClass=UUID.class)
+    @ElementCollection(targetClass = UUID.class)
     @JsonView(Views.usersView.class)
-//    @JsonView(Views.userWithoutProjectsAndPassword.class)
     private List<UUID> projectActiveUsersUuid = new ArrayList<>();
 
 
@@ -69,7 +67,7 @@ public class Project {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectOwner = userOwner;
-        this.projectCreatorUuid = projectOwner.getUuid();
+        this.projectOwnerUuid = projectOwner.getUuid();
 //        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
     }
 
@@ -89,12 +87,12 @@ public class Project {
         this.projectActiveUsersUuid = projectActiveUsersId;
     }
 
-    public UUID getProjectCreatorUuid() {
-        return projectCreatorUuid;
+    public UUID getProjectOwnerUuid() {
+        return projectOwnerUuid;
     }
 
-    public void setProjectCreatorUuid(UUID projectCreatorUuid) {
-        this.projectCreatorUuid = projectCreatorUuid;
+    public void setProjectOwnerUuid(UUID projectOwnerUuid) {
+        this.projectOwnerUuid = projectOwnerUuid;
     }
 
     public User getProjectOwner() {
@@ -102,6 +100,7 @@ public class Project {
     }
 
     public void setProjectOwner(User projectOwner) {
+        this.projectOwnerUuid = projectOwner.getUuid();
         this.projectOwner = projectOwner;
     }
 

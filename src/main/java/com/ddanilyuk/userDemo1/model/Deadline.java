@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "deadline")
 @JsonIgnoreProperties("project")
@@ -19,25 +21,32 @@ public class Deadline {
     @JsonView(Views.deadlinesView.class)
     private int deadlineId;
 
+
     @JsonView(Views.deadlinesView.class)
     private String deadlineName;
 
+
     @JsonView(Views.deadlinesView.class)
     private String deadlineDescription;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
+
     @NotNull
     @JsonView(Views.deadlinesView.class)
     private int deadlineProjectId;
+
 
     @Column
     @ElementCollection(targetClass=UUID.class)
     @JsonView(Views.deadlinesView.class)
     private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
 
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     @Transient
     @JsonView(Views.deadlinesDetailView.class)
     private List<User> deadlineExecutors = new ArrayList<>();
