@@ -12,14 +12,14 @@
 
 [Регєстрація](#Registration)  
 [Логін](#Login)  
-[Всі проекти](#All projects)  
-[Деталі юзера](#User datail)  
-[Створити проект](#Create project)  
-[Додати юзера до проекту](#Add user to project)  
-[Додати дедлайн](#Add deadline)  
-[Додати виконувача проекту](#Add executor to deadline)  
-[Деталі дедлайну](#Deadline detail)  
-[Деталі проекту](#Project detail)  
+[Всі проекти](#AllProjects)  
+[Деталі юзера](#UserDatail)  
+[Створити проект](#CreateProject)  
+[Додати юзера до проекту](#AddUserToProject)  
+[Додати дедлайн](#AddDeadline)  
+[Додати виконувача проекту](#AddExecutorToDeadline)  
+[Деталі дедлайну](#DeadlineDetail)  
+[Деталі проекту](#ProjectDetail)  
 
 ### 	Registration
 
@@ -181,7 +181,7 @@
 
 
 
-### 	All Projects
+### 	AllProjects
 
 **URL**: `{uuid}/allProjects`
 
@@ -228,7 +228,7 @@ uuid - uuid користувача
 
 
 
-### 	User detail
+### 	UserDetail
 
 **URL**: `/{uuid}/details`
 
@@ -288,7 +288,7 @@ uuid - uuid користувача
 
 
 
-### 	Create project
+### 	CreateProject
 
 **URL**: `{uuid}/createProject`
 
@@ -362,7 +362,7 @@ uuid - uuid користувача
 
 
 
-### 	Add user to project
+### 	AddUserToProject
 
 **URL**: `{uuidOwner}/{projectID}/addUserToProject/{uuidUserToAdd}`
 
@@ -457,7 +457,7 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 
 
-### Add deadline
+### AddDeadline
 
 **URL**: `/{uuid}/{projectID}/addDeadline`
 
@@ -548,7 +548,7 @@ projectID - id проекта
 
 
 
-### Add executor to deadline
+### AddExecutorToDeadline
 
 **URL**: `{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}`
 
@@ -664,7 +664,7 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 
 
-### Deadline detail
+### DeadlineDetail
 
 **URL**: `deadlineDetail/{id}`
 
@@ -713,7 +713,7 @@ id - id дедлайна
 
 
 
-### Project detail
+### ProjectDetail
 
 **URL**: `projectDetail/{id}`
 
