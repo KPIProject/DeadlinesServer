@@ -713,61 +713,47 @@ id - id дедлайна
 
 
 
-### ProjectDetail
+### FindByUsername
 
-**URL**: `projectDetail/{id}`
+**URL**: `findByUsername/{username}`
 
 **Request type**: `GET`
 
 **Variables**: 
 
 ```
-id - id проекта
+username - юзернейм
 ```
 
 **Server successful answer**: 
 
 ```json
-{
-  "projectId": 26,
-  "projectName": "Denys project",
-  "projectDescription": "Details of denys project",
-  "deadlines": [
+[
     {
-      "deadlineId": 4,
-      "deadlineName": "Denys deadline",
-      "deadlineDescription": "Details of denys deadline",
-      "deadlineProjectId": 26,
-      "deadlineExecutorsUuid": [
-        "3c8e6d64-423d-4b63-a162-ab46a979f226"
-      ],
-      "deadlineExecutors": [
-        {
-          "userId": 5,
-          "userFirstName": "Nastya",
-          "userSecondName": "Holovash",
-          "username": "username",
-          "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
-        }
-      ]
+        "userId": 1,
+        "userFirstName": "Denys",
+        "userSecondName": "Danilyuk",
+        "username": "danisdanilyuk",
+        "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05"
     }
-  ]
-}
+]
 ```
 
-**Errors**:
+```
+Якщо ввести username не повністю, то повертає список юзерів зі схожим username
+```
 
-- Проект не знайден
+Errors**:
+
+- Коли юзерів по данному username немає
 
 ```json
 {
   "error_type": "NotFoundException",
   "code": 404,
-  "error_message": "Project not found"
+  "error_message": "Users not found"
 }
 ```
-
-
 
 
 
