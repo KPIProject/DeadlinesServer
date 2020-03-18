@@ -10,6 +10,17 @@
 
 ## 	Працюючі запити
 
+[Регєстрація](#Registration)  
+[Логін](#Login)  
+[Всі проекти](#All projects)  
+[Деталі юзера](#User datail)  
+[Створити проект](#Create project)  
+[Додати юзера до проекту](#Add user to project)  
+[Додати дедлайн](#Add deadline)  
+[Додати виконувача проекту](#Add executor to deadline)  
+[Деталі дедлайну](#Deadline detail)  
+[Деталі проекту](#Project detail)  
+
 ### 	Registration
 
 **URL**: `/registration`
@@ -165,6 +176,53 @@
   "error_type": "NotFoundException",
   "code": 404,
   "error_message": "Invalid password"
+}
+```
+
+
+
+### 	All Projects
+
+**URL**: `{uuid}/allProjects`
+
+**Request type**: `GET`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+```
+
+**Server successful answer**: 
+
+```json
+[
+  {
+    "projectId": 1,
+    "projectName": "My own project",
+    "projectDescription": "Details of my project",
+    "deadlines": [],
+    "projectOwner": {
+      "userId": 1,
+      "userFirstName": "Denys",
+      "userSecondName": "Danilyuk",
+      "username": "danisdanilyuk",
+      "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05"
+    },
+    "projectUsers": []
+  }
+]
+```
+
+**Errors**:
+
+- Користувача з таким `username ` не існує
+
+```json
+{
+  "error_type": "NotFoundException",
+  "code": 404,
+  "error_message": "User not found"
 }
 ```
 
