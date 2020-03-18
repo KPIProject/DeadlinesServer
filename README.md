@@ -13,6 +13,9 @@
 [Регєстрація](#Registration)  
 [Логін](#Login)  
 [Всі проекти](#AllProjects)  
+
+[Знайти юзерів по username](#FindByUsername)
+
 [Деталі юзера](#UserDatail)  
 [Створити проект](#CreateProject)  
 [Додати юзера до проекту](#AddUserToProject)  
