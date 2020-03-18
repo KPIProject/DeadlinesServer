@@ -11,18 +11,26 @@
 ## 	Працюючі запити
 
 [Регєстрація](#Registration)  
+
 [Логін](#Login)  
+
 [Всі проекти](#AllProjects)  
 
 [Знайти юзерів по username](#FindByUsername)
 
 [Деталі юзера](#UserDatail)  
+
 [Створити проект](#CreateProject)  
+
 [Додати юзера до проекту](#AddUserToProject)  
+
 [Додати дедлайн](#AddDeadline)  
+
 [Додати виконувача проекту](#AddExecutorToDeadline)  
+
 [Деталі дедлайну](#DeadlineDetail)  
-[Деталі проекту](#ProjectDetail)  
+
+[Деталі проекту](#ProjectDetail) [Новая строка](#lines)  
 
 ### 	Registration
 
