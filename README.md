@@ -30,7 +30,7 @@
 
 [Деталі дедлайну](#DeadlineDetail)  
 
-[Деталі проекту](#ProjectDetail) [Новая строка](#lines)  
+[Деталі проекту](#ProjectDetail)
 
 ### 	Registration
 
