@@ -36,12 +36,12 @@
 
   ```json
   {
-   "project": {
-    "projectName": "My own project",
-    "projectDescription": "Details of my project",
-    "projectCreationTime": 123123123
-   },
-   "usersToAdd": []
+      "project": {
+          "projectName": "My own project",
+    	  "projectDescription": "Details of my project",
+          "projectCreationTime": 123123123
+      },
+      "usersToAdd": []
   }
   ```
 
@@ -53,12 +53,12 @@
 
   ```json
   {
-   "project": {
-    "projectName": "My own project",
-    "projectDescription": "Details of my project",
-    "projectExecutionTime": 123123123
-   },
-   "usersToAdd": []
+      "project": {
+          "projectName": "My own project",
+          "projectDescription": "Details of my project",
+          "projectExecutionTime": 123123123
+      },
+      "usersToAdd": []
   }
   ```
 
@@ -72,9 +72,9 @@
 
   ```json
   {
-  	"deadlineName": "My own deadline",
-  	"deadlineDescription": "Details of my deadline",
-  	"deadlineCreationTime": 158479510000
+      "deadlineName": "My own deadline",
+      "deadlineDescription": "Details of my deadline",
+      "deadlineCreationTime": 158479510000
   }
   ```
 
@@ -86,9 +86,9 @@
 
   ```json
   {
-  	"deadlineName": "My own deadline",
-  	"deadlineDescription": "Details of my deadline",
-  	"deadlineExecutionTime": 158479599998
+      "deadlineName": "My own deadline",
+      "deadlineDescription": "Details of my deadline",
+      "deadlineExecutionTime": 158479599998
   }
   ```
 
@@ -132,10 +132,10 @@
 
 ```json
 {
-	"userFirstName": "Denis",
-	"userSecondName": "Danilyuk",
-	"username": "ddanilyuk",
-	"password": "12345"
+    "userFirstName": "Denis",
+    "userSecondName": "Danilyuk",
+    "username": "ddanilyuk",
+    "password": "12345"
 }
 ```
 
@@ -220,8 +220,8 @@
 
 ```json
 {
-	"username": "ddanilyuk",
-	"password": "12345"
+    "username": "ddanilyuk",
+    "password": "12345"
 }
 ```
 
