@@ -88,7 +88,7 @@
   
     **Або** можна вказати час закінчення дедлайну в `body`  [Додати делайн](#AddDeadline)
   
-​```json
+```json
   {
       "deadline": {
           "deadlineName": "My own deadline 1",
