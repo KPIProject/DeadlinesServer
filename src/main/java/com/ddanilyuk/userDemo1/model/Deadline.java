@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public class Deadline {
 
 
     @Column
-    @ElementCollection(targetClass=UUID.class)
+    @ElementCollection(targetClass = UUID.class)
     @JsonView(Views.deadlinesView.class)
     private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
 
@@ -51,6 +52,17 @@ public class Deadline {
     @JsonView(Views.deadlinesDetailView.class)
     private List<User> deadlineExecutors = new ArrayList<>();
 
+
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long deadlineCreatedTime;
+
+
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long deadlineExecutionTime;
+
+
     public Deadline() {
 
     }
@@ -58,6 +70,9 @@ public class Deadline {
     public Deadline(String deadlineName, String deadlineDescription) {
         this.deadlineName = deadlineName;
         this.deadlineDescription = deadlineDescription;
+
+        Date dateNow = new Date();
+        deadlineCreatedTime = dateNow.getTime();
     }
 
     public Deadline(String deadlineName, String deadlineDescription, Project project) {
@@ -65,6 +80,25 @@ public class Deadline {
         this.deadlineDescription = deadlineDescription;
         this.project = project;
         this.deadlineProjectId = project.getProjectId();
+
+        Date dateNow = new Date();
+        deadlineCreatedTime = dateNow.getTime();
+    }
+
+    public long getDeadlineCreatedTime() {
+        return deadlineCreatedTime;
+    }
+
+    public void setDeadlineCreatedTime(long deadlineCreatedTime) {
+        this.deadlineCreatedTime = deadlineCreatedTime;
+    }
+
+    public long getDeadlineExecutionTime() {
+        return deadlineExecutionTime;
+    }
+
+    public void setDeadlineExecutionTime(long deadlineExecutionTime) {
+        this.deadlineExecutionTime = deadlineExecutionTime;
     }
 
     public List<UUID> getDeadlineExecutorsUuid() {
@@ -79,7 +113,7 @@ public class Deadline {
         List<User> usersAll = project.getProjectUsers();
         List<User> deadlineExecutors = new ArrayList<>();
 
-        for (User user: usersAll) {
+        for (User user : usersAll) {
             if (deadlineExecutorsUuid.contains(user.getUuid())) {
                 deadlineExecutors.add(user);
             }

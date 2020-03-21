@@ -35,16 +35,24 @@ public class User {
     private UUID uuid;
 
 
-    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonView(Views.usersView.class)
     private List<Project> projectsCreated = new ArrayList<>();
 
 
     @Column
-    @ElementCollection(targetClass = Project.class)
     @JsonView(Views.usersView.class)
-    @ManyToMany(mappedBy = "projectUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "projects_appended",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<Project> projectsAppended = new ArrayList<>();
+
+
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long userCreationTime;
 
 
     public User() {
@@ -75,6 +83,14 @@ public class User {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
         this.projectsCreated = projects;
+    }
+
+    public long getUserCreationTime() {
+        return userCreationTime;
+    }
+
+    public void setUserCreationTime(long userCreationTime) {
+        this.userCreationTime = userCreationTime;
     }
 
     public List<Project> getProjectsCreated() {

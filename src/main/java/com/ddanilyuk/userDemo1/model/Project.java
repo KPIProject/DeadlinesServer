@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused"})
 @Entity
 @Table(name = "project")
 public class Project {
@@ -22,6 +24,7 @@ public class Project {
     @JsonView(Views.defaultView.class)
     private String projectName;
 
+    @Size(max = 8192)
     @JsonView(Views.defaultView.class)
     private String projectDescription;
 
@@ -31,7 +34,7 @@ public class Project {
     private List<Deadline> deadlines = new ArrayList<>();
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonView(Views.projectView.class)
     private User projectOwner;
@@ -44,7 +47,7 @@ public class Project {
 
     @Column
     @JsonView(Views.projectView.class)
-    @ElementCollection(targetClass = User.class)
+//    @ElementCollection(targetClass = User.class)
     @ManyToMany(mappedBy = "projectsAppended")
     private List<User> projectUsers = new ArrayList<>();
 
@@ -52,8 +55,17 @@ public class Project {
     @Column
     @ElementCollection(targetClass = UUID.class)
     @JsonView(Views.usersView.class)
-    private List<UUID> projectActiveUsersUuid = new ArrayList<>();
+    private List<UUID> projectUsersUuid = new ArrayList<>();
 
+
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long projectCreationTime;
+
+
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long projectExecutionTime;
 
     public Project() {
     }
@@ -61,6 +73,9 @@ public class Project {
     public Project(String projectName, String projectDescription) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
+
+        Date dateNow = new Date();
+        projectCreationTime = dateNow.getTime();
     }
 
     public Project(String projectName, String projectDescription, User userOwner) {
@@ -69,6 +84,26 @@ public class Project {
         this.projectOwner = userOwner;
         this.projectOwnerUuid = projectOwner.getUuid();
 //        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
+
+        Date dateNow = new Date();
+        projectCreationTime = dateNow.getTime();
+    }
+
+
+    public long getProjectCreationTime() {
+        return projectCreationTime;
+    }
+
+    public void setProjectCreationTime(long projectCreatedTime) {
+        this.projectCreationTime = projectCreatedTime;
+    }
+
+    public long getProjectExecutionTime() {
+        return projectExecutionTime;
+    }
+
+    public void setProjectExecutionTime(long projectExecutionTime) {
+        this.projectExecutionTime = projectExecutionTime;
     }
 
     public List<User> getProjectUsers() {
@@ -80,11 +115,11 @@ public class Project {
     }
 
     public List<UUID> getProjectActiveUsersUuid() {
-        return projectActiveUsersUuid;
+        return projectUsersUuid;
     }
 
     public void setProjectActiveUsersUuid(List<UUID> projectActiveUsersId) {
-        this.projectActiveUsersUuid = projectActiveUsersId;
+        this.projectUsersUuid = projectActiveUsersId;
     }
 
     public UUID getProjectOwnerUuid() {

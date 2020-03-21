@@ -11,10 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 public class UserController {
@@ -65,6 +62,10 @@ public class UserController {
             if (!isExistUser.isPresent()) {
                 User user = new User(userFirstName, userSecondName, username, password);
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+                Date dateNow = new Date();
+                user.setUserCreationTime(dateNow.getTime());
+
                 return userRepository.save(user);
             } else {
                 throw new UserExtension("User is already exist");
