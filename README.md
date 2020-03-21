@@ -38,7 +38,7 @@
   {
       "project": {
           "projectName": "My own project",
-    	  "projectDescription": "Details of my project",
+          "projectDescription": "Details of my project",
           "projectCreationTime": 123123123
       },
       "usersToAdd": []
@@ -72,25 +72,32 @@
 
   ```json
   {
-      "deadlineName": "My own deadline",
-      "deadlineDescription": "Details of my deadline",
-      "deadlineCreationTime": 158479510000
+      "deadline": {
+          "deadlineName": "My own deadline 1",
+          "deadlineDescription": "Details of my deadline 1",
+          "deadlineCreationTime": 123123123
+      },
+      "usersToAdd": []
   }
   ```
-
-  - `deadlineExecutionTime`
-
-    При створенні проекту = `0`
-
+```
+  
+- `deadlineExecutionTime`
+  
+  При створенні проекту = `0`
+  
     **Або** можна вказати час закінчення дедлайну в `body`  [Додати делайн](#AddDeadline)
-
-  ```json
+  
+​```json
   {
-      "deadlineName": "My own deadline",
-      "deadlineDescription": "Details of my deadline",
-      "deadlineExecutionTime": 158479599998
+      "deadline": {
+          "deadlineName": "My own deadline 1",
+          "deadlineDescription": "Details of my deadline 1",
+          "deadlineExecutionTime": 999999999
+      },
+      "usersToAdd": []
   }
-  ```
+```
 
 
 
@@ -143,14 +150,14 @@
 
 ```json
 {
-  "userId": 4,
-  "userFirstName": "Denis",
-  "userSecondName": "Danilyuk",
-  "username": "ddanilyuk",
-  "uuid": "ddd76d87-ae08-4f4d-b939-df09720b2479",
-  "projectsCreated": [],
-  "projectsAppended": [],
-  "userCreationTime": 1584818029554
+    "userId": 4,
+    "userFirstName": "Denis",
+    "userSecondName": "Danilyuk",
+    "username": "ddanilyuk",
+    "uuid": "ddd76d87-ae08-4f4d-b939-df09720b2479",
+    "projectsCreated": [],
+    "projectsAppended": [],
+    "userCreationTime": 1584818029554
 }
 ```
 
@@ -162,9 +169,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User is already exist"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User is already exist"
 }
 ```
 
@@ -172,9 +179,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid userFirstName"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid userFirstName"
 }
 ```
 
@@ -182,9 +189,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid userSecondName"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid userSecondName"
 }
 ```
 
@@ -192,9 +199,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid username"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid username"
 }
 ```
 
@@ -202,9 +209,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid password"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid password"
 }
 ```
 
@@ -229,14 +236,14 @@
 
 ```json
 {
-  "userId": 4,
-  "userFirstName": "Denis",
-  "userSecondName": "Danilyuk",
-  "username": "ddanilyuk",
-  "uuid": "ddd76d87-ae08-4f4d-b939-df09720b2479",
-  "projectsCreated": [],
-  "projectsAppended": [],
-  "userCreationTime": 1584818029554
+    "userId": 4,
+    "userFirstName": "Denis",
+    "userSecondName": "Danilyuk",
+    "username": "ddanilyuk",
+    "uuid": "ddd76d87-ae08-4f4d-b939-df09720b2479",
+    "projectsCreated": [],
+    "projectsAppended": [],
+    "userCreationTime": 1584818029554
 }
 ```
 
@@ -246,9 +253,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User not found"
 }
 ```
 
@@ -256,9 +263,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Password is wrong"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Password is wrong"
 }
 ```
 
@@ -266,9 +273,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid username"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid username"
 }
 ```
 
@@ -276,9 +283,9 @@
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid password"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid password"
 }
 ```
 
@@ -300,21 +307,21 @@ uuid - uuid користувача
 
 ```json
 [
-  {
-    "projectId": 1,
-    "projectName": "My own project",
-    "projectDescription": "Details of my project",
-    "deadlines": [],
-    "projectOwner": {
-      "userId": 1,
-      "userFirstName": "Denys",
-      "userSecondName": "Danilyuk",
-      "username": "danisdanilyuk",
-      "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05",
-  		"userCreationTime": 1584818029554
-    },
-    "projectUsers": []
-  }
+    {
+        "projectId": 1,
+        "projectName": "My own project",
+        "projectDescription": "Details of my project",
+        "deadlines": [],
+        "projectOwner": {
+            "userId": 1,
+            "userFirstName": "Denys",
+            "userSecondName": "Danilyuk",
+            "username": "danisdanilyuk",
+            "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05",
+            "userCreationTime": 1584818029554
+        },
+        "projectUsers": []
+    }
 ]
 ```
 
@@ -324,9 +331,9 @@ uuid - uuid користувача
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User not found"
 }
 ```
 
@@ -348,33 +355,33 @@ uuid - uuid користувача
 
 ```json
 {
-  "userId": 5,
-  "userFirstName": "Nastya",
-  "userSecondName": "Holovash",
-  "username": "username",
-  "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
-  "projectsCreated": [
-    {
-      "projectId": 25,
-      "projectName": "name project",
-      "projectDescription": "project description",
-      "deadlines": [],
-      "projectOwnerUuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
-      "projectActiveUsersUuid": []
-    }
-  ],
-  "projectsAppended": [
-    {
-      "projectId": 26,
-      "projectName": "Denys project",
-      "projectDescription": "Details of denys project",
-      "deadlines": [],
-      "projectOwnerUuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50",
-      "projectActiveUsersUuid": [
-        "3c8e6d64-423d-4b63-a162-ab46a979f226"
-      ]
-    }
-  ]
+    "userId": 5,
+    "userFirstName": "Nastya",
+    "userSecondName": "Holovash",
+    "username": "username",
+    "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
+    "projectsCreated": [
+        {
+            "projectId": 25,
+            "projectName": "name project",
+            "projectDescription": "project description",
+            "deadlines": [],
+            "projectOwnerUuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
+            "projectActiveUsersUuid": []
+        }
+    ],
+    "projectsAppended": [
+        {
+            "projectId": 26,
+            "projectName": "Denys project",
+            "projectDescription": "Details of denys project",
+            "deadlines": [],
+            "projectOwnerUuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50",
+            "projectActiveUsersUuid": [
+                "3c8e6d64-423d-4b63-a162-ab46a979f226"
+            ]
+        }
+    ]
 }
 ```
 
@@ -384,9 +391,9 @@ uuid - uuid користувача
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User not found"
 }
 ```
 
@@ -408,13 +415,13 @@ uuid - uuid користувача
 
 ```json
 {
- "project": {
-  "projectName": "My own project 2",
-  "projectDescription": "Details of my project 2",
-  "projectCreationTime": 123123123,
-  "projectExecutionTime": 999999999
- },
- "usersToAdd": ["1bcfbad3-31d7-4e48-936e-461e0d2a445c"]
+    "project": {
+        "projectName": "My own project 2",
+        "projectDescription": "Details of my project 2",
+        "projectCreationTime": 123123123,
+        "projectExecutionTime": 999999999
+    },
+    "usersToAdd": ["1bcfbad3-31d7-4e48-936e-461e0d2a445c"]
 }
 ```
 
@@ -428,30 +435,30 @@ uuid - uuid користувача
 
 ```json
 {
-  "projectId": 1,
-  "projectName": "My own project 2",
-  "projectDescription": "Details of my project 2",
-  "deadlines": [],
-  "projectOwner": {
-    "userId": 1,
-    "userFirstName": "Denys2",
-    "userSecondName": "Danilyuk2",
-    "username": "ddanilyuk3",
-    "uuid": "197f6109-2973-43a5-9c22-2888fc813838",
-    "userCreationTime": 1584818897341
-  },
-  "projectUsers": [
-    {
-      "userId": 2,
-      "userFirstName": "Denys",
-      "userSecondName": "Danilyuk",
-      "username": "ddanilyuk",
-      "uuid": "1bcfbad3-31d7-4e48-936e-461e0d2a445c",
-      "userCreationTime": 1584818933775
-    }
-  ],
-  "projectCreationTime": 123123123,
-  "projectExecutionTime": 999999999
+    "projectId": 1,
+    "projectName": "My own project 2",
+    "projectDescription": "Details of my project 2",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 1,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "uuid": "197f6109-2973-43a5-9c22-2888fc813838",
+        "userCreationTime": 1584818897341
+    },
+    "projectUsers": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys",
+            "userSecondName": "Danilyuk",
+            "username": "ddanilyuk",
+            "uuid": "1bcfbad3-31d7-4e48-936e-461e0d2a445c",
+            "userCreationTime": 1584818933775
+        }
+    ],
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
 }
 ```
 
@@ -461,9 +468,9 @@ uuid - uuid користувача
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User not found"
 }
 ```
 
@@ -471,9 +478,9 @@ uuid - uuid користувача
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid projectName"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid projectName"
 }
 ```
 
@@ -481,9 +488,9 @@ uuid - uuid користувача
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid projectDescription"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid projectDescription"
 }
 ```
 
@@ -507,26 +514,26 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "projectId": 26,
-  "projectName": "Denys project",
-  "projectDescription": "Details of denys project",
-  "deadlines": [],
-  "projectOwner": {
-    "userId": 6,
-    "userFirstName": "Denys",
-    "userSecondName": "Danilyuk",
-    "username": "danisdanilyuk",
-    "uuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50"
-  },
-  "projectUsers": [
-    {
-      "userId": 5,
-      "userFirstName": "Nastya",
-      "userSecondName": "Holovash",
-      "username": "username",
-      "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
-    }
-  ]
+    "projectId": 26,
+    "projectName": "Denys project",
+    "projectDescription": "Details of denys project",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 6,
+        "userFirstName": "Denys",
+        "userSecondName": "Danilyuk",
+        "username": "danisdanilyuk",
+        "uuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50"
+    },
+    "projectUsers": [
+        {
+            "userId": 5,
+            "userFirstName": "Nastya",
+            "userSecondName": "Holovash",
+            "username": "username",
+            "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
+        }
+    ]
 }
 ```
 
@@ -536,9 +543,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User to add not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User to add not found"
 }
 ```
 
@@ -546,9 +553,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User owner not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User owner not found"
 }
 ```
 
@@ -556,9 +563,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Project not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Project not found"
 }
 ```
 
@@ -566,9 +573,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User is already in this project"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User is already in this project"
 }
 ```
 
@@ -576,9 +583,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid project owner"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid project owner"
 }
 ```
 
@@ -601,13 +608,13 @@ projectID - id проекта
 
 ```json
 {
- "deadline": {
-  "deadlineName": "My own deadline 1",
-  "deadlineDescription": "Details of my deadline 1",
-  "deadlineCreationTime": 123123123,
-  "deadlineExecutionTime": 999999999
- },
- "usersToAdd": ["47efeb77-7635-405c-bd21-dfbc60fe1dae"]
+    "deadline": {
+        "deadlineName": "My own deadline 1",
+        "deadlineDescription": "Details of my deadline 1",
+        "deadlineCreationTime": 123123123,
+        "deadlineExecutionTime": 999999999
+    },
+    "usersToAdd": ["47efeb77-7635-405c-bd21-dfbc60fe1dae"]
 }
 ```
 
@@ -621,42 +628,42 @@ projectID - id проекта
 
 ```json
 {
-  "projectId": 1,
-  "projectName": "My own project",
-  "projectDescription": "Details of my project",
-  "deadlines": [
-    {
-      "deadlineId": 1,
-      "deadlineName": "My own deadline 1",
-      "deadlineDescription": "Details of my deadline 1",
-      "deadlineProjectId": 1,
-      "deadlineExecutorsUuid": [
-        "47efeb77-7635-405c-bd21-dfbc60fe1dae"
-      ],
-      "deadlineCreatedTime": 1584819730624,
-      "deadlineExecutionTime": 999999999
-    }
-  ],
-  "projectOwner": {
-    "userId": 1,
-    "userFirstName": "Denys",
-    "userSecondName": "Danilyuk",
-    "username": "ddanilyuk",
-    "uuid": "c289cb0f-f752-42af-9b68-3d21d3ca39b0",
-    "userCreationTime": 1584819579859
-  },
-  "projectUsers": [
-    {
-      "userId": 2,
-      "userFirstName": "Denys2",
-      "userSecondName": "Danilyuk2",
-      "username": "ddanilyuk2",
-      "uuid": "47efeb77-7635-405c-bd21-dfbc60fe1dae",
-      "userCreationTime": 1584819588258
-    }
-  ],
-  "projectCreationTime": 123123123,
-  "projectExecutionTime": 999999999
+    "projectId": 1,
+    "projectName": "My own project",
+    "projectDescription": "Details of my project",
+    "deadlines": [
+        {
+            "deadlineId": 1,
+            "deadlineName": "My own deadline 1",
+            "deadlineDescription": "Details of my deadline 1",
+            "deadlineProjectId": 1,
+            "deadlineExecutorsUuid": [
+                "47efeb77-7635-405c-bd21-dfbc60fe1dae"
+            ],
+            "deadlineCreatedTime": 1584819730624,
+            "deadlineExecutionTime": 999999999
+        }
+    ],
+    "projectOwner": {
+        "userId": 1,
+        "userFirstName": "Denys",
+        "userSecondName": "Danilyuk",
+        "username": "ddanilyuk",
+        "uuid": "c289cb0f-f752-42af-9b68-3d21d3ca39b0",
+        "userCreationTime": 1584819579859
+    },
+    "projectUsers": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "uuid": "47efeb77-7635-405c-bd21-dfbc60fe1dae",
+            "userCreationTime": 1584819588258
+        }
+    ],
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
 }
 ```
 
@@ -666,9 +673,9 @@ projectID - id проекта
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User not found"
 }
 ```
 
@@ -676,9 +683,9 @@ projectID - id проекта
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid deadlnineName"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid deadlnineName"
 }
 ```
 
@@ -686,9 +693,9 @@ projectID - id проекта
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid deadlineDescription"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid deadlineDescription"
 }
 ```
 
@@ -713,36 +720,36 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "projectId": 26,
-  "projectName": "Denys project",
-  "projectDescription": "Details of denys project",
-  "deadlines": [
-    {
-      "deadlineId": 4,
-      "deadlineName": "Denys deadline",
-      "deadlineDescription": "Details of denys deadline",
-      "deadlineProjectId": 26,
-      "deadlineExecutorsUuid": [
-        "3c8e6d64-423d-4b63-a162-ab46a979f226"
-      ]
-    }
-  ],
-  "projectOwner": {
-    "userId": 6,
-    "userFirstName": "Denys",
-    "userSecondName": "Danilyuk",
-    "username": "danisdanilyuk",
-    "uuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50"
-  },
-  "projectUsers": [
-    {
-      "userId": 5,
-      "userFirstName": "Nastya",
-      "userSecondName": "Holovash",
-      "username": "username",
-      "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
-    }
-  ]
+    "projectId": 26,
+    "projectName": "Denys project",
+    "projectDescription": "Details of denys project",
+    "deadlines": [
+        {
+            "deadlineId": 4,
+            "deadlineName": "Denys deadline",
+            "deadlineDescription": "Details of denys deadline",
+            "deadlineProjectId": 26,
+            "deadlineExecutorsUuid": [
+                "3c8e6d64-423d-4b63-a162-ab46a979f226"
+            ]
+        }
+    ],
+    "projectOwner": {
+        "userId": 6,
+        "userFirstName": "Denys",
+        "userSecondName": "Danilyuk",
+        "username": "danisdanilyuk",
+        "uuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50"
+    },
+    "projectUsers": [
+        {
+            "userId": 5,
+            "userFirstName": "Nastya",
+            "userSecondName": "Holovash",
+            "username": "username",
+            "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
+        }
+    ]
 }
 ```
 
@@ -752,9 +759,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User to add not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User to add not found"
 }
 ```
 
@@ -762,9 +769,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User owner not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User owner not found"
 }
 ```
 
@@ -772,9 +779,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Project not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Project not found"
 }
 ```
 
@@ -782,9 +789,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Deadline not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Deadline not found"
 }
 ```
 
@@ -792,9 +799,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "User to add is not in this project"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User to add is not in this project"
 }
 ```
 
@@ -802,9 +809,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Invalid project owner"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid project owner"
 }
 ```
 
@@ -826,22 +833,22 @@ id - id дедлайна
 
 ```json
 {
-  "deadlineId": 4,
-  "deadlineName": "Denys deadline",
-  "deadlineDescription": "Details of denys deadline",
-  "deadlineProjectId": 26,
-  "deadlineExecutorsUuid": [
-    "3c8e6d64-423d-4b63-a162-ab46a979f226"
-  ],
-  "deadlineExecutors": [
-    {
-      "userId": 5,
-      "userFirstName": "Nastya",
-      "userSecondName": "Holovash",
-      "username": "username",
-      "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
-    }
-  ]
+    "deadlineId": 4,
+    "deadlineName": "Denys deadline",
+    "deadlineDescription": "Details of denys deadline",
+    "deadlineProjectId": 26,
+    "deadlineExecutorsUuid": [
+      	"3c8e6d64-423d-4b63-a162-ab46a979f226"
+    ],
+    "deadlineExecutors": [
+        {
+            "userId": 5,
+            "userFirstName": "Nastya",
+            "userSecondName": "Holovash",
+            "username": "username",
+            "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
+        }
+    ]
 }
 ```
 
@@ -851,9 +858,9 @@ id - id дедлайна
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Deadline not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Deadline not found"
 }
 ```
 
@@ -895,9 +902,9 @@ username - юзернейм
 
 ```json
 {
-  "error_type": "NotFoundException",
-  "code": 404,
-  "error_message": "Users not found"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Users not found"
 }
 ```
 
