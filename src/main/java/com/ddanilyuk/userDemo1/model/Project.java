@@ -5,10 +5,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @SuppressWarnings({"unused"})
@@ -29,12 +26,12 @@ public class Project {
     private String projectDescription;
 
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonView(Views.defaultView.class)
     private List<Deadline> deadlines = new ArrayList<>();
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonView(Views.projectView.class)
     private User projectOwner;
@@ -48,7 +45,12 @@ public class Project {
     @Column
     @JsonView(Views.projectView.class)
 //    @ElementCollection(targetClass = User.class)
-    @ManyToMany(mappedBy = "projectsAppended")
+//    @ManyToMany(mappedBy = "projectsAppended")
+    @ManyToMany
+    @JoinTable(
+            name = "projects_appended",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<User> projectUsers = new ArrayList<>();
 
 
@@ -66,6 +68,14 @@ public class Project {
     @Column
     @JsonView(Views.defaultView.class)
     private long projectExecutionTime;
+
+
+//    @Column
+//    @JsonView(Views.projectView.class)
+////    @ElementCollection(targetClass = User.class)
+//    @ManyToMany(mappedBy = "projectsInvitations", cascade = CascadeType.REFRESH)
+//    private List<User> projectInvitedUsers = new ArrayList<>();
+
 
     public Project() {
     }
@@ -89,6 +99,14 @@ public class Project {
         projectCreationTime = dateNow.getTime();
     }
 
+
+//    public List<User> getProjectInvitedUsers() {
+//        return projectInvitedUsers;
+//    }
+//
+//    public void setProjectInvitedUsers(List<User> projectInvitedUsers) {
+//        this.projectInvitedUsers = projectInvitedUsers;
+//    }
 
     public long getProjectCreationTime() {
         return projectCreationTime;
@@ -114,11 +132,11 @@ public class Project {
         this.projectUsers = projectUsers;
     }
 
-    public List<UUID> getProjectActiveUsersUuid() {
+    public List<UUID> getProjectUsersUuid() {
         return projectUsersUuid;
     }
 
-    public void setProjectActiveUsersUuid(List<UUID> projectActiveUsersId) {
+    public void setProjectUsersUuid(List<UUID> projectActiveUsersId) {
         this.projectUsersUuid = projectActiveUsersId;
     }
 

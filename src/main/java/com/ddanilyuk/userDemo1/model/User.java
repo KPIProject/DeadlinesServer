@@ -3,9 +3,7 @@ package com.ddanilyuk.userDemo1.model;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @SuppressWarnings("unused")
 @Entity
@@ -26,6 +24,9 @@ public class User {
     @JsonView(Views.defaultView.class)
     private String username;
 
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long userCreationTime;
 
     private String password;
 
@@ -35,24 +36,32 @@ public class User {
     private UUID uuid;
 
 
-    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true)
     @JsonView(Views.usersView.class)
     private List<Project> projectsCreated = new ArrayList<>();
 
 
     @Column
     @JsonView(Views.usersView.class)
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "projectUsers", cascade = {CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "projects_appended",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<Project> projectsAppended = new ArrayList<>();
 
+//    @Column
+//    @JsonView(Views.usersView.class)
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+//    @JoinTable(
+//            name = "projects_invitations",
+//            joinColumns = @JoinColumn(name = "project_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//    private List<Project> projectsInvitations = new ArrayList<>();
 
-    @Column
-    @JsonView(Views.defaultView.class)
-    private long userCreationTime;
+
+
 
 
     public User() {
@@ -92,6 +101,14 @@ public class User {
     public void setUserCreationTime(long userCreationTime) {
         this.userCreationTime = userCreationTime;
     }
+
+//    public List<Project> getProjectsInvitations() {
+//        return projectsInvitations;
+//    }
+//
+//    public void setProjectsInvitations(List<Project> projectsInvitations) {
+//        this.projectsInvitations = projectsInvitations;
+//    }
 
     public List<Project> getProjectsCreated() {
         return projectsCreated;

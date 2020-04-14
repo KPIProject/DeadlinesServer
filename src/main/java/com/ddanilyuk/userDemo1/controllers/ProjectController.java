@@ -9,10 +9,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping
@@ -73,7 +70,7 @@ public class ProjectController {
                 addUserToProject(uuid, userToAdd, String.valueOf(project.getProjectId()));
             }
 
-            return projectRepository.save(project);
+            return project;
 
         }
     }
@@ -103,16 +100,23 @@ public class ProjectController {
                 if (project.getProjectUsers().contains(userToAdd)) {
                     throw new UserExtension("User is already in this project");
                 } else {
-                    project.getProjectActiveUsersUuid().add(userToAdd.getUuid());
+                    project.getProjectUsersUuid().add(userToAdd.getUuid());
                     project.getProjectUsers().add(userToAdd);
+//                    project.getProjectInvitedUsers().add(userToAdd);
                 }
 
-                List<Project> projects = userToAdd.getProjectsAppended();
-                projects.add(project);
-                userToAdd.setProjectsAppended(projects);
+//                Set<Project> projects = userToAdd.getProjectsAppended();
+//                projects.add(project);
+//                userToAdd.setProjectsAppended(projects);
+
+//                List<Project> projectsInvitations = userToAdd.getProjectsInvitations();
+//                projectsInvitations.add(project);
+//                userToAdd.setProjectsInvitations(projectsInvitations);
+
                 userRepository.save(userToAdd);
 
                 return projectRepository.save(project);
+//                return project;
             } else {
                 throw new UserExtension("Invalid project owner");
             }
@@ -234,13 +238,42 @@ public class ProjectController {
 
 
     @GetMapping("projectDetail/{id}")
-    @JsonView({Views.deadlinesDetailView.class})
+    @JsonView({Views.projectView.class})
     public Project findProject(@PathVariable String id) {
         Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(id));
 
         if (projectOptional.isPresent()) {
 
             return projectOptional.get();
+        } else {
+            throw new UserExtension("Project not found");
+        }
+    }
+
+
+    @DeleteMapping("projectDelete/{id}")
+    public String deleteProject(@PathVariable String id) {
+        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(id));
+
+        if (projectOptional.isPresent()) {
+//            projectRepository.delete(projectOptional.get());
+            projectRepository.deleteById(projectOptional.get().getProjectId());
+
+            return "deleted";
+        } else {
+            throw new UserExtension("Project not found");
+        }
+    }
+
+    @DeleteMapping("userDelete/{id}")
+    public String deleteUser(@PathVariable String id) {
+        Optional<User> userOptional = userRepository.findById(Integer.parseInt(id));
+
+        if (userOptional.isPresent()) {
+//            projectRepository.delete(projectOptional.get());
+            userRepository.deleteById(userOptional.get().getUserId());
+
+            return "deleted";
         } else {
             throw new UserExtension("Project not found");
         }
