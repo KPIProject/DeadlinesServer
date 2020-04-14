@@ -50,6 +50,7 @@ public class Deadline {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     @Transient
     @JsonView(Views.deadlinesDetailView.class)
+//    @JsonView(Views.deadlinesView.class)
     private List<User> deadlineExecutors = new ArrayList<>();
 
 

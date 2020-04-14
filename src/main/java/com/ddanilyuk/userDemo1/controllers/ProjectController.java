@@ -121,8 +121,8 @@ public class ProjectController {
 
 
     @PostMapping("{uuid}/{projectID}/addDeadline")
-    @JsonView({Views.projectView.class})
-    public Project addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
+    @JsonView({Views.deadlinesDetailView.class})
+    public Deadline addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
 
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
@@ -163,8 +163,8 @@ public class ProjectController {
                     addExecutorToDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), userToAdd);
                 }
 
-
-                return projectToAdd;
+                deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
+                return deadline;
             } else {
                 throw new UserExtension("Invalid project owner");
             }
@@ -174,8 +174,8 @@ public class ProjectController {
 
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}")
-    @JsonView({Views.projectView.class})
-    public Project addExecutorToDeadline(@PathVariable String uuidOwner,
+    @JsonView({Views.deadlinesDetailView.class})
+    public Deadline addExecutorToDeadline(@PathVariable String uuidOwner,
                                          @PathVariable String projectID,
                                          @PathVariable String deadlineId,
                                          @PathVariable String uuidUserToAdd) {
@@ -203,7 +203,11 @@ public class ProjectController {
                         if (deadline.getDeadlineId() == Integer.parseInt(deadlineId)) {
                             deadline.getDeadlineExecutorsUuid().add(userToAdd.getUuid());
 
-                            return projectRepository.save(project);
+                            projectRepository.save(project);
+
+                            deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
+
+                            return deadline;
                         }
                     }
                     throw new UserExtension("Deadline not found");
@@ -225,8 +229,9 @@ public class ProjectController {
         Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(id));
 
         if (deadlineOptional.isPresent()) {
-
-            return deadlineOptional.get();
+            Deadline deadline = deadlineOptional.get();
+            deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
+            return deadline;
         } else {
             throw new UserExtension("Deadline not found");
         }
