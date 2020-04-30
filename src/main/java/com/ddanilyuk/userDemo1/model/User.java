@@ -51,6 +51,16 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projectsAppended = new ArrayList<>();
 
+
+    @Column
+    @ManyToMany
+    @JoinTable(
+            name = "deadline_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "deadline_id"))
+    @JsonView(Views.usersView.class)
+    private List<Deadline> deadlines = new ArrayList<>();
+
 //    @Column
 //    @JsonView(Views.usersView.class)
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)

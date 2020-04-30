@@ -167,10 +167,11 @@ public class ProjectController {
                 List<String> usersUUIDToAdd = complaintDeadline.usersToAdd;
 
                 for (String userToAdd : usersUUIDToAdd) {
-//                    Optional<User> userToAddOptional = userRepository.findUserByUuid(UUID.fromString(userToAdd));
-//                    if (!userToAddOptional.isPresent()) {
-//                        throw new UserExtension("User to add not found");
-//                    }
+                    Optional<User> userToAddOptional = userRepository.findUserByUuid(UUID.fromString(userToAdd));
+                    if (!userToAddOptional.isPresent()) {
+                        deadlineRepository.delete(deadline);
+                        throw new UserExtension("User to add not found");
+                    }
                     addExecutorToDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), userToAdd);
                 }
 
@@ -212,8 +213,8 @@ public class ProjectController {
                     List<Deadline> projectDeadlines = project.getDeadlines();
                     for (Deadline deadline : projectDeadlines) {
                         if (deadline.getDeadlineId() == Integer.parseInt(deadlineId)) {
-                            deadline.getDeadlineExecutorsUuid().add(userToAdd.getUuid());
-
+//                            deadline.getDeadlineExecutorsUuid().add(userToAdd.getUuid());
+                            deadline.getDeadlineExecutors().add(userToAdd);
                             return projectRepository.save(project);
                         }
                     }
@@ -273,19 +274,7 @@ public class ProjectController {
     }
 
 
-    @DeleteMapping("userDelete/{id}")
-    public String deleteUser(@PathVariable String id) {
-        Optional<User> userOptional = userRepository.findById(Integer.parseInt(id));
 
-        if (userOptional.isPresent()) {
-//            projectRepository.delete(projectOptional.get());
-            userRepository.deleteById(userOptional.get().getUserId());
-
-            return "deleted";
-        } else {
-            throw new UserExtension("Project not found");
-        }
-    }
 
     @DeleteMapping("deadlineDelete/{id}")
     public String deadlineDelete(@PathVariable String id) {

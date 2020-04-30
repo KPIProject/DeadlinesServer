@@ -39,16 +39,22 @@ public class Deadline {
     private int deadlineProjectId;
 
 
-    @Column
+//    @Column
+////    @Transient
+//    @ElementCollection(targetClass = UUID.class)
+////    @JsonView(Views.deadlinesView.class)
+//    private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
+
+
+//    @SuppressWarnings({"unused", "FieldCanBeLocal"})
 //    @Transient
-    @ElementCollection(targetClass = UUID.class)
-//    @JsonView(Views.deadlinesView.class)
-    private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
-
-
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    @Transient
-    @JsonView(Views.deadlinesView.class)
+    @Column
+    @JsonView(Views.projectView.class)
+    @ManyToMany
+    @JoinTable(
+            name = "deadline_users",
+            joinColumns = @JoinColumn(name = "deadline_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> deadlineExecutors = new ArrayList<>();
 
 
@@ -100,24 +106,29 @@ public class Deadline {
         this.deadlineExecutionTime = deadlineExecutionTime;
     }
 
-    public List<UUID> getDeadlineExecutorsUuid() {
-        return deadlineExecutorsUuid;
-    }
+//    public List<UUID> getDeadlineExecutorsUuid() {
+//        return deadlineExecutorsUuid;
+//    }
+//
+//    public void setDeadlineExecutorsUuid(List<UUID> deadlineExecutorsUuid) {
+//        this.deadlineExecutorsUuid = deadlineExecutorsUuid;
+//    }
 
-    public void setDeadlineExecutorsUuid(List<UUID> deadlineExecutorsUuid) {
-        this.deadlineExecutorsUuid = deadlineExecutorsUuid;
-    }
+//    public List<User> getDeadlineExecutors() {
+//        List<User> usersAll = project.getProjectUsers();
+//        List<User> deadlineExecutors = new ArrayList<>();
+//
+//        for (User user : usersAll) {
+//            if (deadlineExecutorsUuid.contains(user.getUuid())) {
+//                deadlineExecutors.add(user);
+//            }
+//        }
+//
+//        return deadlineExecutors;
+//    }
+
 
     public List<User> getDeadlineExecutors() {
-        List<User> usersAll = project.getProjectUsers();
-        List<User> deadlineExecutors = new ArrayList<>();
-
-        for (User user : usersAll) {
-            if (deadlineExecutorsUuid.contains(user.getUuid())) {
-                deadlineExecutors.add(user);
-            }
-        }
-
         return deadlineExecutors;
     }
 

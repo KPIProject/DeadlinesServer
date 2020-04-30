@@ -158,4 +158,19 @@ public class UserController {
             return userRepository.save(user);
         }
     }
+
+
+    @DeleteMapping("{uuid}/deleteUser")
+    public String deleteUser(@PathVariable String uuid) {
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+
+        if (userOptional.isPresent()) {
+//            projectRepository.delete(projectOptional.get());
+            userRepository.deleteById(userOptional.get().getUserId());
+
+            return "deleted";
+        } else {
+            throw new UserExtension("User not found");
+        }
+    }
 }
