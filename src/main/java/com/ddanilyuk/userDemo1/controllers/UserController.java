@@ -7,6 +7,7 @@ import com.ddanilyuk.userDemo1.repositories.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -129,5 +130,32 @@ public class UserController {
     @JsonView(Views.defaultView.class)
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+
+    @Modifying
+    @PostMapping("{uuid}/editUser")
+    @JsonView(Views.usersView.class)
+    public User editUser(@PathVariable String uuid, @RequestBody Map<String, String> body) {
+        UUID userToEditUUID = UUID.fromString(uuid);
+        String userFirstName = body.get("userFirstName");
+        String userSecondName = body.get("userSecondName");
+        String username = body.get("username");
+        String password = body.get("password");
+
+        Optional<User> userToEditOptional = userRepository.findUserByUuid(userToEditUUID);
+
+        if (!userToEditOptional.isPresent()) {
+            throw new UserExtension("UserNotFound");
+        } else {
+            User user = userToEditOptional.get();
+            user.setUserFirstName(userFirstName);
+            user.setUserSecondName(userSecondName);
+            user.setUsername(username);
+//            passwordEncoder.upgradeEncoding(passwordEncoder.encode(password));
+//            passwordEncoder.upgradeEncoding(password);
+            user.setPassword(passwordEncoder.encode(password));
+            return userRepository.save(user);
+        }
     }
 }

@@ -26,7 +26,7 @@ public class Project {
     private String projectDescription;
 
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.defaultView.class)
     private List<Deadline> deadlines = new ArrayList<>();
 
@@ -37,9 +37,9 @@ public class Project {
     private User projectOwner;
 
 
-    @NotNull
-    @JsonView(Views.usersView.class)
-    private UUID projectOwnerUuid;
+//    @NotNull
+//    @JsonView(Views.usersView.class)
+//    private UUID projectOwnerUuid;
 
 
     @Column
@@ -49,15 +49,15 @@ public class Project {
     @ManyToMany
     @JoinTable(
             name = "projects_appended",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id"))
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> projectUsers = new ArrayList<>();
 
 
-    @Column
-    @ElementCollection(targetClass = UUID.class)
-    @JsonView(Views.usersView.class)
-    private List<UUID> projectUsersUuid = new ArrayList<>();
+//    @Column
+//    @ElementCollection(targetClass = UUID.class)
+//    @JsonView(Views.usersView.class)
+//    private List<UUID> projectUsersUuid = new ArrayList<>();
 
 
     @Column
@@ -92,7 +92,7 @@ public class Project {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectOwner = userOwner;
-        this.projectOwnerUuid = projectOwner.getUuid();
+//        this.projectOwnerUuid = projectOwner.getUuid();
 //        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
 
         Date dateNow = new Date();
@@ -132,28 +132,28 @@ public class Project {
         this.projectUsers = projectUsers;
     }
 
-    public List<UUID> getProjectUsersUuid() {
-        return projectUsersUuid;
-    }
-
-    public void setProjectUsersUuid(List<UUID> projectActiveUsersId) {
-        this.projectUsersUuid = projectActiveUsersId;
-    }
-
-    public UUID getProjectOwnerUuid() {
-        return projectOwnerUuid;
-    }
-
-    public void setProjectOwnerUuid(UUID projectOwnerUuid) {
-        this.projectOwnerUuid = projectOwnerUuid;
-    }
+//    public List<UUID> getProjectUsersUuid() {
+//        return projectUsersUuid;
+//    }
+//
+//    public void setProjectUsersUuid(List<UUID> projectActiveUsersId) {
+//        this.projectUsersUuid = projectActiveUsersId;
+//    }
+//
+//    public UUID getProjectOwnerUuid() {
+//        return projectOwnerUuid;
+//    }
+//
+//    public void setProjectOwnerUuid(UUID projectOwnerUuid) {
+//        this.projectOwnerUuid = projectOwnerUuid;
+//    }
 
     public User getProjectOwner() {
         return projectOwner;
     }
 
     public void setProjectOwner(User projectOwner) {
-        this.projectOwnerUuid = projectOwner.getUuid();
+//        this.projectOwnerUuid = projectOwner.getUuid();
         this.projectOwner = projectOwner;
     }
 

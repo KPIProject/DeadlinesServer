@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 
@@ -23,13 +24,13 @@ public class Deadline {
     @JsonView(Views.deadlinesView.class)
     private String deadlineName;
 
-
+    @Size(max = 8192)
     @JsonView(Views.deadlinesView.class)
     private String deadlineDescription;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "project_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
 
@@ -39,14 +40,15 @@ public class Deadline {
 
 
     @Column
+//    @Transient
     @ElementCollection(targetClass = UUID.class)
-    @JsonView(Views.deadlinesView.class)
+//    @JsonView(Views.deadlinesView.class)
     private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
 
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     @Transient
-    @JsonView(Views.deadlinesDetailView.class)
+    @JsonView(Views.deadlinesView.class)
     private List<User> deadlineExecutors = new ArrayList<>();
 
 

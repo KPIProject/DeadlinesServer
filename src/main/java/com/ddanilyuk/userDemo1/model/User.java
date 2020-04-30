@@ -47,8 +47,8 @@ public class User {
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "projects_appended",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projectsAppended = new ArrayList<>();
 
 //    @Column

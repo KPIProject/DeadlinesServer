@@ -6,6 +6,8 @@ import com.ddanilyuk.userDemo1.repositories.DeadlineRepository;
 import com.ddanilyuk.userDemo1.repositories.ProjectRepository;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -95,12 +97,12 @@ public class ProjectController {
             User userOwner = userOwnerOptional.get();
             Project project = projectOptional.get();
 
-            if (project.getProjectOwnerUuid().equals(userOwner.getUuid())) {
+            if (project.getProjectOwner().getUuid().equals(userOwner.getUuid())) {
 
                 if (project.getProjectUsers().contains(userToAdd)) {
                     throw new UserExtension("User is already in this project");
                 } else {
-                    project.getProjectUsersUuid().add(userToAdd.getUuid());
+//                    project.getProjectUsersUuid().add(userToAdd.getUuid());
                     project.getProjectUsers().add(userToAdd);
 //                    project.getProjectInvitedUsers().add(userToAdd);
                 }
@@ -146,7 +148,7 @@ public class ProjectController {
             User user = userOptional.get();
             Project projectToAdd = projectToAddOptional.get();
 
-            if (projectToAdd.getProjectOwnerUuid().equals(user.getUuid())) {
+            if (projectToAdd.getProjectOwner().getUuid().equals(user.getUuid())) {
 
                 if (deadline.getDeadlineCreatedTime() == 0) {
                     Date dateNow = new Date();
@@ -162,8 +164,13 @@ public class ProjectController {
 
                 projectRepository.save(projectToAdd);
 
-                List<String> usersToAdd = complaintDeadline.usersToAdd;
-                for (String userToAdd : usersToAdd) {
+                List<String> usersUUIDToAdd = complaintDeadline.usersToAdd;
+
+                for (String userToAdd : usersUUIDToAdd) {
+//                    Optional<User> userToAddOptional = userRepository.findUserByUuid(UUID.fromString(userToAdd));
+//                    if (!userToAddOptional.isPresent()) {
+//                        throw new UserExtension("User to add not found");
+//                    }
                     addExecutorToDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), userToAdd);
                 }
 
@@ -199,7 +206,7 @@ public class ProjectController {
             User userOwner = userOwnerOptional.get();
             Project project = projectOptional.get();
 
-            if (project.getProjectOwnerUuid().equals(userOwner.getUuid())) {
+            if (project.getProjectOwner().getUuid().equals(userOwner.getUuid())) {
 
                 if (project.getProjectUsers().contains(userToAdd)) {
                     List<Deadline> projectDeadlines = project.getDeadlines();
@@ -265,6 +272,7 @@ public class ProjectController {
         }
     }
 
+
     @DeleteMapping("userDelete/{id}")
     public String deleteUser(@PathVariable String id) {
         Optional<User> userOptional = userRepository.findById(Integer.parseInt(id));
@@ -278,5 +286,21 @@ public class ProjectController {
             throw new UserExtension("Project not found");
         }
     }
+
+    @DeleteMapping("deadlineDelete/{id}")
+    public String deadlineDelete(@PathVariable String id) {
+        Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(id));
+
+        if (deadlineOptional.isPresent()) {
+//            projectRepository.delete(projectOptional.get());
+            deadlineRepository.deleteById(deadlineOptional.get().getDeadlineId());
+            return "deleted";
+        } else {
+            throw new UserExtension("Deadline not found");
+        }
+    }
+
+
+
 
 }
