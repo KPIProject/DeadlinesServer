@@ -24,6 +24,7 @@ public class Deadline {
     @JsonView(Views.deadlinesView.class)
     private String deadlineName;
 
+
     @Size(max = 8192)
     @JsonView(Views.deadlinesView.class)
     private String deadlineDescription;

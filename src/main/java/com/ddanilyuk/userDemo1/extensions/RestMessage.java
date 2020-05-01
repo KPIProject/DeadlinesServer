@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder(value = {"error_type", "code", "error_message"})
-public class RestError {
+public class RestMessage {
 
     @JsonProperty("code")
     int code;
@@ -16,11 +16,11 @@ public class RestError {
     String message;
 
 
-    public RestError() {
+    public RestMessage() {
         super();
     }
 
-    public RestError(String type, int code, String message) {
+    public RestMessage(String type, int code, String message) {
 
         this.code = code;
         this.type = type;
