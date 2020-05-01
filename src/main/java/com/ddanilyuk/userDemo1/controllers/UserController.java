@@ -1,6 +1,7 @@
 package com.ddanilyuk.userDemo1.controllers;
 
 import com.ddanilyuk.userDemo1.extensions.UserExtension;
+import com.ddanilyuk.userDemo1.model.Project;
 import com.ddanilyuk.userDemo1.model.User;
 import com.ddanilyuk.userDemo1.model.Views;
 import com.ddanilyuk.userDemo1.repositories.UserRepository;
@@ -133,6 +134,9 @@ public class UserController {
     }
 
 
+
+
+
     @Modifying
     @PostMapping("{uuid}/editUser")
     @JsonView(Views.usersView.class)
@@ -165,12 +169,11 @@ public class UserController {
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
 
         if (userOptional.isPresent()) {
-//            projectRepository.delete(projectOptional.get());
-            userRepository.deleteById(userOptional.get().getUserId());
-
-            return "deleted";
+            userRepository.delete(userOptional.get());
+            throw new UserExtension("Deleted");
         } else {
             throw new UserExtension("User not found");
         }
     }
+
 }

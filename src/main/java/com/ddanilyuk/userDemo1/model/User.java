@@ -61,6 +61,16 @@ public class User {
     @JsonView(Views.usersView.class)
     private List<Deadline> deadlines = new ArrayList<>();
 
+
+
+    @Column
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(
+            name = "projects_invited",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JsonView(Views.usersView.class)
+    private List<Project> projectsInvited = new ArrayList<>();
 //    @Column
 //    @JsonView(Views.usersView.class)
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -102,6 +112,22 @@ public class User {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
         this.projectsCreated = projects;
+    }
+
+    public List<Deadline> getDeadlines() {
+        return deadlines;
+    }
+
+    public void setDeadlines(List<Deadline> deadlines) {
+        this.deadlines = deadlines;
+    }
+
+    public List<Project> getProjectsInvited() {
+        return projectsInvited;
+    }
+
+    public void setProjectsInvited(List<Project> projectsInvited) {
+        this.projectsInvited = projectsInvited;
     }
 
     public long getUserCreationTime() {

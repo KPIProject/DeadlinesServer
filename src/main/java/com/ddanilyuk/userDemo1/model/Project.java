@@ -54,6 +54,15 @@ public class Project {
     private List<User> projectUsers = new ArrayList<>();
 
 
+    @Column
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(
+            name = "projects_invited",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonView(Views.projectView.class)
+    private List<User> projectUsersInvited = new ArrayList<>();
+
 //    @Column
 //    @ElementCollection(targetClass = UUID.class)
 //    @JsonView(Views.usersView.class)
@@ -99,6 +108,13 @@ public class Project {
         projectCreationTime = dateNow.getTime();
     }
 
+    public List<User> getProjectUsersInvited() {
+        return projectUsersInvited;
+    }
+
+    public void setProjectUsersInvited(List<User> projectUsersInvited) {
+        this.projectUsersInvited = projectUsersInvited;
+    }
 
 //    public List<User> getProjectInvitedUsers() {
 //        return projectInvitedUsers;

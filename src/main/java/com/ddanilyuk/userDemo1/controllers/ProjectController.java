@@ -8,6 +8,7 @@ import com.ddanilyuk.userDemo1.repositories.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -103,7 +104,8 @@ public class ProjectController {
                     throw new UserExtension("User is already in this project");
                 } else {
 //                    project.getProjectUsersUuid().add(userToAdd.getUuid());
-                    project.getProjectUsers().add(userToAdd);
+//                    project.getProjectUsers().add(userToAdd);
+                    project.getProjectUsersInvited().add(userToAdd);
 //                    project.getProjectInvitedUsers().add(userToAdd);
                 }
 
@@ -231,65 +233,121 @@ public class ProjectController {
     }
 
 
-    @GetMapping("deadlineDetail/{id}")
-    @JsonView({Views.deadlinesDetailView.class})
-    public Deadline findDeadline(@PathVariable String id) {
-        Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(id));
+//    @GetMapping("deadlineDetail/{id}")
+//    @JsonView({Views.deadlinesDetailView.class})
+//    public Deadline findDeadline(@PathVariable String id) {
+//        Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(id));
+//
+//        if (deadlineOptional.isPresent()) {
+//
+//            return deadlineOptional.get();
+//        } else {
+//            throw new UserExtension("Deadline not found");
+//        }
+//    }
+//
+//
+//    @GetMapping("projectDetail/{id}")
+//    @JsonView({Views.projectView.class})
+//    public Project findProject(@PathVariable String id) {
+//        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(id));
+//        if (projectOptional.isPresent()) {
+//            return projectOptional.get();
+//        } else {
+//            throw new UserExtension("Project not found");
+//        }
+//    }
 
-        if (deadlineOptional.isPresent()) {
 
-            return deadlineOptional.get();
+    @GetMapping("{uuid}/getInvitations")
+    @JsonView(Views.projectView.class)
+    public List<Project> getInvitations(@PathVariable String uuid) {
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getProjectsInvited();
         } else {
-            throw new UserExtension("Deadline not found");
+            throw new UserExtension("User not found");
         }
     }
 
 
-    @GetMapping("projectDetail/{id}")
-    @JsonView({Views.projectView.class})
-    public Project findProject(@PathVariable String id) {
-        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(id));
+    @PostMapping("{uuid}/{projectID}/acceptInvite")
+    @JsonView(Views.projectView.class)
+    public Project acceptInvite(@PathVariable String uuid, @PathVariable String projectID) {
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
 
-        if (projectOptional.isPresent()) {
-
-            return projectOptional.get();
-        } else {
+        if (!userOptional.isPresent()) {
+            throw new UserExtension("User not found");
+        } else if (!projectOptional.isPresent()) {
             throw new UserExtension("Project not found");
+        } else {
+            User user = userOptional.get();
+            Project project = projectOptional.get();
+            List<Project> projects =  user.getProjectsInvited();
+            if (projects.contains(project)) {
+                project.getProjectUsers().add(user);
+                project.getProjectUsersInvited().remove(user);
+                return projectRepository.save(project);
+            } else {
+                throw new UserExtension("You are not invited to this project");
+            }
         }
     }
 
 
-    @DeleteMapping("projectDelete/{id}")
-    public String deleteProject(@PathVariable String id) {
-        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(id));
+    @DeleteMapping("{uuid}/{projectID}/deleteProject")
+    public String deleteProject(@PathVariable String uuid, @PathVariable String projectID) {
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
 
-        if (projectOptional.isPresent()) {
-//            projectRepository.delete(projectOptional.get());
-            projectRepository.deleteById(projectOptional.get().getProjectId());
-
-            return "deleted";
-        } else {
+        if (!userOptional.isPresent()) {
+            throw new UserExtension("User not found");
+        } else if (!projectOptional.isPresent()) {
             throw new UserExtension("Project not found");
-        }
-    }
-
-
-
-
-    @DeleteMapping("deadlineDelete/{id}")
-    public String deadlineDelete(@PathVariable String id) {
-        Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(id));
-
-        if (deadlineOptional.isPresent()) {
-//            projectRepository.delete(projectOptional.get());
-            deadlineRepository.deleteById(deadlineOptional.get().getDeadlineId());
-            return "deleted";
         } else {
-            throw new UserExtension("Deadline not found");
+            User userOwner = userOptional.get();
+            Project project = projectOptional.get();
+            if (project.getProjectOwner().equals(userOwner)) {
+                projectRepository.delete(project);
+                throw new UserExtension("Deleted");
+            } else {
+                throw new UserExtension("User is not owner of this project");
+            }
         }
     }
 
 
+    @DeleteMapping("{uuid}/{projectID}/{deadlineID}/deleteDeadline")
+    public String deleteDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID) {
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
+        Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(deadlineID));
 
+        if (!userOptional.isPresent()) {
+            throw new UserExtension("User not found");
+        } else if (!projectOptional.isPresent()) {
+            throw new UserExtension("Project not found");
+        } else if (!deadlineOptional.isPresent()) {
+            throw new UserExtension("Deadline not found");
+        } else {
+            User userOwner = userOptional.get();
+            Project project = projectOptional.get();
+            Deadline deadline = deadlineOptional.get();
+
+            if (project.getProjectOwner().equals(userOwner)) {
+                if (project.getDeadlines().contains(deadline)) {
+                    deadlineRepository.delete(deadline);
+                    throw new UserExtension("Deleted");
+                } else  {
+                    throw new UserExtension("Deadline is not this project");
+                }
+            } else {
+                throw new UserExtension("User is not owner of this project");
+            }
+        }
+
+    }
 
 }
