@@ -142,9 +142,94 @@ public class ProjectController {
     }
 
 
-    @PostMapping("{uuid}/{projectID}/addDeadline")
+    /** DEBUG VERSIONS WITHOUT INVITE */
+
+    @SuppressWarnings("DuplicatedCode")
+    @PostMapping("{uuid}/createProjectDebug")
+    @JsonView(Views.projectView.class)
+    public Project createProjectDebug(@PathVariable String uuid, @Valid @RequestBody ComplaintProject complaintProject) {
+
+        Project project = complaintProject.project;
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+
+        if (!userOptional.isPresent()) {
+            throw new ServiceException("User is not found");
+        } else if (project.getProjectDescription() == null) {
+            throw new ServiceException("Invalid projectDescription");
+        } else if (project.getProjectName() == null || project.getProjectName().equals("")) {
+            throw new ServiceException("Invalid projectName");
+        } else {
+            if (project.getProjectCreationTime() == 0) {
+                Date dateNow = new Date();
+                project.setProjectCreationTime(dateNow.getTime());
+            }
+            User user = userOptional.get();
+            project.setProjectOwner(user);
+
+            projectRepository.save(project);
+
+            List<String> usersToAdd = complaintProject.usersToAdd;
+            for (String userToAdd : usersToAdd) {
+                if (!userRepository.findUserByUuid(UUID.fromString(userToAdd)).isPresent()) {
+                    projectRepository.delete(project);
+                    throw new ServiceException("User to add is not found");
+                } else if (userToAdd.equals(user.getUuid().toString())) {
+                    projectRepository.delete(project);
+                    throw new ServiceException("User owner cant be invited to project");
+                }
+                addUserToProjectDebug(uuid, userToAdd, String.valueOf(project.getProjectId()));
+            }
+
+            return project;
+        }
+    }
+
+
+    @SuppressWarnings("DuplicatedCode")
+    @PostMapping("{uuidOwner}/{projectID}/addUserToProjectDebug/{uuidUserToAdd}")
     @JsonView({Views.projectView.class})
-    public Project addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
+    public Project addUserToProjectDebug(@PathVariable String uuidOwner, @PathVariable String uuidUserToAdd, @PathVariable String projectID) {
+
+        Optional<User> userToAddOptional = userRepository.findUserByUuid(UUID.fromString(uuidUserToAdd));
+        Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
+        Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
+
+        if (!userToAddOptional.isPresent()) {
+            throw new ServiceException("User to add not found");
+        } else if (!userOwnerOptional.isPresent()) {
+            throw new ServiceException("User owner not found");
+        } else if (!projectOptional.isPresent()) {
+            throw new ServiceException("Project not found");
+        } else {
+            User userToAdd = userToAddOptional.get();
+            User userOwner = userOwnerOptional.get();
+            Project project = projectOptional.get();
+
+            if (userToAdd.equals(userOwner)) {
+                throw new ServiceException("User owner cant be invited to project");
+            }
+
+            if (project.getProjectOwner().getUuid().equals(userOwner.getUuid())) {
+
+                if (project.getProjectUsers().contains(userToAdd)) {
+                    throw new ServiceException("User is already in this project");
+                } else {
+                    project.getProjectUsers().add(userToAdd);
+                }
+                userRepository.save(userToAdd);
+                return projectRepository.save(project);
+            } else {
+                throw new ServiceException("Invalid project owner");
+            }
+        }
+    }
+
+    /** */
+
+
+    @PostMapping("{uuid}/{projectID}/addDeadline")
+    @JsonView({Views.deadlinesDetailView.class})
+    public Deadline addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
 
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
@@ -191,7 +276,8 @@ public class ProjectController {
                     addExecutorToDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), userToAdd);
                 }
 
-                return projectToAdd;
+                deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
+                return deadline;
             } else {
                 throw new ServiceException("Invalid project owner");
             }
@@ -201,8 +287,8 @@ public class ProjectController {
 
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}")
-    @JsonView({Views.projectView.class})
-    public Project addExecutorToDeadline(@PathVariable String uuidOwner,
+    @JsonView({Views.deadlinesDetailView.class})
+    public Deadline addExecutorToDeadline(@PathVariable String uuidOwner,
                                          @PathVariable String projectID,
                                          @PathVariable String deadlineId,
                                          @PathVariable String uuidUserToAdd) {
@@ -229,7 +315,12 @@ public class ProjectController {
                     for (Deadline deadline : projectDeadlines) {
                         if (deadline.getDeadlineId() == Integer.parseInt(deadlineId)) {
                             deadline.getDeadlineExecutors().add(userToAdd);
-                            return projectRepository.save(project);
+
+                            projectRepository.save(project);
+
+                            deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
+
+                            return deadline;
                         }
                     }
                     throw new ServiceException("Deadline not found");
@@ -247,7 +338,7 @@ public class ProjectController {
 
     @Modifying
     @PostMapping("{uuid}/{projectID}/editProject")
-    @JsonView(Views.usersView.class)
+    @JsonView(Views.projectView.class)
     public Project editProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody Project projectEdited) {
 
         Optional<User> userToEditOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
@@ -282,7 +373,7 @@ public class ProjectController {
 
     @Modifying
     @PostMapping("{uuid}/{projectID}/{deadlineID}/editDeadline")
-    @JsonView(Views.usersView.class)
+    @JsonView(Views.deadlinesDetailView.class)
     public Deadline editDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID, @RequestBody Deadline deadlineEdited) {
 
         Optional<User> userToEditOptional = userRepository.findUserByUuid(UUID.fromString(uuid));

@@ -3,16 +3,16 @@ package com.ddanilyuk.userDemo1.extensions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder(value = {"error_type", "code", "error_message"})
+@JsonPropertyOrder(value = {"type", "code", "message"})
 public class RestMessage {
 
     @JsonProperty("code")
     int code;
 
-    @JsonProperty("error_type")
+    @JsonProperty("type")
     String type;
 
-    @JsonProperty("error_message")
+    @JsonProperty("message")
     String message;
 
 

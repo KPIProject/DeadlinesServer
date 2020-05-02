@@ -50,7 +50,7 @@ public class Deadline {
 //    @SuppressWarnings({"unused", "FieldCanBeLocal"})
 //    @Transient
     @Column
-    @JsonView(Views.projectView.class)
+    @JsonView(Views.deadlinesDetailView.class)
     @ManyToMany
     @JoinTable(
             name = "deadline_users",

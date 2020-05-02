@@ -48,8 +48,8 @@ public class UserController {
 
 
     @PostMapping("/registration")
-    @JsonView(Views.usersView.class)
-    public User newUser(@RequestBody Map<String, String> body) {
+    @JsonView(Views.defaultView.class)
+    public User registration(@RequestBody Map<String, String> body) {
         String userFirstName = body.get("userFirstName");
         String userSecondName = body.get("userSecondName");
         String username = body.get("username");
@@ -82,7 +82,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    @JsonView(Views.usersView.class)
+    @JsonView(Views.defaultView.class)
     public User loginUser(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
@@ -110,7 +110,7 @@ public class UserController {
 
     @GetMapping("{uuid}/details")
     @JsonView(Views.usersView.class)
-    public User index(@PathVariable String uuid) {
+    public User details(@PathVariable String uuid) {
         Optional<User> optionalUser = userRepository.findUserByUuid(UUID.fromString(uuid));
         if (optionalUser.isPresent()) {
             return optionalUser.get();
