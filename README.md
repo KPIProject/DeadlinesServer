@@ -12,63 +12,57 @@
 
 ## [API](#API)
 
-#### 		[Юзер](#User)  
+#### 				[Юзер](#User)  
 
-​			[Регєстрація](#Registration)  
+​								[Регєстрація](#Registration)  
 
-​			[Логін](#Login)  
+​								[Логін](#Login)  
 
-​			[Всі проекти](#AllProjects)
+​								[Всі проекти](#AllProjects)
 
-​			[Деталі юзера](#UserDatail)    
+​								[Деталі юзера](#UserDatail)    
 
-​			[Знайти юзерів по username](#FindByUsername)
+​								[Знайти юзерів по username](#FindByUsername)
 
-​			[Подивитись всі запрошення](#GetInvintations)
+​								[Подивитись всі запрошення](#GetInvintations)
 
-​			[Прийняти запрошення](#AcceptInvite)
+​								[Прийняти запрошення](#AcceptInvite)
 
-​			[Відхилити запрошення](#RejectInvite)
+​								[Відхилити запрошення](#RejectInvite)
 
-​			[Змінити юзера](#EditUser)
+​								[Змінити юзера](#EditUser)
 
-​			[Видалити юзера](#DeleteUser)
-
-
-
-#### 		[Проект та дедлайн](#Project And Deadlines)
-
-​			[Створити проект](#CreateProject)  
-
-​			[Додати юзера до проекту](#AddUserToProject)  
-
-​			[Додати дедлайн](#AddDeadline)  
-
-​			[Додати виконувача дедлайну](#AddExecutorToDeadline)  
-
-​			[Змінити проект](#DeadlineDetail)  
-
-​			[Змінити дедлайн](#DeadlineDetail)
-
-​			[Видалити проект](#ProjectDetail)
-
-​			[Видалити дедлайн](#ProjectDetail)
-
-​			[Видалити юзера з проекту](#ProjectDetail)
-
-​			[Видалити виконувача з дедлайну](#ProjectDetail)
+​								[Видалити юзера](#DeleteUser)
 
 
 
+#### 				[Проект та дедлайн](#ProjectAndDeadlines)
+
+​								[Створити проект](#CreateProject)  
+
+​								[Додати юзера до проекту](#AddUserToProject)  
+
+​								[Додати дедлайн](#AddDeadline)  
+
+​								[Додати виконувача дедлайну](#AddExecutorToDeadline)  
+
+​								[Змінити проект](#DeadlineDetail)  
+
+​								[Змінити дедлайн](#DeadlineDetail)
+
+​								[Видалити проект](#ProjectDetail)
+
+​								[Видалити дедлайн](#ProjectDetail)
+
+​								[Видалити юзера з проекту](#ProjectDetail)
+
+​								[Видалити виконувача з дедлайну](#ProjectDetail)
 
 
 
+#### 				[Помилки](#Errors)
 
-​	
-
-#### 		[Помилки](#Errors)
-
-​			[Список всіх помилок](#ProjectDetail)
+​								[Список всіх помилок](#ProjectDetail)
 
 
 
@@ -253,9 +247,9 @@
 
 ```json
 {
-  	"type": "Error",
-  	"code": 404,
-  	"message": "User is already exist"
+    "type": "Error",
+    "code": 404,
+    "message": "User is already exist"
 }
 ```
 
@@ -264,7 +258,7 @@
 ```json
 {
     "type": "Error",
-  	"code": 404,
+    "code": 404,
     "message": "Invalid userFirstName"
 }
 ```
@@ -274,7 +268,7 @@
 ```json
 {
     "type": "Error",
-  	"code": 404,
+    "code": 404,
     "message": "Invalid userSecondName"
 }
 ```
@@ -393,37 +387,37 @@ uuid - uuid користувача
 [
     {
         "projectId": 2,
-    		"projectName": "My own projecttttt2",
-    		"projectDescription": "Details of my project2",
-    		"deadlines": [
-     				{
-        				"deadlineId": 1,
-        				"deadlineName": "My own deadline 1",
-        				"deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
-      				  "deadlineProjectId": 2,
-        				"deadlineCreatedTime": 1588370977977,
-       				  "deadlineExecutionTime": 999999999
-      			}
-    		],
-    		"projectOwner": {
-     			 "userId": 1,
-      		 "userFirstName": "DenysDADADA",
-      		 "userSecondName": "Danilyuk2",
-      		 "username": "ddanilyuk1",
-      		 "userCreationTime": 1588370871083
-    		 },
-    		"projectUsers": [
-      		 	{
-        				"userId": 2,
-        				"userFirstName": "Denys2",
-        				"userSecondName": "Danilyuk2",
-        				"username": "ddanilyuk2",
-        				"userCreationTime": 1588370875757
-      			}
-    		],
-    		"projectUsersInvited": [],
-    		"projectCreationTime": 123123123,
-    		"projectExecutionTime": 999999999
+        "projectName": "My own projecttttt2",
+        "projectDescription": "Details of my project2",
+        "deadlines": [
+            {
+                "deadlineId": 1,
+                "deadlineName": "My own deadline 1",
+                "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+                "deadlineProjectId": 2,
+                "deadlineCreatedTime": 1588370977977,
+                "deadlineExecutionTime": 999999999
+            }
+        ],
+        "projectOwner": {
+            "userId": 1,
+            "userFirstName": "DenysDADADA",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk1",
+            "userCreationTime": 1588370871083
+         },
+         "projectUsers": [
+             {
+                 "userId": 2,
+                 "userFirstName": "Denys2",
+                 "userSecondName": "Danilyuk2",
+                 "username": "ddanilyuk2",
+                 "userCreationTime": 1588370875757
+             }
+         ],
+         "projectUsersInvited": [],
+         "projectCreationTime": 123123123,
+         "projectExecutionTime": 999999999
     }
 ]
 ```
