@@ -1,26 +1,24 @@
 # Deadlines
 
 
-
 ## [Лог змін](#Log-change)
 
-- [Version 1.02](#Version-1.02)
+- [Version 1.02](#version-1.02)
 
-- [Version 1.01](#Version-1.01)
-
+- [Version 1.01](#version-1.01)
 
 
 ## [API](#API)
 
-- [Юзер](#User)  
+- [Юзер](#Юзер)  
 
-	- [Регєстрація](#Registration)  
+	- [Реєстрація](#Реєстрація)  
 
-	- [Логін](#Login)  
+	- [Логін](#Логін)  
 
-	- [Всі проекти](#All-projects)
+	- [Всі проекти](#Всі-проекти)
 
-	- [Деталі юзера](#UserDatail)    
+	- [Деталі юзера](#Деталі-юзера)    
 
 	- [Знайти юзерів по username](#FindByUsername)
 
@@ -36,33 +34,33 @@
 
 
 
-#### 				[Проект та дедлайн](#ProjectAndDeadlines)
+- [Проект та дедлайн](#ProjectAndDeadlines)
 
-​								[Створити проект](#CreateProject)  
+	- [Створити проект](#CreateProject)  
 
-​								[Додати юзера до проекту](#AddUserToProject)  
+	- [Додати юзера до проекту](#AddUserToProject)  
 
-​								[Додати дедлайн](#AddDeadline)  
+	- [Додати дедлайн](#AddDeadline)  
 
-​								[Додати виконувача дедлайну](#AddExecutorToDeadline)  
+	- [Додати виконувача дедлайну](#AddExecutorToDeadline)  
 
-​								[Змінити проект](#DeadlineDetail)  
+	- [Змінити проект](#DeadlineDetail)  
 
-​								[Змінити дедлайн](#DeadlineDetail)
+	- [Змінити дедлайн](#DeadlineDetail)
 
-​								[Видалити проект](#ProjectDetail)
+	- [Видалити проект](#ProjectDetail)
 
-​								[Видалити дедлайн](#ProjectDetail)
+	- [Видалити дедлайн](#ProjectDetail)
 
-​								[Видалити юзера з проекту](#ProjectDetail)
+	- [Видалити юзера з проекту](#ProjectDetail)
 
-​								[Видалити виконувача з дедлайну](#ProjectDetail)
+	- [Видалити виконувача з дедлайну](#ProjectDetail)
 
 
 
-#### 				[Помилки](#Errors)
+- [Помилки](#Errors)
 
-​								[Список всіх помилок](#ProjectDetail)
+	- [Список всіх помилок](#ProjectDetail)
 
 
 
@@ -211,7 +209,7 @@
 
 ### User
 
-#### 	Registration
+#### 	Реєстрація
 
 **URL**: `/registration`
 
@@ -299,7 +297,7 @@
 
 
 
-#### 	Login
+#### 	Логін
 
 **URL**: `/login`
 
@@ -373,7 +371,7 @@
 
 
 
-#### AllProjects
+#### Всі проекти
 
 **URL**: `{uuid}/allProjects`
 
