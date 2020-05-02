@@ -2,37 +2,37 @@
 
 
 
-## [Лог змін](#Log change)
+## [Лог змін](#Log-change)
 
-#### 			[Version 1.02](#Version 1.02)
+- [Version 1.02](#Version-1.02)
 
-#### 			[Version 1.01](#Version 1.01)
+- [Version 1.01](#Version-1.01)
 
 
 
 ## [API](#API)
 
-#### [Юзер](#User)  
+- [Юзер](#User)  
 
-[	Регєстрація](#Registration)  
+	- [Регєстрація](#Registration)  
 
-[	Логін](#Login)  
+	- [Логін](#Login)  
 
-[	Всі проекти](#AllProjects)
+	- [Всі проекти](#All-projects)
 
-[	Деталі юзера](#UserDatail)    
+	- [Деталі юзера](#UserDatail)    
 
-[	Знайти юзерів по username](#FindByUsername)
+	- [Знайти юзерів по username](#FindByUsername)
 
-[	Подивитись всі запрошення](#GetInvintations)
+	- [Подивитись всі запрошення](#GetInvintations)
 
-[	Прийняти запрошення](#AcceptInvite)
+	- [Прийняти запрошення](#AcceptInvite)
 
-[	Відхилити запрошення](#RejectInvite)
+	- [Відхилити запрошення](#RejectInvite)
 
-[	Змінити юзера](#EditUser)
+	- [Змінити юзера](#EditUser)
 
-[	Видалити юзера](#DeleteUser)
+	- [Видалити юзера](#DeleteUser)
 
 
 
@@ -63,6 +63,10 @@
 #### 				[Помилки](#Errors)
 
 ​								[Список всіх помилок](#ProjectDetail)
+
+
+
+
 
 
 
