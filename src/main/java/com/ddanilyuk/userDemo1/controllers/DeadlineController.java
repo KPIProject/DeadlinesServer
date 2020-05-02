@@ -193,10 +193,10 @@ public class DeadlineController {
                     deadlineRepository.delete(deadline);
                     throw new SuccessException("Deleted");
                 } else {
-                    throw new ServiceException("Deadline is not this project");
+                    throw new ServiceException("Deadline is not in this project");
                 }
             } else {
-                throw new ServiceException("User is not owner of this project");
+                throw new ServiceException("Invalid project owner");
             }
         }
     }

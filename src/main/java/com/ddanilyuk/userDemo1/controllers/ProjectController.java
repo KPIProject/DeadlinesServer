@@ -280,7 +280,7 @@ public class ProjectController {
         Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(deadlineID));
 
         if (!userOptional.isPresent()) {
-            throw new ServiceException("User owner not found");
+            throw new ServiceException("User not found");
         } else if (!userToDeleteOptional.isPresent()) {
             throw new ServiceException("User to delete not found");
         } else if (!projectOptional.isPresent()) {
@@ -302,10 +302,10 @@ public class ProjectController {
                     deadlineRepository.save(deadline);
                     throw new SuccessException("Deleted");
                 } else {
-                    throw new ServiceException("Deadline is not this project");
+                    throw new ServiceException("Deadline is not in this project");
                 }
             } else {
-                throw new ServiceException("User is not owner of this project");
+                throw new ServiceException("Invalid project owner");
             }
         }
     }
@@ -318,7 +318,7 @@ public class ProjectController {
         Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
 
         if (!userOptional.isPresent()) {
-            throw new ServiceException("User owner not found");
+            throw new ServiceException("User not found");
         } else if (!userToDeleteOptional.isPresent()) {
             throw new ServiceException("User to delete not found");
         } else if (!projectOptional.isPresent()) {
@@ -340,7 +340,7 @@ public class ProjectController {
                 throw new SuccessException("Deleted");
 
             } else {
-                throw new ServiceException("User is not owner of this project");
+                throw new ServiceException("Invalid project owner");
             }
         }
     }
