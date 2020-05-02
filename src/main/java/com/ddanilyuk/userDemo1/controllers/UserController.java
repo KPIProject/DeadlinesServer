@@ -41,14 +41,14 @@ public class UserController {
 
     // Test request (Delete with release)
     @GetMapping("/all")
-    @JsonView(Views.usersView.class)
-    public List<User> index() {
+    @JsonView(Views.usersViewDebugVersion.class)
+    public List<User> all() {
         return userRepository.findAll();
     }
 
 
     @PostMapping("/registration")
-    @JsonView(Views.defaultView.class)
+    @JsonView(Views.loginView.class)
     public User registration(@RequestBody Map<String, String> body) {
         String userFirstName = body.get("userFirstName");
         String userSecondName = body.get("userSecondName");
@@ -82,8 +82,8 @@ public class UserController {
 
 
     @PostMapping("/login")
-    @JsonView(Views.defaultView.class)
-    public User loginUser(@RequestBody Map<String, String> body) {
+    @JsonView(Views.loginView.class)
+    public User login(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
 
@@ -109,7 +109,7 @@ public class UserController {
 
 
     @GetMapping("{uuid}/details")
-    @JsonView(Views.usersView.class)
+    @JsonView(Views.loginView.class)
     public User details(@PathVariable String uuid) {
         Optional<User> optionalUser = userRepository.findUserByUuid(UUID.fromString(uuid));
         if (optionalUser.isPresent()) {
@@ -171,6 +171,32 @@ public class UserController {
     }
 
 
+    @PostMapping("{uuid}/rejectInvite/{projectID}")
+    @JsonView(Views.projectView.class)
+    public String rejectInvite(@PathVariable String uuid, @PathVariable String projectID) {
+
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
+
+        if (!userOptional.isPresent()) {
+            throw new ServiceException("User not found");
+        } else if (!projectOptional.isPresent()) {
+            throw new ServiceException("Project not found");
+        } else {
+            User user = userOptional.get();
+            Project project = projectOptional.get();
+            List<Project> projects =  user.getProjectsInvited();
+            if (projects.contains(project)) {
+                project.getProjectUsersInvited().remove(user);
+                projectRepository.save(project);
+                throw new SuccessException("Done");
+            } else {
+                throw new ServiceException("You are not invited to this project");
+            }
+        }
+    }
+
+
     @Modifying
     @PostMapping("{uuid}/editUser")
     @JsonView(Views.usersView.class)
@@ -199,30 +225,6 @@ public class UserController {
             return userRepository.save(user);
         }
     }
-
-//    @Modifying
-//    @PostMapping("{uuid}/editUser")
-//    @JsonView(Views.usersView.class)
-//    public User editUser(@PathVariable String uuid, @RequestBody Map<String, String> body) {
-//        UUID userToEditUUID = UUID.fromString(uuid);
-//        String userFirstName = body.get("userFirstName");
-//        String userSecondName = body.get("userSecondName");
-//        String username = body.get("username");
-//        String password = body.get("password");
-//
-//        Optional<User> userToEditOptional = userRepository.findUserByUuid(userToEditUUID);
-//
-//        if (!userToEditOptional.isPresent()) {
-//            throw new ServiceException("User not found");
-//        } else {
-//            User user = userToEditOptional.get();
-//            user.setUserFirstName(userFirstName);
-//            user.setUserSecondName(userSecondName);
-//            user.setUsername(username);
-//            user.setPassword(passwordEncoder.encode(password));
-//            return userRepository.save(user);
-//        }
-//    }
 
 
     @DeleteMapping("{uuid}/deleteUser")

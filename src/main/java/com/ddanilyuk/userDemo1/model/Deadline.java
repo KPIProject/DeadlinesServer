@@ -40,15 +40,6 @@ public class Deadline {
     private int deadlineProjectId;
 
 
-//    @Column
-////    @Transient
-//    @ElementCollection(targetClass = UUID.class)
-////    @JsonView(Views.deadlinesView.class)
-//    private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
-
-
-//    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-//    @Transient
     @Column
     @JsonView(Views.deadlinesDetailView.class)
     @ManyToMany
@@ -106,28 +97,6 @@ public class Deadline {
     public void setDeadlineExecutionTime(long deadlineExecutionTime) {
         this.deadlineExecutionTime = deadlineExecutionTime;
     }
-
-//    public List<UUID> getDeadlineExecutorsUuid() {
-//        return deadlineExecutorsUuid;
-//    }
-//
-//    public void setDeadlineExecutorsUuid(List<UUID> deadlineExecutorsUuid) {
-//        this.deadlineExecutorsUuid = deadlineExecutorsUuid;
-//    }
-
-//    public List<User> getDeadlineExecutors() {
-//        List<User> usersAll = project.getProjectUsers();
-//        List<User> deadlineExecutors = new ArrayList<>();
-//
-//        for (User user : usersAll) {
-//            if (deadlineExecutorsUuid.contains(user.getUuid())) {
-//                deadlineExecutors.add(user);
-//            }
-//        }
-//
-//        return deadlineExecutors;
-//    }
-
 
     public List<User> getDeadlineExecutors() {
         return deadlineExecutors;

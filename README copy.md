@@ -1,118 +1,12 @@
 # Deadlines
 
+Модель роботи проекта:
 
-
-## [Лог змін](#Log change)
-
-#### 		[Version 1.02](#Version 1.02)
-
-#### 		[Version 1.01](#Version 1.01)
-
-
-
-## [API](#API)
-
-#### 		[Юзер](#User)  
-
-​			[Регєстрація](#Registration)  
-
-​			[Логін](#Login)  
-
-​			[Всі проекти](#AllProjects)
-
-​			[Деталі юзера](#UserDatail)    
-
-​			[Знайти юзерів по username](#FindByUsername)
-
-​			[Подивитись всі запрошення](#GetInvintations)
-
-​			[Прийняти запрошення](#AcceptInvite)
-
-​			[Відхилити запрошення](#RejectInvite)
-
-​			[Змінити юзера](#EditUser)
-
-​			[Видалити юзера](#DeleteUser)
-
-
-
-#### 		[Проект та дедлайн](#Project And Deadlines)
-
-​			[Створити проект](#CreateProject)  
-
-​			[Додати юзера до проекту](#AddUserToProject)  
-
-​			[Додати дедлайн](#AddDeadline)  
-
-​			[Додати виконувача дедлайну](#AddExecutorToDeadline)  
-
-​			[Змінити проект](#DeadlineDetail)  
-
-​			[Змінити дедлайн](#DeadlineDetail)
-
-​			[Видалити проект](#ProjectDetail)
-
-​			[Видалити дедлайн](#ProjectDetail)
-
-​			[Видалити юзера з проекту](#ProjectDetail)
-
-​			[Видалити виконувача з дедлайну](#ProjectDetail)
-
-
-
-
-
-
-
-​	
-
-#### 		[Помилки](#Errors)
-
-​			[Список всіх помилок](#ProjectDetail)
-
-
+1. Серверная частина на Java c RestApi и БД SQL
+2. Веб-сайт
+3. IOS Додаток
 
 ## Log change
-
-### Version 1.02
-
-#### Rename
-
-- Повідомлення якщо сталася помилка або операція успішна
-
-  Тепер мають таку структуру
-
-  ```json
-  {
-  	"type": "Exception",
-  	"code": 404,
-  	"message": "Unknown error"
-  }
-  ```
-
-  `error_type` > `type`
-
-  `error_message` > `message`
-
-  
-
-#### Edit
-
-- Всі поля які приймали `uuid` для додавання юзерів у проекти та дедлайни теперь приймають `username`
-- Тепер при додавання когось у проект, юзер отримує запрошення, яке він может прийняти або відхилити
-
-#### Add
-
-- Видалення юзерів
-- Видалення проектів
-- Видалення дедлайнів
-- Видалення юзерів з проекту
-- Видалення виконувачів з дедлайну проекту
-- Зміна `username`, `userFirstName`, `userSecondName`, `password` y юзера
-- Зміна `projectName`, `projectDescription`, `projectExecutionTime` y проекта
-- Зміна `deadlineId`, `deadlineName`, `deadlineDescription` у дедлайна
-
-
 
 ### Version 1.01
 
@@ -209,11 +103,33 @@
 
 
 
-## 	API
+## 	Працюючі запити
 
-### User
+[Регєстрація](#Registration)  
 
-#### 	Registration
+[Логін](#Login)  
+
+[Всі проекти](#AllProjects)  
+
+[Знайти юзерів по username](#FindByUsername)
+
+[Деталі юзера](#UserDatail)  
+
+[Створити проект](#CreateProject)  
+
+[Додати юзера до проекту](#AddUserToProject)  
+
+[Додати дедлайн](#AddDeadline)  
+
+[Додати виконувача проекту](#AddExecutorToDeadline)  
+
+[Деталі дедлайну](#DeadlineDetail)  
+
+[Деталі проекту](#ProjectDetail)
+
+
+
+### 	Registration
 
 **URL**: `/registration`
 
@@ -253,9 +169,9 @@
 
 ```json
 {
-  	"type": "Error",
-  	"code": 404,
-  	"message": "User is already exist"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "User is already exist"
 }
 ```
 
@@ -263,9 +179,9 @@
 
 ```json
 {
-    "type": "Error",
-  	"code": 404,
-    "message": "Invalid userFirstName"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid userFirstName"
 }
 ```
 
@@ -273,9 +189,9 @@
 
 ```json
 {
-    "type": "Error",
-  	"code": 404,
-    "message": "Invalid userSecondName"
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Invalid userSecondName"
 }
 ```
 
@@ -283,9 +199,9 @@
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "Invalid username"
+    "error_message": "Invalid username"
 }
 ```
 
@@ -293,15 +209,15 @@
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "Invalid password"
+    "error_message": "Invalid password"
 }
 ```
 
 
 
-#### 	Login
+### 	Login
 
 **URL**: `/login`
 
@@ -337,9 +253,9 @@
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "User not found"
+    "error_message": "User not found"
 }
 ```
 
@@ -347,9 +263,9 @@
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "Password is wrong"
+    "error_message": "Password is wrong"
 }
 ```
 
@@ -357,9 +273,9 @@
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "Invalid username"
+    "error_message": "Invalid username"
 }
 ```
 
@@ -367,15 +283,15 @@
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "Invalid password"
+    "error_message": "Invalid password"
 }
 ```
 
 
 
-#### 	AllProjects
+### 	AllProjects
 
 **URL**: `{uuid}/allProjects`
 
@@ -392,43 +308,22 @@ uuid - uuid користувача
 ```json
 [
     {
-        "projectId": 2,
-    		"projectName": "My own projecttttt2",
-    		"projectDescription": "Details of my project2",
-    		"deadlines": [
-     				{
-        				"deadlineId": 1,
-        				"deadlineName": "My own deadline 1",
-        				"deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
-      				  "deadlineProjectId": 2,
-        				"deadlineCreatedTime": 1588370977977,
-       				  "deadlineExecutionTime": 999999999
-      			}
-    		],
-    		"projectOwner": {
-     			 "userId": 1,
-      		 "userFirstName": "DenysDADADA",
-      		 "userSecondName": "Danilyuk2",
-      		 "username": "ddanilyuk1",
-      		 "userCreationTime": 1588370871083
-    		 },
-    		"projectUsers": [
-      		 	{
-        				"userId": 2,
-        				"userFirstName": "Denys2",
-        				"userSecondName": "Danilyuk2",
-        				"username": "ddanilyuk2",
-        				"userCreationTime": 1588370875757
-      			}
-    		],
-    		"projectUsersInvited": [],
-    		"projectCreationTime": 123123123,
-    		"projectExecutionTime": 999999999
+        "projectId": 1,
+        "projectName": "My own project",
+        "projectDescription": "Details of my project",
+        "deadlines": [],
+        "projectOwner": {
+            "userId": 1,
+            "userFirstName": "Denys",
+            "userSecondName": "Danilyuk",
+            "username": "danisdanilyuk",
+            "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05",
+            "userCreationTime": 1584818029554
+        },
+        "projectUsers": []
     }
 ]
 ```
-
-​	*Список створених та до яких юзер приєднаний проектів (без запрошених)*
 
 **Errors**:
 
@@ -436,15 +331,15 @@ uuid - uuid користувача
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "User not found"
+    "error_message": "User not found"
 }
 ```
 
 
 
-#### 	UserDetail
+### 	UserDetail
 
 **URL**: `/{uuid}/details`
 
@@ -460,12 +355,33 @@ uuid - uuid користувача
 
 ```json
 {
-  	"userId": 2,
-  	"userFirstName": "Denys2",
-  	"userSecondName": "Danilyuk2",
-  	"username": "ddanilyuk2",
-  	"userCreationTime": 1588370875757,
-  	"uuid": "a426ed57-3e59-4d5f-92d9-c2ba9a003f08"
+    "userId": 5,
+    "userFirstName": "Nastya",
+    "userSecondName": "Holovash",
+    "username": "username",
+    "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
+    "projectsCreated": [
+        {
+            "projectId": 25,
+            "projectName": "name project",
+            "projectDescription": "project description",
+            "deadlines": [],
+            "projectOwnerUuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
+            "projectActiveUsersUuid": []
+        }
+    ],
+    "projectsAppended": [
+        {
+            "projectId": 26,
+            "projectName": "Denys project",
+            "projectDescription": "Details of denys project",
+            "deadlines": [],
+            "projectOwnerUuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50",
+            "projectActiveUsersUuid": [
+                "3c8e6d64-423d-4b63-a162-ab46a979f226"
+            ]
+        }
+    ]
 }
 ```
 
@@ -475,344 +391,15 @@ uuid - uuid користувача
 
 ```json
 {
-    "type": "Error",
+    "error_type": "NotFoundException",
     "code": 404,
-    "message": "User not found"
+    "error_message": "User not found"
 }
 ```
 
 
 
-#### FindByUsername
-
-**URL**: `findByUsername/{username}`
-
-**Request type**: `GET`
-
-**Variables**: 
-
-```
-username - юзернейм
-```
-
-**Server successful answer**: 
-
-```json
-[
-    {
-        "userId": 1,
-        "userFirstName": "Denys",
-        "userSecondName": "Danilyuk",
-        "username": "danisdanilyuk"
-    }
-]
-```
-
-```
-Якщо ввести username не повністю, то повертає список юзерів зі схожим username
-```
-
-**Errors**:
-
-- Коли юзерів по данному username немає
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "Users not found"
-}
-```
-
-
-
-#### GetInvitations
-
-**URL**: `{uuid}/getInvitations`
-
-**Request type**: `GET`
-
-**Variables**: 
-
-```
-uuid - uuid користувача
-```
-
-**Server successful answer**: 
-
-```json
-[
-  	{
-    		"projectId": 13,
-    		"projectName": "My own projecttttt2",
-   		  "projectDescription": "Details of my project2",
-   		  "deadlines": [],
-    		"projectOwner": {
-      			"userId": 3,
-      			"userFirstName": "Denys2",
-     			  "userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk3",
-      			"userCreationTime": 1588413299112
-    		},
-    		"projectUsers": [],
-    		"projectUsersInvited": [
-      			{
-        				"userId": 2,
-                "userFirstName": "Denys2",
-        				"userSecondName": "Danilyuk2",
-        				"username": "ddanilyuk2",
-        				"userCreationTime": 1588370875757
-      			}
-    		],
-    		"projectCreationTime": 123123123,
-    		"projectExecutionTime": 999999999
-  	}
-]
-```
-
-**Errors**:
-
-- Користувача з таким `username ` не існує
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-
-
-#### AcceptInvite
-
-**URL**: `{uuid}/acceptInvite/{projectID}`
-
-**Request type**: `POST`
-
-**Variables**: 
-
-```
-uuid - uuid користувача
-projectID - id проекта
-```
-
-**Server successful answer**: 
-
-```json
-{
-  	"projectId": 13,
-  	"projectName": "My own projecttttt2",
-  	"projectDescription": "Details of my project2",
-  	"deadlines": [],
-  	"projectOwner": {
-    		"userId": 3,
-    		"userFirstName": "Denys2",
-    		"userSecondName": "Danilyuk2",
-    		"username": "ddanilyuk3",
-    		"userCreationTime": 1588413299112
-  	},
-  	"projectUsers": [
-    		{
-      			"userId": 2,
-      			"userFirstName": "Denys2",
-      			"userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk2",
-      			"userCreationTime": 1588370875757
-    		}
-  	],
-    "projectUsersInvited": [],
-  	"projectCreationTime": 123123123,
-  	"projectExecutionTime": 999999999
-}
-```
-
-**Errors**:
-
-- Користувача з таким `username ` не існує
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-- Проект не знайдений
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "Project not found"
-}
-```
-
-- Юзер не запрошений до цього проекту
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-
-
-#### RejectInvite
-
-**URL**: `{uuid}/rejectInvite/{projectID}`
-
-**Request type**: `POST`
-
-**Variables**: 
-
-```
-uuid - uuid користувача
-projectID - id проекта
-```
-
-**Server successful answer**: 
-
-```json
-{
-    "type": "Success",
-    "code": 200,
-    "message": "Done"
-}
-```
-
-**Errors**:
-
-- Користувача з таким `username ` не існує
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-- Проект не знайдений
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "Project not found"
-}
-```
-
-- Юзер не запрошений до цього проекту
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-
-
-#### EditUser
-
-**URL**: `{uuid}/editUser`
-
-**Request type**: `POST`
-
-**Variables**: 
-
-```
-uuid - uuid користувача
-```
-
-**Body**: 
-
-```json
-{
-    "userFirstName": "Denis",
-    "userSecondName": "Danilyuk",
-    "username": "ddanilyukEdited",
-    "password": "12345"
-}
-```
-
-*Всі поля є опціональними!!!*
-
-**Server successful answer**: 
-
-```json
-{
-  	"userId": 4,
-  	"userFirstName": "Denis",
-  	"userSecondName": "Danilyuk",
-  	"username": "ddanilyukEdited",
-  	"userCreationTime": 1588450838368,
-  	"projectsCreated": [],
-  	"projectsAppended": [],
-  	"projectsInvited": []
-}
-```
-
-**Errors**:
-
-- Користувача з таким `username ` не існує
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-
-
-#### DeleteUser
-
-**URL**: `{uuid}/deleteUser`
-
-**Request type**: `DELETE`
-
-**Variables**: 
-
-```
-uuid - uuid користувача
-```
-
-**Server successful answer**: 
-
-```json
-{
-    "type": "Success",
-    "code": 200,
-    "message": "Deleted"
-}
-```
-
-**Errors**:
-
-- Користувача з таким `username ` не існує
-
-```json
-{
-    "type": "Error",
-    "code": 404,
-    "message": "User not found"
-}
-```
-
-
-
-
-
-### Project And Deadlines
-
-#### 	CreateProject
+### 	CreateProject
 
 **URL**: `{uuid}/createProject`
 
@@ -909,7 +496,7 @@ uuid - uuid користувача
 
 *ТАКОЖ ВСІ ПОМИЛКИ З `AddUserToProject` (якщо додати не існуючого користувача)*
 
-#### 	AddUserToProject
+### 	AddUserToProject
 
 **URL**: `{uuidOwner}/{projectID}/addUserToProject/{uuidUserToAdd}`
 
@@ -1004,7 +591,7 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 
 
-#### AddDeadline
+### AddDeadline
 
 **URL**: `/{uuid}/{projectID}/addDeadline`
 
@@ -1114,7 +701,7 @@ projectID - id проекта
 
 
 
-#### AddExecutorToDeadline
+### AddExecutorToDeadline
 
 **URL**: `{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}`
 
@@ -1230,7 +817,7 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 
 
-#### DeadlineDetail
+### DeadlineDetail
 
 **URL**: `deadlineDetail/{id}`
 
@@ -1279,21 +866,47 @@ id - id дедлайна
 
 
 
-### Errors
+### FindByUsername
 
+**URL**: `findByUsername/{username}`
 
+**Request type**: `GET`
 
+**Variables**: 
 
+```
+username - юзернейм
+```
 
+**Server successful answer**: 
 
+```json
+[
+    {
+        "userId": 1,
+        "userFirstName": "Denys",
+        "userSecondName": "Danilyuk",
+        "username": "danisdanilyuk",
+        "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05"
+    }
+]
+```
 
+```
+Якщо ввести username не повністю, то повертає список юзерів зі схожим username
+```
 
+**Errors**:
 
-Модель роботи проекта:
+- Коли юзерів по данному username немає
 
-1. Серверна частина на Java c RestApi и БД SQL
-2. Веб-сайт
-3. IOS Додаток
+```json
+{
+    "error_type": "NotFoundException",
+    "code": 404,
+    "error_message": "Users not found"
+}
+```
 
 
 

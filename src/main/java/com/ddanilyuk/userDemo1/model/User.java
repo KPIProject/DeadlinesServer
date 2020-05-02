@@ -1,5 +1,6 @@
 package com.ddanilyuk.userDemo1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class User {
 
 
     @Column(name = "uuid", updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
-    @JsonView(Views.defaultView.class)
+    @JsonView(Views.loginView.class)
     private UUID uuid;
 
 
@@ -43,7 +44,6 @@ public class User {
 
     @Column
     @JsonView(Views.usersView.class)
-//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "projectUsers", cascade = {CascadeType.MERGE})
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "projects_appended",
@@ -59,6 +59,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "deadline_id"))
     @JsonView(Views.usersView.class)
+    @JsonIgnore
     private List<Deadline> deadlines = new ArrayList<>();
 
 
@@ -71,18 +72,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     @JsonView(Views.usersView.class)
     private List<Project> projectsInvited = new ArrayList<>();
-//    @Column
-//    @JsonView(Views.usersView.class)
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-//    @JoinTable(
-//            name = "projects_invitations",
-//            joinColumns = @JoinColumn(name = "project_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id"))
-//    private List<Project> projectsInvitations = new ArrayList<>();
-
-
-
-
 
     public User() {
     }
@@ -137,14 +126,6 @@ public class User {
     public void setUserCreationTime(long userCreationTime) {
         this.userCreationTime = userCreationTime;
     }
-
-//    public List<Project> getProjectsInvitations() {
-//        return projectsInvitations;
-//    }
-//
-//    public void setProjectsInvitations(List<Project> projectsInvitations) {
-//        this.projectsInvitations = projectsInvitations;
-//    }
 
     public List<Project> getProjectsCreated() {
         return projectsCreated;

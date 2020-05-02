@@ -17,7 +17,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findUserByUuid(UUID uuid);
 
-
     @Query("select u from User u where username like %?1%")
     Optional<List<User>> findAllByUsername(String username);
 

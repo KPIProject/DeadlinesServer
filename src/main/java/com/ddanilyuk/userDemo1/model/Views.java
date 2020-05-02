@@ -8,6 +8,12 @@ public final class Views {
     public interface defaultView {
     }
 
+    public interface loginView extends defaultView {
+    }
+
+    public interface usersViewDebugVersion extends loginView, usersView {
+    }
+
     // Output with List<Project> projectsCreated, List<Project> projectsAppended in User
     // UUID projectOwnerUuid, List<UUID> projectActiveUsersUuid in Project
     public interface usersView extends defaultView, deadlinesView {
