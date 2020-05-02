@@ -37,29 +37,42 @@
 
 
 - [Проект та дедлайн](#Проект-та-дедлайн)
-- [Створити проект](#Створити-проект)  
+
+	- [Створити проект](#Створити-проект)  
+
 	- [Додати юзера у проект](#Додати-юзера-у-проект)  
+
 	- [Додати дедлайн](#Додати-дедлайн)  
+
 	- [Додати виконувача дедлайну](#Додати-виконувача-дедлайну)  
+
 	- [Редагувати проект](#Редагувати-проект)  
+
 	- [Редагувати дедлайн](#Редагувати-дедлайн)
+
 	- [Видалити проект](#Видалити-проект)
+
 	- [Видалити дедлайн](#Видалити-дедлайн)
+
 	- [Видалити юзера з проекту](#Видалити-юзера-з-проекту)
+
 	- [Видалити виконувача з дедлайну](#Видалити-виконувача-з-делайну)
 
 
 
 - [Дебаг версії запитів](#Дебаг-версії-запитів)
 
-  - [Створити проект дебаг](#Створити-проект-дебаг)
-  - [Додати юзера у проект дебаг](#Додати-юзера-у-проект-дебаг)
-  - [Всі юзери](#Всі-юзери)
+	- [Створити проект дебаг](#Створити-проект-дебаг)
+
+	- [Додати юзера у проект дебаг](#Додати-юзера-у-проект-дебаг)
+
+	- [Всі юзери](#Всі-юзери)
 
   
 
 - [Помилки](#Помилки)
-  - [Список всіх помилок](#Список-всіх-помилок)
+
+	- [Список всіх помилок](#Список-всіх-помилок)
 
 
 
@@ -75,9 +88,9 @@
 
   ```json
   {
-  	"type": "Exception",
-  	"code": 404,
-  	"message": "Unknown error"
+      "type": "Exception",
+      "code": 404,
+      "message": "Unknown error"
   }
   ```
 
@@ -103,7 +116,7 @@
 - [Зміна](#Редагувати-проект) `projectName`, `projectDescription`, `projectExecutionTime` y проекта
 - [Зміна](#Редагувати-дедлайн) `deadlineId`, `deadlineName`, `deadlineDescription` у дедлайна
 - [Запрошення у проект](#Подивитись-всі-запрошення)
-- [Дебаг запити](Дебаг версії запитів)
+- [Дебаг запити](#Дебаг версії запитів)
 
 
 
@@ -453,12 +466,12 @@ uuid - uuid користувача
 
 ```json
 {
-  	"userId": 2,
-  	"userFirstName": "Denys2",
-  	"userSecondName": "Danilyuk2",
-  	"username": "ddanilyuk2",
-  	"userCreationTime": 1588370875757,
-  	"uuid": "a426ed57-3e59-4d5f-92d9-c2ba9a003f08"
+    "userId": 2,
+    "userFirstName": "Denys2",
+    "userSecondName": "Danilyuk2",
+    "username": "ddanilyuk2",
+    "userCreationTime": 1588370875757,
+    "uuid": "a426ed57-3e59-4d5f-92d9-c2ba9a003f08"
 }
 ```
 
@@ -535,31 +548,31 @@ uuid - uuid користувача
 
 ```json
 [
-  	{
-    		"projectId": 13,
-    		"projectName": "My own projecttttt2",
-   		  "projectDescription": "Details of my project2",
-   		  "deadlines": [],
-    		"projectOwner": {
-      			"userId": 3,
-      			"userFirstName": "Denys2",
-     			  "userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk3",
-      			"userCreationTime": 1588413299112
-    		},
-    		"projectUsers": [],
-    		"projectUsersInvited": [
-      			{
-        				"userId": 2,
+    {
+        "projectId": 13,
+        "projectName": "My own projecttttt2",
+   	    "projectDescription": "Details of my project2",
+        "deadlines": [],
+        "projectOwner": {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
+        },
+        "projectUsers": [],
+        "projectUsersInvited": [
+            {
+                "userId": 2,
                 "userFirstName": "Denys2",
-        				"userSecondName": "Danilyuk2",
-        				"username": "ddanilyuk2",
-        				"userCreationTime": 1588370875757
-      			}
-    		],
-    		"projectCreationTime": 123123123,
-    		"projectExecutionTime": 999999999
-  	}
+                "userSecondName": "Danilyuk2",
+                "username": "ddanilyuk2",
+                "userCreationTime": 1588370875757
+            }
+        ],
+        "projectCreationTime": 123123123,
+        "projectExecutionTime": 999999999
+    }
 ]
 ```
 
@@ -594,29 +607,29 @@ projectID - id проекта
 
 ```json
 {
-  	"projectId": 13,
-  	"projectName": "My own projecttttt2",
-  	"projectDescription": "Details of my project2",
-  	"deadlines": [],
-  	"projectOwner": {
-    		"userId": 3,
-    		"userFirstName": "Denys2",
-    		"userSecondName": "Danilyuk2",
-    		"username": "ddanilyuk3",
-    		"userCreationTime": 1588413299112
-  	},
-  	"projectUsers": [
-    		{
-      			"userId": 2,
-      			"userFirstName": "Denys2",
-      			"userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk2",
-      			"userCreationTime": 1588370875757
-    		}
-  	],
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
+    },
+    "projectUsers": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
+        }
+    ],
     "projectUsersInvited": [],
-  	"projectCreationTime": 123123123,
-  	"projectExecutionTime": 999999999
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
 }
 ```
 
@@ -740,14 +753,14 @@ uuid - uuid користувача
 
 ```json
 {
-  	"userId": 4,
-  	"userFirstName": "Denis",
-  	"userSecondName": "Danilyuk",
-  	"username": "ddanilyukEdited",
-  	"userCreationTime": 1588450838368,
-  	"projectsCreated": [],
-  	"projectsAppended": [],
-  	"projectsInvited": []
+    "userId": 4,
+    "userFirstName": "Denis",
+    "userSecondName": "Danilyuk",
+    "username": "ddanilyukEdited",
+    "userCreationTime": 1588450838368,
+    "projectsCreated": [],
+    "projectsAppended": [],
+    "projectsInvited": []
 }
 ```
 
@@ -841,29 +854,29 @@ uuid - uuid користувача
 
 ```json
 {
-  	"projectId": 13,
-  	"projectName": "My own projecttttt2",
-  	"projectDescription": "Details of my project2",
-  	"deadlines": [],
-  	"projectOwner": {
-    		"userId": 3,
-    		"userFirstName": "Denys2",
-    		"userSecondName": "Danilyuk2",
-    		"username": "ddanilyuk3",
-    		"userCreationTime": 1588413299112
-  	},
-  	"projectUsersInvited": [
-    		{
-      			"userId": 2,
-      			"userFirstName": "Denys2",
-      			"userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk2",
-      			"userCreationTime": 1588370875757
-    		}
-  	],
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
+    },
+    "projectUsersInvited": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
+        }
+    ],
     "projectUsers": [],
-  	"projectCreationTime": 123123123,
-  	"projectExecutionTime": 999999999
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
 }
 ```
 
@@ -921,29 +934,29 @@ usernameToAdd - username юзера якого потрібно додати
 
 ```json
 {
-  	"projectId": 13,
-  	"projectName": "My own projecttttt2",
-  	"projectDescription": "Details of my project2",
-  	"deadlines": [],
-  	"projectOwner": {
-    		"userId": 3,
-    		"userFirstName": "Denys2",
-    		"userSecondName": "Danilyuk2",
-    		"username": "ddanilyuk3",
-    		"userCreationTime": 1588413299112
-  	},
-  	"projectUsersInvited": [
-    		{
-      			"userId": 2,
-      			"userFirstName": "Denys2",
-      			"userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk2",
-      			"userCreationTime": 1588370875757
-    		}
-  	],
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
+    },
+    "projectUsersInvited": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
+        }
+    ],
     "projectUsers": [],
-  	"projectCreationTime": 123123123,
-  	"projectExecutionTime": 999999999
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
 }
 ```
 
@@ -1274,30 +1287,30 @@ projectID - id проекта який потрібно змінити
 
 ```json
 {
-  	"projectId": 13,
-  	"projectName": "My own projecttttt2",
-  	"projectDescription": "Details of my project2",
-  	"deadlines": [],
-  	"projectOwner": {
-    		"userId": 3,
-    		"userFirstName": "Denys2",
-    		"userSecondName": "Danilyuk2",
-    		"username": "ddanilyuk3",
-    		"userCreationTime": 1588413299112
-  	},
-  	"projectUsersInvited": [
-    		{
-      			"userId": 2,
-      			"userFirstName": "Denys2",
-      			"userSecondName": "Danilyuk2",
-      			"username": "ddanilyuk2",
-      			"userCreationTime": 1588370875757
-    		}
-  	],
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
+    },
+    "projectUsersInvited": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
+        }
+    ],
     "projectUsers": [],
-  	"projectCreationTime": 123123123,
-  	"projectExecutionTime": 999999999
-}
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
+} 
 ```
 
 **Errors**:
