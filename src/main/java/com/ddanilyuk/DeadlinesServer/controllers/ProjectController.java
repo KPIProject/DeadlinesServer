@@ -77,7 +77,7 @@ public class ProjectController {
             for (String userToAdd : usersToAdd) {
                 if (!userRepository.findByUsername(userToAdd).isPresent()) {
                     projectRepository.delete(project);
-                    throw new ServiceException("User to add is not found");
+                    throw new ServiceException("User to add not found");
                 } else if (userToAdd.equals(user.getUsername())) {
                     projectRepository.delete(project);
                     throw new ServiceException("User owner cant be invited to project");
@@ -159,7 +159,7 @@ public class ProjectController {
             for (String userToAdd : usersToAdd) {
                 if (!userRepository.findByUsername(userToAdd).isPresent()) {
                     projectRepository.delete(project);
-                    throw new ServiceException("User to add is not found");
+                    throw new ServiceException("User to add not found");
                 } else if (userToAdd.equals(user.getUsername())) {
                     projectRepository.delete(project);
                     throw new ServiceException("User owner cant be invited to project");

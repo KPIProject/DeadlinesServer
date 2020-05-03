@@ -1,3 +1,5 @@
+
+
 # Deadlines
 
 ## Зміст
@@ -72,7 +74,7 @@
 
 - [Помилки](#Помилки)
 
-	- [Список всіх помилок](#Список-всіх-помилок)
+	- [Список всіх можливих помилок](#Список-всіх-можливих-помилок)
 
 
 
@@ -1772,14 +1774,243 @@ usernameToDelete - username юзера якого необхідно видал�
 
 ### Помилки
 
-#### Список всіх помилок
+#### Список всіх можливих помилок
 
-SOON
+##### Основні
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline not found"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid deadlineName"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid deadlineDescription"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to add not found"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User owner not found"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to add is not in this project"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline is not in this project"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid projectDescription"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid projectName"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid projectDescription"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User owner cant be invited to project"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User is already in this project"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to delete not found"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to delete is not this project"
+}
+```
 
 
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "You are not invited to this project"
+}
+```
 
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid username"
+}
+```
 
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid password"
+}
+```
 
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Password is wrong"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid userFirstName"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid userSecondName"
+}
+```
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User is already exist"
+}
+```
+
+##### Інше
+```json
+{
+    "type": "Exception",
+    "code": 404,
+    "message": "Unknown error"
+}
+```
+
+```json
+{
+    "type": "DataException",
+    "code": 404,
+    "message": "DataException"
+}
+```
+
+```json
+{
+    "type": "NotSupportedException",
+    "code": 405,
+    "message": "Method not supported"
+}
+```
+
+```json
+{
+    "type": "HttpRequestMethodNotSupportedException",
+    "code": 405,
+    "message": "Method not allowed"
+}
+```
+
+```json
+{
+    "type": "HttpClientErrorException.NotFound",
+    "code": 404,
+    "message": "Not found"
+}
+```
 
 
 
