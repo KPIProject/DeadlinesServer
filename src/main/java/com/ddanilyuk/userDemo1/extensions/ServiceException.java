@@ -1,10 +1,11 @@
 package com.ddanilyuk.userDemo1.extensions;
 
-public class UserExtension extends RuntimeException {
+public class ServiceException extends RuntimeException {
 
-    public UserExtension(String username) {
-        super(username);
+    public ServiceException(String error) {
+        super(error);
     }
+
 
     @Override
     public synchronized Throwable fillInStackTrace() {

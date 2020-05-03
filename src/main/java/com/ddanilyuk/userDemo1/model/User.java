@@ -1,11 +1,10 @@
 package com.ddanilyuk.userDemo1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @SuppressWarnings("unused")
 @Entity
@@ -26,34 +25,53 @@ public class User {
     @JsonView(Views.defaultView.class)
     private String username;
 
+    @Column
+    @JsonView(Views.defaultView.class)
+    private long userCreationTime;
 
     private String password;
 
 
     @Column(name = "uuid", updatable = false, nullable = false, unique = true, columnDefinition = "BINARY(16)")
-    @JsonView(Views.defaultView.class)
+    @JsonView(Views.loginView.class)
     private UUID uuid;
 
 
-    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "projectOwner", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true)
     @JsonView(Views.usersView.class)
     private List<Project> projectsCreated = new ArrayList<>();
 
 
     @Column
     @JsonView(Views.usersView.class)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "projects_appended",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projectsAppended = new ArrayList<>();
 
 
     @Column
-    @JsonView(Views.defaultView.class)
-    private long userCreationTime;
+    @ManyToMany
+    @JoinTable(
+            name = "deadline_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "deadline_id"))
+    @JsonView(Views.usersView.class)
+    @JsonIgnore
+    private List<Deadline> deadlines = new ArrayList<>();
 
+
+
+    @Column
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(
+            name = "projects_invited",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JsonView(Views.usersView.class)
+    private List<Project> projectsInvited = new ArrayList<>();
 
     public User() {
     }
@@ -83,6 +101,22 @@ public class User {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
         this.projectsCreated = projects;
+    }
+
+    public List<Deadline> getDeadlines() {
+        return deadlines;
+    }
+
+    public void setDeadlines(List<Deadline> deadlines) {
+        this.deadlines = deadlines;
+    }
+
+    public List<Project> getProjectsInvited() {
+        return projectsInvited;
+    }
+
+    public void setProjectsInvited(List<Project> projectsInvited) {
+        this.projectsInvited = projectsInvited;
     }
 
     public long getUserCreationTime() {

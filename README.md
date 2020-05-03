@@ -1,14 +1,126 @@
 # Deadlines
 
-Модель роботи проекта:
+## Зміст
 
-1. Серверная частина на Java c RestApi и БД SQL
-2. Веб-сайт
-3. IOS Додаток
+
+### [Лог змін](#Log-change)
+
+- [Версія 1.02](#1.02)
+
+- [Версія 1.01](#1.01)
+
+
+### [Запити на сервер](#API)
+
+- [Юзер](#Юзер)  
+
+	- [Реєстрація](#Реєстрація)  
+	
+	- [Логін](#Логін)  
+	
+	- [Всі проекти](#Всі-проекти)
+	
+	- [Деталі юзера](#Деталі-юзера)    
+	
+	- [Знайти юзерів по username](#Знайти-юзерів-по-username)
+	
+	- [Подивитись всі запрошення](#Подивитись-всі-запрошення)
+	
+	- [Прийняти запрошення](#Прийняти-запрошення)
+	
+	- [Відхилити запрошення](#Відхилити-запрошення)
+	
+	- [Редагувати юзера](#Редагувати-юзера)
+	
+	- [Видалити юзера](#Видалити-юзера)
+
+
+
+- [Проект та дедлайн](#Проект-та-дедлайн)
+
+	- [Створити проект](#Створити-проект)  
+
+	- [Додати юзера у проект](#Додати-юзера-у-проект)  
+
+	- [Додати дедлайн](#Додати-дедлайн)  
+
+	- [Додати виконувача дедлайну](#Додати-виконувача-делайну)  
+
+	- [Редагувати проект](#Редагувати-проект)  
+
+	- [Редагувати дедлайн](#Редагувати-дедлайн)
+
+	- [Видалити проект](#Видалити-проект)
+
+	- [Видалити дедлайн](#Видалити-дедлайн)
+
+	- [Видалити юзера з проекту](#Видалити-юзера-з-проекту)
+
+	- [Видалити виконувача з дедлайну](#Видалити-виконувача-з-дедлайну)
+
+
+
+- [Дебаг версії запитів](#Дебаг-версії-запитів)
+
+	- [Створити проект дебаг](#Створити-проект-дебаг)
+
+	- [Додати юзера у проект дебаг](#Додати-юзера-у-проект-дебаг)
+
+	- [Всі юзери](#Всі-юзери)
+
+  
+
+- [Помилки](#Помилки)
+
+	- [Список всіх помилок](#Список-всіх-помилок)
+
+
 
 ## Log change
 
-### Version 1.01
+### 1.02
+
+#### Rename
+
+- Повідомлення якщо сталася помилка або операція успішна
+
+  Тепер мають таку структуру
+
+  ```json
+  {
+      "type": "Exception",
+      "code": 404,
+      "message": "Unknown error"
+  }
+  ```
+
+  `error_type` > `type`
+
+  `error_message` > `message`
+
+#### Edit
+
+- Всі поля які приймали `uuid` для додавання юзерів у проекти та дедлайни теперь приймають `username`
+- Вивід `uuid` тільки при логін та реєстрації
+- Тепер при додавання когось у проект, юзер отримує запрошення, яке він может прийняти або відхилити
+
+#### Add
+
+- [Видалення юзерів](#Видалити-юзера) 
+- [Видалення проектів](#Видалити-проект) 
+- [Видалення дедлайнів](#Видалити-дедлайн) 
+- [Видалення юзерів з проекту](Видалити-юзера-з-проекту)
+- [Видалення виконувачів з дедлайну проекту](Видалити-юзера-з-проекту)
+- [Видалення виконувачів з дедлайну проекту](Видалити-виконувача-з-делайну)
+- [Зміна](#Редагувати-юзера) `username`, `userFirstName`, `userSecondName`, `password` y юзера
+- [Зміна](#Редагувати-проект) `projectName`, `projectDescription`, `projectExecutionTime` y проекта
+- [Зміна](#Редагувати-дедлайн) `deadlineId`, `deadlineName`, `deadlineDescription` у дедлайна
+- [Запрошення у проект](#Подивитись-всі-запрошення)
+- [Дебаг запити](#Дебаг версії запитів)
+
+
+
+### 1.01
 
 #### Rename
 
@@ -103,33 +215,11 @@
 
 
 
-## 	Працюючі запити
+## 	API
 
-[Регєстрація](#Registration)  
+### Юзер
 
-[Логін](#Login)  
-
-[Всі проекти](#AllProjects)  
-
-[Знайти юзерів по username](#FindByUsername)
-
-[Деталі юзера](#UserDatail)  
-
-[Створити проект](#CreateProject)  
-
-[Додати юзера до проекту](#AddUserToProject)  
-
-[Додати дедлайн](#AddDeadline)  
-
-[Додати виконувача проекту](#AddExecutorToDeadline)  
-
-[Деталі дедлайну](#DeadlineDetail)  
-
-[Деталі проекту](#ProjectDetail)
-
-
-
-### 	Registration
+#### 	Реєстрація
 
 **URL**: `/registration`
 
@@ -169,9 +259,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User is already exist"
+    "message": "User is already exist"
 }
 ```
 
@@ -179,9 +269,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid userFirstName"
+    "message": "Invalid userFirstName"
 }
 ```
 
@@ -189,9 +279,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid userSecondName"
+    "message": "Invalid userSecondName"
 }
 ```
 
@@ -199,9 +289,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid username"
+    "message": "Invalid username"
 }
 ```
 
@@ -209,15 +299,15 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid password"
+    "message": "Invalid password"
 }
 ```
 
 
 
-### 	Login
+#### 	Логін
 
 **URL**: `/login`
 
@@ -253,9 +343,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User not found"
+    "message": "User not found"
 }
 ```
 
@@ -263,9 +353,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Password is wrong"
+    "message": "Password is wrong"
 }
 ```
 
@@ -273,9 +363,9 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid username"
+    "message": "Invalid username"
 }
 ```
 
@@ -283,15 +373,15 @@
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid password"
+    "message": "Invalid password"
 }
 ```
 
 
 
-### 	AllProjects
+#### Всі проекти
 
 **URL**: `{uuid}/allProjects`
 
@@ -308,22 +398,43 @@ uuid - uuid користувача
 ```json
 [
     {
-        "projectId": 1,
-        "projectName": "My own project",
-        "projectDescription": "Details of my project",
-        "deadlines": [],
+        "projectId": 2,
+        "projectName": "My own projecttttt2",
+        "projectDescription": "Details of my project2",
+        "deadlines": [
+            {
+                "deadlineId": 1,
+                "deadlineName": "My own deadline 1",
+                "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+                "deadlineProjectId": 2,
+                "deadlineCreatedTime": 1588370977977,
+                "deadlineExecutionTime": 999999999
+            }
+        ],
         "projectOwner": {
             "userId": 1,
-            "userFirstName": "Denys",
-            "userSecondName": "Danilyuk",
-            "username": "danisdanilyuk",
-            "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05",
-            "userCreationTime": 1584818029554
-        },
-        "projectUsers": []
+            "userFirstName": "DenysDADADA",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk1",
+            "userCreationTime": 1588370871083
+         },
+         "projectUsers": [
+             {
+                 "userId": 2,
+                 "userFirstName": "Denys2",
+                 "userSecondName": "Danilyuk2",
+                 "username": "ddanilyuk2",
+                 "userCreationTime": 1588370875757
+             }
+         ],
+         "projectUsersInvited": [],
+         "projectCreationTime": 123123123,
+         "projectExecutionTime": 999999999
     }
 ]
 ```
+
+​	*Список створених та до яких юзер приєднаний проектів (без запрошених)*
 
 **Errors**:
 
@@ -331,15 +442,15 @@ uuid - uuid користувача
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User not found"
+    "message": "User not found"
 }
 ```
 
 
 
-### 	UserDetail
+#### 	Деталі юзера
 
 **URL**: `/{uuid}/details`
 
@@ -355,33 +466,12 @@ uuid - uuid користувача
 
 ```json
 {
-    "userId": 5,
-    "userFirstName": "Nastya",
-    "userSecondName": "Holovash",
-    "username": "username",
-    "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
-    "projectsCreated": [
-        {
-            "projectId": 25,
-            "projectName": "name project",
-            "projectDescription": "project description",
-            "deadlines": [],
-            "projectOwnerUuid": "3c8e6d64-423d-4b63-a162-ab46a979f226",
-            "projectActiveUsersUuid": []
-        }
-    ],
-    "projectsAppended": [
-        {
-            "projectId": 26,
-            "projectName": "Denys project",
-            "projectDescription": "Details of denys project",
-            "deadlines": [],
-            "projectOwnerUuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50",
-            "projectActiveUsersUuid": [
-                "3c8e6d64-423d-4b63-a162-ab46a979f226"
-            ]
-        }
-    ]
+    "userId": 2,
+    "userFirstName": "Denys2",
+    "userSecondName": "Danilyuk2",
+    "username": "ddanilyuk2",
+    "userCreationTime": 1588370875757,
+    "uuid": "a426ed57-3e59-4d5f-92d9-c2ba9a003f08"
 }
 ```
 
@@ -391,15 +481,344 @@ uuid - uuid користувача
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User not found"
+    "message": "User not found"
 }
 ```
 
 
 
-### 	CreateProject
+#### Знайти юзерів по username
+
+**URL**: `findByUsername/{username}`
+
+**Request type**: `GET`
+
+**Variables**: 
+
+```
+username - юзернейм
+```
+
+**Server successful answer**: 
+
+```json
+[
+    {
+        "userId": 1,
+        "userFirstName": "Denys",
+        "userSecondName": "Danilyuk",
+        "username": "danisdanilyuk"
+    }
+]
+```
+
+```
+Якщо ввести username не повністю, то повертає список юзерів зі схожим username
+```
+
+**Errors**:
+
+- Коли юзерів по данному username немає
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Users not found"
+}
+```
+
+
+
+#### Подивитись всі запрошення
+
+**URL**: `{uuid}/getInvitations`
+
+**Request type**: `GET`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+```
+
+**Server successful answer**: 
+
+```json
+[
+    {
+        "projectId": 13,
+        "projectName": "My own projecttttt2",
+   	    "projectDescription": "Details of my project2",
+        "deadlines": [],
+        "projectOwner": {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
+        },
+        "projectUsers": [],
+        "projectUsersInvited": [
+            {
+                "userId": 2,
+                "userFirstName": "Denys2",
+                "userSecondName": "Danilyuk2",
+                "username": "ddanilyuk2",
+                "userCreationTime": 1588370875757
+            }
+        ],
+        "projectCreationTime": 123123123,
+        "projectExecutionTime": 999999999
+    }
+]
+```
+
+**Errors**:
+
+- Користувача з таким `username ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+
+
+#### Прийняти запрошення
+
+**URL**: `{uuid}/acceptInvite/{projectID}`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+projectID - id проекта
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [],
+    "projectOwner": {
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
+    },
+    "projectUsers": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
+        }
+    ],
+    "projectUsersInvited": [],
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
+}
+```
+
+**Errors**:
+
+- Користувача з таким `username ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Юзер не запрошений до цього проекту
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+
+
+#### Відхилити запрошення
+
+**URL**: `{uuid}/rejectInvite/{projectID}`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+projectID - id проекта
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "type": "Success",
+    "code": 200,
+    "message": "Done"
+}
+```
+
+**Errors**:
+
+- Користувача з таким `username ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Юзер не запрошений до цього проекту
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+
+
+#### Редагувати юзера
+
+**URL**: `{uuid}/editUser`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+```
+
+**Body**: 
+
+```json
+{
+    "userFirstName": "Denis",
+    "userSecondName": "Danilyuk",
+    "username": "ddanilyukEdited",
+    "password": "12345"
+}
+```
+
+*Всі поля є опціональними!!!*
+
+**Server successful answer**: 
+
+```json
+{
+    "userId": 4,
+    "userFirstName": "Denis",
+    "userSecondName": "Danilyuk",
+    "username": "ddanilyukEdited",
+    "userCreationTime": 1588450838368,
+    "projectsCreated": [],
+    "projectsAppended": [],
+    "projectsInvited": []
+}
+```
+
+**Errors**:
+
+- Користувача з таким `username ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+
+
+#### Видалити юзера
+
+**URL**: `{uuid}/deleteUser`
+
+**Request type**: `DELETE`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "type": "Success",
+    "code": 200,
+    "message": "Deleted"
+}
+```
+
+**Errors**:
+
+- Користувача з таким `username ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+
+
+
+
+### Проект та дедлайн
+
+#### 	Створити проект
 
 **URL**: `{uuid}/createProject`
 
@@ -421,7 +840,7 @@ uuid - uuid користувача
         "projectCreationTime": 123123123,
         "projectExecutionTime": 999999999
     },
-    "usersToAdd": ["1bcfbad3-31d7-4e48-936e-461e0d2a445c"]
+    "usersToAdd": ["ddanilyuk2"]
 }
 ```
 
@@ -435,28 +854,27 @@ uuid - uuid користувача
 
 ```json
 {
-    "projectId": 1,
-    "projectName": "My own project 2",
-    "projectDescription": "Details of my project 2",
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
     "deadlines": [],
     "projectOwner": {
-        "userId": 1,
+        "userId": 3,
         "userFirstName": "Denys2",
         "userSecondName": "Danilyuk2",
         "username": "ddanilyuk3",
-        "uuid": "197f6109-2973-43a5-9c22-2888fc813838",
-        "userCreationTime": 1584818897341
+        "userCreationTime": 1588413299112
     },
-    "projectUsers": [
+    "projectUsersInvited": [
         {
             "userId": 2,
-            "userFirstName": "Denys",
-            "userSecondName": "Danilyuk",
-            "username": "ddanilyuk",
-            "uuid": "1bcfbad3-31d7-4e48-936e-461e0d2a445c",
-            "userCreationTime": 1584818933775
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
         }
     ],
+    "projectUsers": [],
     "projectCreationTime": 123123123,
     "projectExecutionTime": 999999999
 }
@@ -468,9 +886,9 @@ uuid - uuid користувача
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User not found"
+    "message": "User not found"
 }
 ```
 
@@ -478,9 +896,9 @@ uuid - uuid користувача
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid projectName"
+    "message": "Invalid projectName"
 }
 ```
 
@@ -488,17 +906,19 @@ uuid - uuid користувача
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid projectDescription"
+    "message": "Invalid projectDescription"
 }
 ```
 
-*ТАКОЖ ВСІ ПОМИЛКИ З `AddUserToProject` (якщо додати не існуючого користувача)*
+ТАКОЖ ВСІ ПОМИЛКИ З `Додати юзера у проект` (якщо додати не існуючого користувача)*
 
-### 	AddUserToProject
 
-**URL**: `{uuidOwner}/{projectID}/addUserToProject/{uuidUserToAdd}`
+
+#### 	Додати юзера у проект
+
+**URL**: `{uuidOwner}/{projectID}/addUserToProject/{usernameToAdd}`
 
 **Request type**: `POST`
 
@@ -507,55 +927,58 @@ uuid - uuid користувача
 ```
 uuidOwner - uuid власника проекта
 projectID - id проекта
-uuidUserToAdd - uuid юзера якого потрібно додати
+usernameToAdd - username юзера якого потрібно додати
 ```
 
 **Server successful answer**: 
 
 ```json
 {
-    "projectId": 26,
-    "projectName": "Denys project",
-    "projectDescription": "Details of denys project",
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
     "deadlines": [],
     "projectOwner": {
-        "userId": 6,
-        "userFirstName": "Denys",
-        "userSecondName": "Danilyuk",
-        "username": "danisdanilyuk",
-        "uuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50"
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
     },
-    "projectUsers": [
+    "projectUsersInvited": [
         {
-            "userId": 5,
-            "userFirstName": "Nastya",
-            "userSecondName": "Holovash",
-            "username": "username",
-            "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588370875757
         }
-    ]
+    ],
+    "projectUsers": [],
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999
 }
 ```
 
 **Errors**:
 
-- Користувача якого ви збираєтесь додати не існує
+- Користувача, якого ви збираєтесь додати, не існує
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User to add not found"
+    "message": "User to add not found"
 }
 ```
 
-- Користувача який керує цим проектом не існує
+- Користувача, який керує цим проектом, не існує
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User owner not found"
+    "message": "User owner not found"
 }
 ```
 
@@ -563,9 +986,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Project not found"
+    "message": "Project not found"
 }
 ```
 
@@ -573,9 +996,9 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User is already in this project"
+    "message": "User is already in this project"
 }
 ```
 
@@ -583,15 +1006,25 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid project owner"
+    "message": "Invalid project owner"
+}
+```
+
+- Якщо запросити у проект самого себе
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User owner cant be invited to project"
 }
 ```
 
 
 
-### AddDeadline
+#### Додати дедлайн
 
 **URL**: `/{uuid}/{projectID}/addDeadline`
 
@@ -609,12 +1042,12 @@ projectID - id проекта
 ```json
 {
     "deadline": {
-        "deadlineName": "My own deadline 1",
-        "deadlineDescription": "Details of my deadline 1",
+        "deadlineName": "My own deadline HELLO",
+        "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
         "deadlineCreationTime": 123123123,
-        "deadlineExecutionTime": 999999999
+        "deadlineExecutionTime": 1231123552
     },
-    "usersToAdd": ["47efeb77-7635-405c-bd21-dfbc60fe1dae"]
+    "usersToAdd": ["ddanilyuk", "ddanilyuk3"]
 }
 ```
 
@@ -628,42 +1061,411 @@ projectID - id проекта
 
 ```json
 {
-    "projectId": 1,
-    "projectName": "My own project",
-    "projectDescription": "Details of my project",
-    "deadlines": [
+    "deadlineId": 6,
+    "deadlineName": "My own deadline HELLO",
+    "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+    "deadlineProjectId": 13,
+    "deadlineExecutors": [
         {
-            "deadlineId": 1,
-            "deadlineName": "My own deadline 1",
-            "deadlineDescription": "Details of my deadline 1",
-            "deadlineProjectId": 1,
-            "deadlineExecutorsUuid": [
-                "47efeb77-7635-405c-bd21-dfbc60fe1dae"
-            ],
-            "deadlineCreatedTime": 1584819730624,
-            "deadlineExecutionTime": 999999999
+            "userId": 2,
+            "userFirstName": "Denis",
+            "userSecondName": "Danilyuk",
+            "username": "ddanilyuk",
+            "userCreationTime": 1588370875757
+        },
+        {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
         }
     ],
+    "deadlineCreatedTime": 1588456369847,
+    "deadlineExecutionTime": 1231123552
+}
+```
+
+**Errors**:
+
+- Користувача (власника проекту) з таким `uuid ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Якщо `deadlnineName` пустий або `null`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid deadlnineName"
+}
+```
+
+- Якщо `deadlineDescription`  `null`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid deadlineDescription"
+}
+```
+
+- Користувача (якого потрібно додати до дедлайну) з таким `username ` не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to add not found"
+}
+```
+
+- `userOwner` не керуює проектом з цим `projectID`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+
+
+#### Додати виконувача делайну
+
+**URL**: `{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{usernameToAdd}`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта
+deadlineId - id дедлайна до якого потрібно додати виконувача
+usernameToAdd - username юзера якого потрібно додати
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "deadlineId": 6,
+    "deadlineName": "My own deadline HELLO",
+    "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+    "deadlineProjectId": 13,
+    "deadlineExecutors": [
+        {
+            "userId": 2,
+            "userFirstName": "Denis",
+            "userSecondName": "Danilyuk",
+            "username": "ddanilyuk",
+            "userCreationTime": 1588370875757
+        },
+        {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
+        }
+    ],
+    "deadlineCreatedTime": 1588456369847,
+    "deadlineExecutionTime": 1231123552
+}
+```
+
+**Errors**:
+
+- Користувача якого ви збираєтесь додати не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to add not found"
+}
+```
+
+- Користувача який керує цим проектом не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User owner not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Дедлайн не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline not found"
+}
+```
+
+- `userToAdd` вже не доданий до цього проекту
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to add is not in this project"
+}
+```
+
+- `userOwner` не керуює проектом з цим `projectID`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+
+
+#### Редагувати проект
+
+**URL**: `{uuid}/{projectID}/editProject`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта який потрібно змінити
+```
+
+**Body**: 
+
+```json
+{
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project 2",
+    "projectExecutionTime": 999999999
+}
+```
+
+*Всі поля є опціональними!!!*
+
+**Server successful answer**: 
+
+```json
+{
+    "projectId": 13,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [],
     "projectOwner": {
-        "userId": 1,
-        "userFirstName": "Denys",
-        "userSecondName": "Danilyuk",
-        "username": "ddanilyuk",
-        "uuid": "c289cb0f-f752-42af-9b68-3d21d3ca39b0",
-        "userCreationTime": 1584819579859
+        "userId": 3,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk3",
+        "userCreationTime": 1588413299112
     },
-    "projectUsers": [
+    "projectUsersInvited": [
         {
             "userId": 2,
             "userFirstName": "Denys2",
             "userSecondName": "Danilyuk2",
             "username": "ddanilyuk2",
-            "uuid": "47efeb77-7635-405c-bd21-dfbc60fe1dae",
-            "userCreationTime": 1584819588258
+            "userCreationTime": 1588370875757
         }
     ],
+    "projectUsers": [],
     "projectCreationTime": 123123123,
     "projectExecutionTime": 999999999
+} 
+```
+
+**Errors**:
+
+- Користувача який керує цим проектом не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- `userOwner` не керуює проектом з цим `projectID`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+
+
+#### Редагувати дедлайн
+
+**URL**: `{uuid}/{projectID}/{deadlineID}/editDeadline`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта
+deadlineID - id дедлайна який потрібно змінити
+```
+
+**Body**: 
+
+```json
+{
+    "deadlineName": "My own deadline EDITED",
+    "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+    "deadlineExecutionTime": 1231123552
+}
+```
+
+*Всі поля є опціональними!!!*
+
+**Server successful answer**: 
+
+```json
+{
+    "deadlineId": 6,
+    "deadlineName": "My own deadline EDITED",
+    "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+    "deadlineProjectId": 13,
+    "deadlineExecutors": [
+        {
+            "userId": 2,
+            "userFirstName": "Denis",
+            "userSecondName": "Danilyuk",
+            "username": "ddanilyuk",
+            "userCreationTime": 1588370875757
+        },
+        {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
+        }
+    ],
+    "deadlineCreatedTime": 1588456369847,
+    "deadlineExecutionTime": 1231123552
+}
+```
+
+**Errors**:
+
+- Користувача який керує цим проектом не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Дедлайн не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline not found"
+}
+```
+
+- `userOwner` не керуює проектом з цим `projectID`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+
+
+#### Видалити проект
+
+**URL**: `{uuid}/{projectID}/deleteProject`
+
+**Request type**: `DELETE`
+
+**Variables**: 
+
+```
+uuid - uuid користувача
+projectID - id проекта який необхідно видалити
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "type": "Success",
+    "code": 200,
+    "message": "Deleted"
 }
 ```
 
@@ -673,115 +1475,87 @@ projectID - id проекта
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User not found"
+    "message": "User not found"
 }
 ```
 
-- Якщо `deadlnineName` пустий або `null`
+- Проекту з таким `id ` не знайдено
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid deadlnineName"
+    "message": "Project not found"
 }
 ```
 
-- Якщо `deadlineDescription`  `null`
+- `user` не керуює проектом з цим `projectID`
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Invalid deadlineDescription"
+    "message": "Invalid project owner"
 }
 ```
 
 
 
-### AddExecutorToDeadline
+#### Видалити дедлайн
 
-**URL**: `{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{uuidUserToAdd}`
+**URL**: `{uuid}/{projectID}/{deadlineID}/deleteDeadline`
 
-**Request type**: `POST`
+**Request type**: `DELETE`
 
 **Variables**: 
 
 ```
-uuidOwner - uuid власника проекта
-projectID - id проекта
-deadlineId - id дедлайна до якого потрібно додати виконувача проекта
-uuidUserToAdd - uuid юзера якого потрібно додати
+uuid - uuid користувача
+projectID - id проекта з якого необхідно видалити дедлайн
+deadlineID - id дедлайна який необхідно видалити
 ```
 
 **Server successful answer**: 
 
 ```json
 {
-    "projectId": 26,
-    "projectName": "Denys project",
-    "projectDescription": "Details of denys project",
-    "deadlines": [
-        {
-            "deadlineId": 4,
-            "deadlineName": "Denys deadline",
-            "deadlineDescription": "Details of denys deadline",
-            "deadlineProjectId": 26,
-            "deadlineExecutorsUuid": [
-                "3c8e6d64-423d-4b63-a162-ab46a979f226"
-            ]
-        }
-    ],
-    "projectOwner": {
-        "userId": 6,
-        "userFirstName": "Denys",
-        "userSecondName": "Danilyuk",
-        "username": "danisdanilyuk",
-        "uuid": "982b13ac-b2bc-40a0-a7a3-563d801e4e50"
-    },
-    "projectUsers": [
-        {
-            "userId": 5,
-            "userFirstName": "Nastya",
-            "userSecondName": "Holovash",
-            "username": "username",
-            "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
-        }
-    ]
+    "type": "Success",
+    "code": 200,
+    "message": "Deleted"
 }
 ```
 
 **Errors**:
 
-- Користувача, якого ви збираєтесь додати, не існує
+- Користувача з таким `username ` не існує
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User to add not found"
+    "message": "User not found"
 }
 ```
 
-- Користувача, який керує цим проектом, не існує
+- Проекту з таким `id ` не знайдено
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User owner not found"
+    "message": "Project not found"
 }
 ```
 
-- Проект не знайдений
+- `user` не керуює проектом з цим `projectID`
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Project not found"
+    "message": "Invalid project owner"
 }
 ```
 
@@ -789,124 +1563,232 @@ uuidUserToAdd - uuid юзера якого потрібно додати
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Deadline not found"
+    "message": "Deadline not found"
 }
 ```
 
-- `userToAdd` вже не доданий до цього проекту
+- Дедлайн не знаходиться у цьому проекті
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "User to add is not in this project"
-}
-```
-
-- `userOwner` не керуює проектом з цим `projectID`
-
-```json
-{
-    "error_type": "NotFoundException",
-    "code": 404,
-    "error_message": "Invalid project owner"
+    "message": "Deadline is not in this project"
 }
 ```
 
 
 
-### DeadlineDetail
+#### Видалити юзера з проекту
 
-**URL**: `deadlineDetail/{id}`
+**URL**: `{uuid}/{projectID}/deleteUserFromProject/{usernameToDelete}`
 
-**Request type**: `GET`
+**Request type**: `DELETE`
 
 **Variables**: 
 
 ```
-id - id дедлайна
+uuid - uuid користувача
+projectID - id проекта з якого необхідно видалити юзера
+usernameToDelete - username юзера якого необхідно видалити
 ```
 
 **Server successful answer**: 
 
 ```json
 {
-    "deadlineId": 4,
-    "deadlineName": "Denys deadline",
-    "deadlineDescription": "Details of denys deadline",
-    "deadlineProjectId": 26,
-    "deadlineExecutorsUuid": [
-      	"3c8e6d64-423d-4b63-a162-ab46a979f226"
-    ],
-    "deadlineExecutors": [
-        {
-            "userId": 5,
-            "userFirstName": "Nastya",
-            "userSecondName": "Holovash",
-            "username": "username",
-            "uuid": "3c8e6d64-423d-4b63-a162-ab46a979f226"
-        }
-    ]
+    "type": "Success",
+    "code": 200,
+    "message": "Deleted"
 }
 ```
 
 **Errors**:
 
-- Дедлайн не знайден
+- Користувача з таким `username ` не існує
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Deadline not found"
+    "message": "User not found"
+}
+```
+
+- Користувача з таким `username ` якого ви хочете видалити не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to delete not found"
+}
+```
+
+- Проекту з таким `projectID ` не знайдено
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- `user` не керуює проектом з цим `projectID`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
 }
 ```
 
 
 
-### FindByUsername
+#### Видалити виконувача з дедлайну
 
-**URL**: `findByUsername/{username}`
+**URL**: `{uuid}/{projectID}/{deadlineID}/deleteExecutorFromDeadline/{usernameToDelete}`
 
-**Request type**: `GET`
+**Request type**: `DELETE`
 
 **Variables**: 
 
 ```
-username - юзернейм
+uuid - uuid користувача
+projectID - id проекта в якому знаходиться дедлайн
+deadlineID - id дедлайна з якого необхідно видалити юзера
+usernameToDelete - username юзера якого необхідно видалити
 ```
 
 **Server successful answer**: 
 
 ```json
-[
-    {
-        "userId": 1,
-        "userFirstName": "Denys",
-        "userSecondName": "Danilyuk",
-        "username": "danisdanilyuk",
-        "uuid": "7027a4eb-b409-4df8-b4be-725f0faa3a05"
-    }
-]
-```
-
-```
-Якщо ввести username не повністю, то повертає список юзерів зі схожим username
+{
+    "type": "Success",
+    "code": 200,
+    "message": "Deleted"
+}
 ```
 
 **Errors**:
 
-- Коли юзерів по данному username немає
+- Користувача з таким `username ` не існує
 
 ```json
 {
-    "error_type": "NotFoundException",
+    "type": "Error",
     "code": 404,
-    "error_message": "Users not found"
+    "message": "User not found"
 }
 ```
+
+- Користувача з таким `username ` якого ви хочете видалити не існує
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to delete not found"
+}
+```
+
+- Проекту з таким `projectID ` не знайдено
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- `user` не керуює проектом з цим `projectID`
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+- `user` якого ви хочете видалити не знаходиться в цьому проекті
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User to delete is not this project"
+}
+```
+
+- Дедлайн з якого ви хочете видалити виконувача не знаходиться в цьому проекті
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline is not in this project"
+}
+```
+
+
+
+
+
+### Дебаг версії запитів
+
+#### Створити проект дебаг
+
+Дебаг версія запиту [створити проект](#Створити-проект), але юзери яких ви хочете додати до проекту одразу попадають у проект, минуючи запрошення.
+
+**URL**: `{uuid}/createProjectDebug`
+
+
+
+#### Додати юзера у проект дебаг
+
+Дебаг версія запиту [додати юзера у проект](#Додати-юзера-у-проект), але юзери яких ви хочете додати до проекту одразу попадають у проект, минуючи запрошення.
+
+**URL**: `{uuidOwner}/{projectID}/addUserToProjectDebug/{usernameToAdd}`
+
+
+
+#### Всі юзери
+
+Запит для отримання списку всіх юзерів (з uuid та проектами)
+
+**URL**: `/all`
+
+**Request type**: `GET`
+
+
+
+
+
+### Помилки
+
+#### Список всіх помилок
+
+SOON
+
+
+
+
+
+
+
+
+
+Модель роботи проекта:
+
+1. Серверна частина на Java c RestApi и БД SQL
+2. Веб-сайт
+3. IOS Додаток
 
 
 

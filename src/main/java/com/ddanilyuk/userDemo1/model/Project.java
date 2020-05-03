@@ -5,10 +5,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @SuppressWarnings({"unused"})
@@ -29,33 +26,34 @@ public class Project {
     private String projectDescription;
 
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.defaultView.class)
     private List<Deadline> deadlines = new ArrayList<>();
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonView(Views.projectView.class)
     private User projectOwner;
 
-
-    @NotNull
-    @JsonView(Views.usersView.class)
-    private UUID projectOwnerUuid;
-
-
     @Column
     @JsonView(Views.projectView.class)
-//    @ElementCollection(targetClass = User.class)
-    @ManyToMany(mappedBy = "projectsAppended")
+    @ManyToMany
+    @JoinTable(
+            name = "projects_appended",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> projectUsers = new ArrayList<>();
 
 
     @Column
-    @ElementCollection(targetClass = UUID.class)
-    @JsonView(Views.usersView.class)
-    private List<UUID> projectUsersUuid = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(
+            name = "projects_invited",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonView(Views.projectView.class)
+    private List<User> projectUsersInvited = new ArrayList<>();
 
 
     @Column
@@ -66,6 +64,7 @@ public class Project {
     @Column
     @JsonView(Views.defaultView.class)
     private long projectExecutionTime;
+
 
     public Project() {
     }
@@ -82,12 +81,19 @@ public class Project {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectOwner = userOwner;
-        this.projectOwnerUuid = projectOwner.getUuid();
-//        this. projectActiveUserIds = Collections.singletonList(projectActiveUser.getUserId());
 
         Date dateNow = new Date();
         projectCreationTime = dateNow.getTime();
     }
+
+    public List<User> getProjectUsersInvited() {
+        return projectUsersInvited;
+    }
+
+    public void setProjectUsersInvited(List<User> projectUsersInvited) {
+        this.projectUsersInvited = projectUsersInvited;
+    }
+
 
 
     public long getProjectCreationTime() {
@@ -114,28 +120,12 @@ public class Project {
         this.projectUsers = projectUsers;
     }
 
-    public List<UUID> getProjectActiveUsersUuid() {
-        return projectUsersUuid;
-    }
-
-    public void setProjectActiveUsersUuid(List<UUID> projectActiveUsersId) {
-        this.projectUsersUuid = projectActiveUsersId;
-    }
-
-    public UUID getProjectOwnerUuid() {
-        return projectOwnerUuid;
-    }
-
-    public void setProjectOwnerUuid(UUID projectOwnerUuid) {
-        this.projectOwnerUuid = projectOwnerUuid;
-    }
 
     public User getProjectOwner() {
         return projectOwner;
     }
 
     public void setProjectOwner(User projectOwner) {
-        this.projectOwnerUuid = projectOwner.getUuid();
         this.projectOwner = projectOwner;
     }
 
@@ -172,13 +162,4 @@ public class Project {
         this.deadlines = deadlines;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Project{" +
-//                "id=" + projectId +
-//                ", project_name='" + projectName + '\'' +
-//                ", project_description='" + projectDescription + '\'' +
-//                ", deadlines=" + deadlines +
-//                '}';
-//    }
 }

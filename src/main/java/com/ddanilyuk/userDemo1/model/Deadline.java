@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 
 @SuppressWarnings("unused")
@@ -27,12 +25,13 @@ public class Deadline {
     private String deadlineName;
 
 
+    @Size(max = 8192)
     @JsonView(Views.deadlinesView.class)
     private String deadlineDescription;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "project_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
 
@@ -42,15 +41,12 @@ public class Deadline {
 
 
     @Column
-    @ElementCollection(targetClass = UUID.class)
-    @JsonView(Views.deadlinesView.class)
-    private List<UUID> deadlineExecutorsUuid = new ArrayList<>();
-
-
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    @Transient
     @JsonView(Views.deadlinesDetailView.class)
-//    @JsonView(Views.deadlinesView.class)
+    @ManyToMany
+    @JoinTable(
+            name = "deadline_users",
+            joinColumns = @JoinColumn(name = "deadline_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> deadlineExecutors = new ArrayList<>();
 
 
@@ -102,24 +98,7 @@ public class Deadline {
         this.deadlineExecutionTime = deadlineExecutionTime;
     }
 
-    public List<UUID> getDeadlineExecutorsUuid() {
-        return deadlineExecutorsUuid;
-    }
-
-    public void setDeadlineExecutorsUuid(List<UUID> deadlineExecutorsUuid) {
-        this.deadlineExecutorsUuid = deadlineExecutorsUuid;
-    }
-
     public List<User> getDeadlineExecutors() {
-        List<User> usersAll = project.getProjectUsers();
-        List<User> deadlineExecutors = new ArrayList<>();
-
-        for (User user : usersAll) {
-            if (deadlineExecutorsUuid.contains(user.getUuid())) {
-                deadlineExecutors.add(user);
-            }
-        }
-
         return deadlineExecutors;
     }
 

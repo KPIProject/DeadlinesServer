@@ -3,24 +3,24 @@ package com.ddanilyuk.userDemo1.extensions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder(value = {"error_type", "code", "error_message"})
-public class RestError {
+@JsonPropertyOrder(value = {"type", "code", "message"})
+public class RestMessage {
 
     @JsonProperty("code")
     int code;
 
-    @JsonProperty("error_type")
+    @JsonProperty("type")
     String type;
 
-    @JsonProperty("error_message")
+    @JsonProperty("message")
     String message;
 
 
-    public RestError() {
+    public RestMessage() {
         super();
     }
 
-    public RestError(String type, int code, String message) {
+    public RestMessage(String type, int code, String message) {
 
         this.code = code;
         this.type = type;
