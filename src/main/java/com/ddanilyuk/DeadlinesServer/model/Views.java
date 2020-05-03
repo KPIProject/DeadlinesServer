@@ -1,4 +1,4 @@
-package com.ddanilyuk.userDemo1.model;
+package com.ddanilyuk.DeadlinesServer.model;
 
 
 @SuppressWarnings("ALL")

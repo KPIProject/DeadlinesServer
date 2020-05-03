@@ -1,4 +1,4 @@
-package com.ddanilyuk.userDemo1.extensions;
+package com.ddanilyuk.DeadlinesServer.extensions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

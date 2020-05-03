@@ -1,7 +1,6 @@
-package com.ddanilyuk.userDemo1.model;
+package com.ddanilyuk.DeadlinesServer.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

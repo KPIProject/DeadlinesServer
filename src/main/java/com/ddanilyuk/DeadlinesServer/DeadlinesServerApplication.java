@@ -1,4 +1,4 @@
-package com.ddanilyuk.userDemo1;
+package com.ddanilyuk.DeadlinesServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
-public class UserDemo1Application {
+public class DeadlinesServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserDemo1Application.class, args);
+		SpringApplication.run(DeadlinesServerApplication.class, args);
 	}
 
 }

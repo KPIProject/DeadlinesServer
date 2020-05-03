@@ -1,4 +1,4 @@
-package com.ddanilyuk.userDemo1.extensions;
+package com.ddanilyuk.DeadlinesServer.extensions;
 
 import org.hibernate.exception.DataException;
 import org.springframework.http.HttpHeaders;

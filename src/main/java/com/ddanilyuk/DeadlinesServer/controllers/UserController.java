@@ -1,12 +1,12 @@
-package com.ddanilyuk.userDemo1.controllers;
+package com.ddanilyuk.DeadlinesServer.controllers;
 
-import com.ddanilyuk.userDemo1.extensions.SuccessException;
-import com.ddanilyuk.userDemo1.extensions.ServiceException;
-import com.ddanilyuk.userDemo1.model.Project;
-import com.ddanilyuk.userDemo1.model.User;
-import com.ddanilyuk.userDemo1.model.Views;
-import com.ddanilyuk.userDemo1.repositories.ProjectRepository;
-import com.ddanilyuk.userDemo1.repositories.UserRepository;
+import com.ddanilyuk.DeadlinesServer.repositories.ProjectRepository;
+import com.ddanilyuk.DeadlinesServer.repositories.UserRepository;
+import com.ddanilyuk.DeadlinesServer.extensions.SuccessException;
+import com.ddanilyuk.DeadlinesServer.extensions.ServiceException;
+import com.ddanilyuk.DeadlinesServer.model.Project;
+import com.ddanilyuk.DeadlinesServer.model.User;
+import com.ddanilyuk.DeadlinesServer.model.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

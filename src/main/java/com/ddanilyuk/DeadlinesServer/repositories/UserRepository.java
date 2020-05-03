@@ -1,6 +1,6 @@
-package com.ddanilyuk.userDemo1.repositories;
+package com.ddanilyuk.DeadlinesServer.repositories;
 
-import com.ddanilyuk.userDemo1.model.User;
+import com.ddanilyuk.DeadlinesServer.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
