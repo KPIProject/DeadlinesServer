@@ -130,7 +130,7 @@ public class ProjectController {
 
 
     /** DEBUG VERSIONS WITHOUT INVITE */
-
+    
     @SuppressWarnings("DuplicatedCode")
     @PostMapping("{uuid}/createProjectDebug")
     @JsonView(Views.projectView.class)
