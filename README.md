@@ -4,11 +4,10 @@
 
 ## Зміст
 
-
 ### [Лог змін](#Log-change)
 
+- [Версія 1.03](#103)
 - [Версія 1.02](#102)
-
 - [Версія 1.01](#101)
 
 
@@ -39,26 +38,20 @@
 
 
 - [Проект та дедлайн](#Проект-та-дедлайн)
-
-	- [Створити проект](#Створити-проект)  
-
-	- [Додати юзера у проект](#Додати-юзера-у-проект)  
-
-	- [Додати дедлайн](#Додати-дедлайн)  
-
-	- [Додати виконувача дедлайну](#Додати-виконувача-делайну)  
-
-	- [Редагувати проект](#Редагувати-проект)  
-
-	- [Редагувати дедлайн](#Редагувати-дедлайн)
-
-	- [Видалити проект](#Видалити-проект)
-
-	- [Видалити дедлайн](#Видалити-дедлайн)
-
-	- [Видалити юзера з проекту](#Видалити-юзера-з-проекту)
-
-	- [Видалити виконувача з дедлайну](#Видалити-виконувача-з-дедлайну)
+  - [Створити проект](#Створити-проект)  
+  - [Додати юзера у проект](#Додати-юзера-у-проект)  
+  - [Додати дедлайн](#Додати-дедлайн)  
+  - [Додати виконувача дедлайну](#Додати-виконувача-делайну)  
+  - [Редагувати проект](#Редагувати-проект)  
+  - [Редагувати дедлайн](#Редагувати-дедлайн)
+  - [Видалити проект](#Видалити-проект)
+  - [Видалити дедлайн](#Видалити-дедлайн)
+  - [Видалити юзера з проекту](#Видалити-юзера-з-проекту)
+  - [Видалити виконувача з дедлайну](#Видалити-виконувача-з-дедлайну)
+  - [Виконати дедлайн](Виконати-дедлайн)
+  - [Відмінити виконання дедлайну](Відмінити-виконання-дедлайну)
+  - [Виконати проект](Виконати-проект)
+  - [Відмінити виконання проекту](Відмінити-виконання-проекту)
 
 
 
@@ -79,6 +72,34 @@
 
 
 ## Log change
+
+### 1.03
+
+#### Edit
+
+- Дедлайн тепер має поля:
+  - `completeMark` Boolean - відмітка про виконання
+  - `completedBy` String 
+    - Якщо `completeMark` == true, то =  username того, хто виконав
+    - Якщо `completeMark` == false, то = ""
+- Проект тепер має поле:
+  - `completeMark` Boolean - відмітка про виконання
+- Дедлайн може виконати власник проекту або виконувач проекту
+- Проект може виконати тільки власник
+
+####  Add
+
+- [Виконати дедлайн](Виконати-дедлайн)
+- [Відмінити виконання дедлайну](Відмінити-виконання-дедлайну)
+- [Виконати проект](Виконати-проект)
+- [Відмінити виконання проекту](Відмінити-виконання-проекту)
+
+#### Fix
+
+- Видалення дедлайну
+- Видалення юзерів з проекту
+
+------
 
 ### 1.02
 
@@ -112,8 +133,8 @@
 - [Видалення проектів](#Видалити-проект) 
 - [Видалення дедлайнів](#Видалити-дедлайн) 
 - [Видалення юзерів з проекту](Видалити-юзера-з-проекту)
-- [Видалення виконувачів з дедлайну проекту](Видалити-юзера-з-проекту)
-- [Видалення виконувачів з дедлайну проекту](Видалити-виконувача-з-делайну)
+- [Видалення виконувачів з проекту](Видалити-юзера-з-проекту)
+- [Видалення виконувачів з дедлайну](Видалити-виконувача-з-дедлайну)
 - [Зміна](#Редагувати-юзера) `username`, `userFirstName`, `userSecondName`, `password` y юзера
 - [Зміна](#Редагувати-проект) `projectName`, `projectDescription`, `projectExecutionTime` y проекта
 - [Зміна](#Редагувати-дедлайн) `deadlineId`, `deadlineName`, `deadlineDescription` у дедлайна
@@ -121,7 +142,7 @@
 - [Дебаг запити](#Дебаг-версії-запитів)
 - [Список всіх можливих помилок](#Список-всіх-можливих-помилок)]
 
-
+------
 
 ### 1.01
 
@@ -216,8 +237,6 @@
 
 
 
-
-
 ## 	API
 
 ### Юзер
@@ -308,7 +327,7 @@
 }
 ```
 
-
+-----
 
 #### 	Логін
 
@@ -382,7 +401,7 @@
 }
 ```
 
-
+-----
 
 #### Всі проекти
 
@@ -410,8 +429,26 @@ uuid - uuid користувача
                 "deadlineName": "My own deadline 1",
                 "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
                 "deadlineProjectId": 2,
+                "deadlineExecutors": [
+                    {
+                        "userId": 1,
+                        "userFirstName": "Denys2",
+                        "userSecondName": "Danilyuk2",
+                        "username": "ddanilyuk1",
+                        "userCreationTime": 1588630725991
+                    },
+                    {
+                        "userId": 2,
+                        "userFirstName": "Denys2",
+                        "userSecondName": "Danilyuk2",
+                        "username": "ddanilyuk2",
+                        "userCreationTime": 1588630728684
+                    }
+                ],
                 "deadlineCreatedTime": 1588370977977,
-                "deadlineExecutionTime": 999999999
+                "deadlineExecutionTime": 999999999,
+                "completeMark": true,
+                "completedBy": "ddanilyuk",
             }
         ],
         "projectOwner": {
@@ -431,6 +468,7 @@ uuid - uuid користувача
              }
          ],
          "projectUsersInvited": [],
+         "completeMark": false,
          "projectCreationTime": 123123123,
          "projectExecutionTime": 999999999
     }
@@ -451,7 +489,7 @@ uuid - uuid користувача
 }
 ```
 
-
+-----
 
 #### 	Деталі юзера
 
@@ -490,7 +528,7 @@ uuid - uuid користувача
 }
 ```
 
-
+-----
 
 #### Знайти юзерів по username
 
@@ -533,7 +571,7 @@ username - юзернейм
 }
 ```
 
-
+-----
 
 #### Подивитись всі запрошення
 
@@ -573,6 +611,7 @@ uuid - uuid користувача
                 "userCreationTime": 1588370875757
             }
         ],
+        "completeMark": false,
         "projectCreationTime": 123123123,
         "projectExecutionTime": 999999999
     }
@@ -591,7 +630,7 @@ uuid - uuid користувача
 }
 ```
 
-
+-----
 
 #### Прийняти запрошення
 
@@ -631,6 +670,7 @@ projectID - id проекта
         }
     ],
     "projectUsersInvited": [],
+    "completeMark": false,
     "projectCreationTime": 123123123,
     "projectExecutionTime": 999999999
 }
@@ -668,7 +708,7 @@ projectID - id проекта
 }
 ```
 
-
+-----
 
 #### Відхилити запрошення
 
@@ -725,7 +765,7 @@ projectID - id проекта
 }
 ```
 
-
+-----
 
 #### Редагувати юзера
 
@@ -779,7 +819,7 @@ uuid - uuid користувача
 }
 ```
 
-
+-----
 
 #### Видалити юзера
 
@@ -815,9 +855,7 @@ uuid - uuid користувача
 }
 ```
 
-
-
-
+-----
 
 ### Проект та дедлайн
 
@@ -878,6 +916,7 @@ uuid - uuid користувача
         }
     ],
     "projectUsers": [],
+    "completeMark": false,
     "projectCreationTime": 123123123,
     "projectExecutionTime": 999999999
 }
@@ -917,7 +956,7 @@ uuid - uuid користувача
 
 ТАКОЖ ВСІ ПОМИЛКИ З `Додати юзера у проект` (якщо додати не існуючого користувача)*
 
-
+-----
 
 #### 	Додати юзера у проект
 
@@ -958,6 +997,7 @@ usernameToAdd - username юзера якого потрібно додати
         }
     ],
     "projectUsers": [],
+    "completeMark": false,
     "projectCreationTime": 123123123,
     "projectExecutionTime": 999999999
 }
@@ -1025,7 +1065,7 @@ usernameToAdd - username юзера якого потрібно додати
 }
 ```
 
-
+-----
 
 #### Додати дедлайн
 
@@ -1070,22 +1110,24 @@ projectID - id проекта
     "deadlineProjectId": 13,
     "deadlineExecutors": [
         {
-            "userId": 2,
-            "userFirstName": "Denis",
-            "userSecondName": "Danilyuk",
+            "userId": 1,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
             "username": "ddanilyuk",
-            "userCreationTime": 1588370875757
+            "userCreationTime": 1588630725991
         },
         {
-            "userId": 3,
+            "userId": 2,
             "userFirstName": "Denys2",
             "userSecondName": "Danilyuk2",
             "username": "ddanilyuk3",
-            "userCreationTime": 1588413299112
-        }
+            "userCreationTime": 1588630728684
+         }
     ],
-    "deadlineCreatedTime": 1588456369847,
-    "deadlineExecutionTime": 1231123552
+    "deadlineCreatedTime": 1588370977977,
+    "deadlineExecutionTime": 999999999,
+    "completeMark": true,
+  	"completedBy": "ddanilyuk"
 }
 ```
 
@@ -1151,7 +1193,7 @@ projectID - id проекта
 }
 ```
 
-
+-----
 
 #### Додати виконувача делайну
 
@@ -1178,22 +1220,24 @@ usernameToAdd - username юзера якого потрібно додати
     "deadlineProjectId": 13,
     "deadlineExecutors": [
         {
-            "userId": 2,
-            "userFirstName": "Denis",
-            "userSecondName": "Danilyuk",
-            "username": "ddanilyuk",
-            "userCreationTime": 1588370875757
-        },
-        {
-            "userId": 3,
+            "userId": 1,
             "userFirstName": "Denys2",
             "userSecondName": "Danilyuk2",
-            "username": "ddanilyuk3",
-            "userCreationTime": 1588413299112
-        }
+            "username": "ddanilyuk1",
+            "userCreationTime": 1588630725991
+        },
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588630728684
+         }
     ],
-    "deadlineCreatedTime": 1588456369847,
-    "deadlineExecutionTime": 1231123552
+    "deadlineCreatedTime": 1588370977977,
+    "deadlineExecutionTime": 999999999,
+    "completeMark": true,
+    "completedBy": "ddanilyuk"
 }
 ```
 
@@ -1259,7 +1303,7 @@ usernameToAdd - username юзера якого потрібно додати
 }
 ```
 
-
+-----
 
 #### Редагувати проект
 
@@ -1312,7 +1356,8 @@ projectID - id проекта який потрібно змінити
     ],
     "projectUsers": [],
     "projectCreationTime": 123123123,
-    "projectExecutionTime": 999999999
+    "projectExecutionTime": 999999999,
+    "completeMark": true
 } 
 ```
 
@@ -1348,7 +1393,7 @@ projectID - id проекта який потрібно змінити
 }
 ```
 
-
+-----
 
 #### Редагувати дедлайн
 
@@ -1401,7 +1446,9 @@ deadlineID - id дедлайна який потрібно змінити
         }
     ],
     "deadlineCreatedTime": 1588456369847,
-    "deadlineExecutionTime": 1231123552
+    "deadlineExecutionTime": 1231123552,
+    "completeMark": true,
+    "completedBy": "ddanilyuk"
 }
 ```
 
@@ -1447,7 +1494,7 @@ deadlineID - id дедлайна який потрібно змінити
 }
 ```
 
-
+-----
 
 #### Видалити проект
 
@@ -1504,7 +1551,7 @@ projectID - id проекта який необхідно видалити
 }
 ```
 
-
+-----
 
 #### Видалити дедлайн
 
@@ -1582,7 +1629,7 @@ deadlineID - id дедлайна який необхідно видалити
 }
 ```
 
-
+-----
 
 #### Видалити юзера з проекту
 
@@ -1650,7 +1697,7 @@ usernameToDelete - username юзера якого необхідно видал�
 }
 ```
 
-
+-----
 
 #### Видалити виконувача з дедлайну
 
@@ -1739,9 +1786,387 @@ usernameToDelete - username юзера якого необхідно видал�
 }
 ```
 
+-----
 
+#### Виконати дедлайн
 
+**URL**: `{uuid}/{projectID}/{deadlineID}/setDeadlineComplete`
 
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта
+deadlineID - id дедлайна який потрібно виконати
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "deadlineId": 6,
+    "deadlineName": "My own deadline EDITED",
+    "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+    "deadlineProjectId": 13,
+    "deadlineExecutors": [
+        {
+            "userId": 2,
+            "userFirstName": "Denis",
+            "userSecondName": "Danilyuk",
+            "username": "ddanilyuk",
+            "userCreationTime": 1588370875757
+        },
+        {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
+        }
+    ],
+    "completeMark": true,
+    "completedBy": "ddanilyuk",
+    "deadlineCreatedTime": 1588456369847,
+    "deadlineExecutionTime": 1231123552
+}
+```
+
+**Errors**:
+
+- Користувача не знайдено
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Дедлайн не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline not found"
+}
+```
+
+- `user` не керуює проектом або не є виконувачем цього дедлайну
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User cant complete this deadline"
+}
+```
+
+-----
+
+#### Відмінити виконання дедлайну
+
+**URL**: `{uuid}/{projectID}/{deadlineID}/setDeadlineUnComplete`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта
+deadlineID - id дедлайна який потрібно виконати
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "deadlineId": 6,
+    "deadlineName": "My own deadline EDITED",
+    "deadlineDescription": "Details of my deadline 1Details of my deadline 1D",
+    "deadlineProjectId": 13,
+    "deadlineExecutors": [
+        {
+            "userId": 2,
+            "userFirstName": "Denis",
+            "userSecondName": "Danilyuk",
+            "username": "ddanilyuk",
+            "userCreationTime": 1588370875757
+        },
+        {
+            "userId": 3,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk3",
+            "userCreationTime": 1588413299112
+        }
+    ],
+    "completeMark": false,
+    "completedBy": "",
+    "deadlineCreatedTime": 1588456369847,
+    "deadlineExecutionTime": 1231123552
+}
+```
+
+**Errors**:
+
+- Користувача не знайдено
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- Дедлайн не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Deadline not found"
+}
+```
+
+- `user` не керуює проектом або не є виконувачем цього дедлайну
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User cant complete this deadline"
+}
+```
+
+-----
+
+#### Виконати проект
+
+**URL**: `{uuid}/{projectID}/setProjectComplete`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта який потрібно виконати
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "projectId": 1,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [
+        {
+            "deadlineId": 2,
+            "deadlineName": "My own deadline HELLO",
+            "deadlineDescription": "Details of my deadline 1",
+            "deadlineProjectId": 1,
+            "deadlineCreatedTime": 1588620685372,
+            "deadlineExecutionTime": 1231123552,
+            "completeMark": true,
+            "completedBy": "ddanilyuk1"
+        },
+        {
+            "deadlineId": 3,
+            "deadlineName": "My own deadline HELLO",
+            "deadlineDescription": "Details of my deadline 2",
+            "deadlineProjectId": 1,
+            "deadlineCreatedTime": 1588624214816,
+            "deadlineExecutionTime": 1231123552,
+            "completeMark": true,
+            "completedBy": "ddanilyuk1"
+        }
+    ],
+    "projectOwner": {
+        "userId": 1,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk1",
+        "userCreationTime": 1588620556232
+    },
+    "projectUsers": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588620559513
+        }
+    ],
+    "projectUsersInvited": [],
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999,
+    "completeMark": true
+}
+```
+
+*Також відмічає всі дедлайни в проекті як виконані!!!*
+
+**Errors**:
+
+- Користувача не знайдено
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- `user` не керуює проектом
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+-----
+
+#### Відмінити виконання проекту
+
+**URL**: `{uuid}/{projectID}/setProjectUnComplete`
+
+**Request type**: `POST`
+
+**Variables**: 
+
+```
+uuidOwner - uuid власника проекта
+projectID - id проекта який потрібно виконати
+```
+
+**Server successful answer**: 
+
+```json
+{
+    "projectId": 1,
+    "projectName": "My own projecttttt2",
+    "projectDescription": "Details of my project2",
+    "deadlines": [
+        {
+            "deadlineId": 2,
+            "deadlineName": "My own deadline HELLO",
+            "deadlineDescription": "Details of my deadline 1",
+            "deadlineProjectId": 1,
+            "deadlineCreatedTime": 1588620685372,
+            "deadlineExecutionTime": 1231123552,
+            "completeMark": true,
+            "completedBy": "ddanilyuk1"
+        },
+        {
+            "deadlineId": 3,
+            "deadlineName": "My own deadline HELLO",
+            "deadlineDescription": "Details of my deadline 2",
+            "deadlineProjectId": 1,
+            "deadlineCreatedTime": 1588624214816,
+            "deadlineExecutionTime": 1231123552,
+            "completeMark": true,
+            "completedBy": "ddanilyuk1"
+        }
+    ],
+    "projectOwner": {
+        "userId": 1,
+        "userFirstName": "Denys2",
+        "userSecondName": "Danilyuk2",
+        "username": "ddanilyuk1",
+        "userCreationTime": 1588620556232
+    },
+    "projectUsers": [
+        {
+            "userId": 2,
+            "userFirstName": "Denys2",
+            "userSecondName": "Danilyuk2",
+            "username": "ddanilyuk2",
+            "userCreationTime": 1588620559513
+        }
+    ],
+    "projectUsersInvited": [],
+    "projectCreationTime": 123123123,
+    "projectExecutionTime": 999999999,
+    "completeMark": false
+}
+```
+
+*Відміна виконання проекту не відміняє відміну виконання дедлайнів!!!*
+
+**Errors**:
+
+- Користувача не знайдено
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User not found"
+}
+```
+
+- Проект не знайдений
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Project not found"
+}
+```
+
+- `user` не керуює проектом
+
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "Invalid project owner"
+}
+```
+
+-----
 
 ### Дебаг версії запитів
 
@@ -1751,7 +2176,7 @@ usernameToDelete - username юзера якого необхідно видал�
 
 **URL**: `{uuid}/createProjectDebug`
 
-
+-----
 
 #### Додати юзера у проект дебаг
 
@@ -1759,7 +2184,7 @@ usernameToDelete - username юзера якого необхідно видал�
 
 **URL**: `{uuidOwner}/{projectID}/addUserToProjectDebug/{usernameToAdd}`
 
-
+-----
 
 #### Всі юзери
 
@@ -1769,9 +2194,7 @@ usernameToDelete - username юзера якого необхідно видал�
 
 **Request type**: `GET`
 
-
-
-
+-----
 
 ### Помилки
 
@@ -1972,7 +2395,18 @@ usernameToDelete - username юзера якого необхідно видал�
 }
 ```
 
+```json
+{
+    "type": "Error",
+    "code": 404,
+    "message": "User cant complete this deadline"
+}
+```
+
+-----
+
 ##### Інше
+
 ```json
 {
     "type": "Exception",
@@ -2013,7 +2447,7 @@ usernameToDelete - username юзера якого необхідно видал�
 }
 ```
 
-
+-----
 
 
 Модель роботи проекта:

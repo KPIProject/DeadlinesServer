@@ -20,7 +20,7 @@ public final class Views {
     }
 
     // Output with User projectOwner, List<User> projectUsers in Project
-    public interface projectView extends defaultView, deadlinesView {
+    public interface projectView extends defaultView, deadlinesDetailView {
     }
 
     // All deadlines field without project and List<User> deadlineExecutors

@@ -65,6 +65,11 @@ public class Project {
     private long projectExecutionTime;
 
 
+    @Column
+    @JsonView(Views.defaultView.class)
+    private Boolean completeMark;
+
+
     public Project() {
     }
 
@@ -93,7 +98,13 @@ public class Project {
         this.projectUsersInvited = projectUsersInvited;
     }
 
+    public Boolean getCompleteMark() {
+        return completeMark;
+    }
 
+    public void setCompleteMark(Boolean completeMark) {
+        this.completeMark = completeMark;
+    }
 
     public long getProjectCreationTime() {
         return projectCreationTime;

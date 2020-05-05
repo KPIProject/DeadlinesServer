@@ -6,7 +6,9 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @SuppressWarnings("unused")
@@ -60,6 +62,16 @@ public class Deadline {
     private long deadlineExecutionTime;
 
 
+    @Column
+    @JsonView(Views.defaultView.class)
+    private Boolean completeMark;
+
+
+    @Column
+    @JsonView(Views.defaultView.class)
+    private String completedBy;
+
+
     public Deadline() {
 
     }
@@ -80,6 +92,22 @@ public class Deadline {
 
         Date dateNow = new Date();
         deadlineCreatedTime = dateNow.getTime();
+    }
+
+    public String getCompletedBy() {
+        return completedBy;
+    }
+
+    public void setCompletedBy(String completedBy) {
+        this.completedBy = completedBy;
+    }
+
+    public Boolean getCompleteMark() {
+        return completeMark;
+    }
+
+    public void setCompleteMark(Boolean doneMark) {
+        this.completeMark = doneMark;
     }
 
     public long getDeadlineCreatedTime() {
