@@ -1,5 +1,6 @@
 package com.ddanilyuk.DeadlinesServer.controllers;
 
+import com.ddanilyuk.DeadlinesServer.extensions.RestMessage;
 import com.ddanilyuk.DeadlinesServer.model.*;
 import com.ddanilyuk.DeadlinesServer.repositories.DeadlineRepository;
 import com.ddanilyuk.DeadlinesServer.repositories.ProjectRepository;
@@ -69,6 +70,7 @@ public class ProjectController {
             }
             User user = userOptional.get();
             project.setProjectOwner(user);
+            project.setCompleteMark(Boolean.FALSE);
 
             projectRepository.save(project);
 
@@ -152,6 +154,7 @@ public class ProjectController {
             }
             User user = userOptional.get();
             project.setProjectOwner(user);
+            project.setCompleteMark(Boolean.FALSE);
 
             projectRepository.save(project);
 
@@ -211,6 +214,65 @@ public class ProjectController {
     }
 
 
+
+    @Modifying
+    @PostMapping("{uuid}/{projectID}/setProjectComplete")
+    @JsonView({Views.projectView.class})
+    public Project setProjectComplete(@PathVariable String uuid, @PathVariable String projectID) {
+
+        Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
+
+        if (!userOwnerOptional.isPresent()) {
+            throw new ServiceException("User not found");
+        } else if (!projectOptional.isPresent()) {
+            throw new ServiceException("Project not found");
+        } else {
+            User userOwner = userOwnerOptional.get();
+            Project project = projectOptional.get();
+
+            if (!project.getProjectOwner().equals(userOwner)) {
+                throw new ServiceException("Invalid project owner");
+            }
+
+            project.setCompleteMark(Boolean.TRUE);
+
+            for (Deadline deadline: project.getDeadlines()) {
+                deadline.setCompleteMark(Boolean.TRUE);
+                deadline.setCompletedBy(userOwner.getUsername());
+            }
+
+            return projectRepository.save(project);
+        }
+    }
+
+
+    @Modifying
+    @PostMapping("{uuid}/{projectID}/setProjectUnComplete")
+    @JsonView({Views.projectView.class})
+    public Project setProjectUnComplete(@PathVariable String uuid, @PathVariable String projectID) {
+
+        Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
+
+        if (!userOwnerOptional.isPresent()) {
+            throw new ServiceException("User not found");
+        } else if (!projectOptional.isPresent()) {
+            throw new ServiceException("Project not found");
+        } else {
+            User userOwner = userOwnerOptional.get();
+            Project project = projectOptional.get();
+
+            if (!project.getProjectOwner().equals(userOwner)) {
+                throw new ServiceException("Invalid project owner");
+            }
+
+            project.setCompleteMark(Boolean.FALSE);
+            return projectRepository.save(project);
+        }
+    }
+
+
     /*********EDITING*********/
 
     @Modifying
@@ -251,7 +313,7 @@ public class ProjectController {
     /*********DELETING*********/
 
     @DeleteMapping("{uuid}/{projectID}/deleteProject")
-    public String deleteProject(@PathVariable String uuid, @PathVariable String projectID) {
+    public RestMessage deleteProject(@PathVariable String uuid, @PathVariable String projectID) {
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
 
@@ -264,7 +326,7 @@ public class ProjectController {
             Project project = projectOptional.get();
             if (project.getProjectOwner().equals(userOwner)) {
                 projectRepository.delete(project);
-                throw new SuccessException("Deleted");
+                return new RestMessage("Success", 200, "Deleted");
             } else {
                 throw new ServiceException("Invalid project owner");
             }
@@ -273,7 +335,7 @@ public class ProjectController {
 
 
     @DeleteMapping("{uuid}/{projectID}/{deadlineID}/deleteExecutorFromDeadline/{usernameToDelete}")
-    public String deleteExecutorFromDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID, @PathVariable String usernameToDelete) {
+    public RestMessage deleteExecutorFromDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID, @PathVariable String usernameToDelete) {
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         Optional<User> userToDeleteOptional = userRepository.findByUsername(usernameToDelete);
         Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
@@ -300,7 +362,7 @@ public class ProjectController {
                     }
                     deadline.getDeadlineExecutors().remove(userToDelete);
                     deadlineRepository.save(deadline);
-                    throw new SuccessException("Deleted");
+                    return new RestMessage("Success", 200, "Deleted");
                 } else {
                     throw new ServiceException("Deadline is not in this project");
                 }
@@ -311,8 +373,43 @@ public class ProjectController {
     }
 
 
+    @DeleteMapping("{uuid}/{projectID}/{deadlineID}/deleteDeadline")
+    public RestMessage deleteDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID) {
+        Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
+        Optional<Deadline> deadlineOptional = deadlineRepository.findById(Integer.parseInt(deadlineID));
+
+        if (!userOptional.isPresent()) {
+            throw new ServiceException("User not found");
+        } else if (!projectOptional.isPresent()) {
+            throw new ServiceException("Project not found");
+        } else if (!deadlineOptional.isPresent()) {
+            throw new ServiceException("Deadline not found");
+        } else {
+            User userOwner = userOptional.get();
+            Project project = projectOptional.get();
+            Deadline deadline = deadlineOptional.get();
+
+
+            if (project.getProjectOwner().equals(userOwner)) {
+                if (project.getDeadlines().contains(deadline)) {
+//                    deadlineRepository.deleteById(deadline.getDeadlineId());
+                    project.getDeadlines().remove(deadline);
+                    deadlineRepository.delete(deadline);
+                    return new RestMessage("Success", 200, "Deleted");
+                } else {
+                    throw new ServiceException("Deadline is not in this project");
+                }
+
+            } else {
+                throw new ServiceException("Invalid project owner");
+            }
+        }
+    }
+
+
     @DeleteMapping("{uuid}/{projectID}/deleteUserFromProject/{usernameToDelete}")
-    public String deleteUserFromProject(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String usernameToDelete) {
+    public RestMessage deleteUserFromProject(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String usernameToDelete) {
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         Optional<User> userToDeleteOptional = userRepository.findByUsername(usernameToDelete);
         Optional<Project> projectOptional = projectRepository.findById(Integer.parseInt(projectID));
@@ -330,14 +427,14 @@ public class ProjectController {
 
             if (project.getProjectOwner().equals(userOwner)) {
 
-                project.getProjectUsers().remove(userToDelete);
-
                 for (Deadline deadline : project.getDeadlines()) {
                     deleteExecutorFromDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), usernameToDelete);
                 }
 
+                project.getProjectUsers().remove(userToDelete);
+
                 projectRepository.save(project);
-                throw new SuccessException("Deleted");
+                return new RestMessage("Success", 200, "Deleted");
 
             } else {
                 throw new ServiceException("Invalid project owner");
