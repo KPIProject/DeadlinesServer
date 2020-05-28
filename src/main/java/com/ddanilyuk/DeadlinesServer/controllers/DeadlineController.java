@@ -30,17 +30,17 @@ public class DeadlineController {
         this.deadlineRepository = deadlineRepository;
     }
 
-/*
-Функція додавання дедлайна
-*/
+    /*
+    Функція додавання дедлайна
+    */
     @PostMapping("{uuid}/{projectID}/addDeadline")
     @JsonView({Views.deadlinesDetailView.class})
     public Deadline addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
-// в списку з бази даних по ююid намагаємось знайти юзера
+        // в списку з бази даних по ююid намагаємось знайти юзера
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         // намагаємось найти проект
         Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
-// отрим. дедлайн який хочемо додати
+    // отримуємо дедлайн який хочемо додати
         Deadline deadline = complaintDeadline.deadline;
 // блок для помилки
         if (!userOptional.isPresent()) {
