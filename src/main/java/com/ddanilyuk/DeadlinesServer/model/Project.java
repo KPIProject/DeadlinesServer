@@ -19,7 +19,7 @@ public class Project {
 
     @JsonView(Views.defaultView.class)
     private String projectName;
-
+// size, максимальна кількісь символів для опису проекту
     @Size(max = 8192)
     @JsonView(Views.defaultView.class)
     private String projectDescription;
@@ -64,7 +64,7 @@ public class Project {
     @JsonView(Views.defaultView.class)
     private long projectExecutionTime;
 
-
+// виконано чи не виконано. Коли ти виконуєш проект, дедлайні автоматично стають виконані
     @Column
     @JsonView(Views.defaultView.class)
     private Boolean completeMark;

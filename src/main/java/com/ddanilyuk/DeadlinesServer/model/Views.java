@@ -2,12 +2,13 @@ package com.ddanilyuk.DeadlinesServer.model;
 
 
 @SuppressWarnings("ALL")
+// обеження виводу інформації для джейсон
 public final class Views {
 
     // Default output
     public interface defaultView {
     }
-
+// при логіні виводиться та реєстрації
     public interface loginView extends defaultView {
     }
 

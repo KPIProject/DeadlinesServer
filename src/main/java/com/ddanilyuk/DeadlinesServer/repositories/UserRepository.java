@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select us from User us where us.uuid = ?1")
     Optional<User> findUserByUuidEqual(UUID uuidGiven);
 
-
+// запрос який здійснює пошук серед юзерів зі схожим юзернеймом який ви ввели
     @Query("select u from User u where u.username like %?1%")
     Optional<List<User>> findAllByUsername(String username);
 

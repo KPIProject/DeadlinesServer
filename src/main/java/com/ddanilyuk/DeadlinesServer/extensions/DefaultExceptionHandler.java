@@ -55,7 +55,7 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<RestMessage>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
+// коли видалився юзер, пишеш сров нью. Створює сообщ з типом саксес з кодом 200 і видається сообщ що ти написав
     @ExceptionHandler(value = {SuccessException.class})
     public ResponseEntity<RestMessage> handleSuccessException(SuccessException ex, WebRequest request) {
         RestMessage successMessage = new RestMessage("Success", 200, ex.getMessage());

@@ -39,7 +39,7 @@ public class UserController {
     }
 
 
-    // Test request (Delete with release)
+    // Test request (Delete with release) список юзер з усіма ююайді
     @GetMapping("/all")
     @JsonView(Views.usersViewDebugVersion.class)
     public List<User> all() {
@@ -131,7 +131,7 @@ public class UserController {
         }
     }
 
-
+// глянуть на все в поекті куда тебе запросили
     @GetMapping("{uuid}/getInvitations")
     @JsonView(Views.projectView.class)
     public List<Project> getInvitations(@PathVariable String uuid) {
@@ -160,6 +160,7 @@ public class UserController {
             User user = userOptional.get();
             Project project = projectOptional.get();
             List<Project> projects =  user.getProjectsInvited();
+            // приймає запрос на вхід в проект. Перевірка на наявність в проекті
             if (projects.contains(project)) {
                 project.getProjectUsers().add(user);
                 project.getProjectUsersInvited().remove(user);

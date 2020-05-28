@@ -14,6 +14,9 @@ import java.util.*;
 
 @RestController
 @RequestMapping
+/*
+Контролер дедлайнів
+*/
 public class DeadlineController {
 
     private final ProjectRepository projectRepository;
@@ -27,16 +30,19 @@ public class DeadlineController {
         this.deadlineRepository = deadlineRepository;
     }
 
-
+/*
+Функція додавання дедлайна
+*/
     @PostMapping("{uuid}/{projectID}/addDeadline")
     @JsonView({Views.deadlinesDetailView.class})
     public Deadline addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
-
+// в списку з бази даних по ююid намагаємось знайти юзера
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
+        // намагаємось найти проект
         Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
-
+// отрим. дедлайн який хочемо додати
         Deadline deadline = complaintDeadline.deadline;
-
+// блок для помилки
         if (!userOptional.isPresent()) {
             throw new ServiceException("User not found");
         } else if (!projectToAddOptional.isPresent()) {
@@ -46,40 +52,45 @@ public class DeadlineController {
         } else if (deadline.getDeadlineDescription() == null) {
             throw new ServiceException("Invalid deadlineDescription");
         } else {
-
+// отрим не опціонального юзера
             User user = userOptional.get();
             Project projectToAdd = projectToAddOptional.get();
-
+// якщо в проекті куда хочемо додати дедл, юзер і проект мають однакові ююайді(мож додати дедл якщо ти власник)
             if (projectToAdd.getProjectOwner().getUuid().equals(user.getUuid())) {
-
+// якщо в тому дедлайні який юзер хоче додати немає поля дейт, сервер додає тікущу дату сервака
                 if (deadline.getDeadlineCreatedTime() == 0) {
                     Date dateNow = new Date();
                     deadline.setDeadlineCreatedTime(dateNow.getTime());
                 }
+                //робимо так що дедл не виконаний
                 deadline.setCompleteMark(Boolean.FALSE);
                 deadline.setCompletedBy("");
+                // у дедлайна є проект в якому він знаходиться
                 deadline.setProject(projectToAdd);
+                // у дедлайна є айдішнік проекта в полі якого він знаходиться
                 deadline.setDeadlineProjectId(projectToAdd.getProjectId());
+                //беремо всі дедлайни і додаємо у проект(взаємний зв'язок)
                 projectToAdd.getDeadlines().add(deadline);
 
                 deadlineRepository.save(deadline);
                 projectRepository.save(projectToAdd);
 
                 List<String> usersUUIDToAdd = complaintDeadline.usersToAdd;
-
+//відповідає за додавання юзера до дедлайна
                 for (String userToAdd : usersUUIDToAdd) {
                     Optional<User> userToAddOptional = userRepository.findByUsername(userToAdd);
                     if (!userToAddOptional.isPresent()) {
                         deadlineRepository.delete(deadline);
                         throw new ServiceException("User to add not found");
                     }
+                    // якщо юзер існує, виконується ця функція, додати виконавця в дедлайн
                     addExecutorToDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), userToAdd);
                 }
 
                 deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
-                return deadline;
+                return deadline; // повертає дедлайн
             } else {
-                throw new ServiceException("Invalid project owner");
+                throw new ServiceException("Invalid project owner"); // ти не власник проекту але хоч додати дедл
             }
         }
     }
@@ -95,7 +106,7 @@ public class DeadlineController {
         Optional<User> userToAddOptional = userRepository.findByUsername(usernameToAdd);
         Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
         Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
-
+// перевірка на помилки
         if (!userToAddOptional.isPresent()) {
             throw new ServiceException("User to add not found");
         } else if (!userOwnerOptional.isPresent()) {

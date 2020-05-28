@@ -36,12 +36,12 @@ public class Deadline {
     @JoinColumn(name = "project_id")
     private Project project;
 
-
+// зберігається номер проекту до якого цей дедлайн відноситься
     @NotNull
     @JsonView(Views.deadlinesView.class)
     private int deadlineProjectId;
 
-
+// список виконавців проекту
     @Column
     @JsonView(Views.deadlinesDetailView.class)
     @ManyToMany
@@ -66,7 +66,7 @@ public class Deadline {
     @JsonView(Views.defaultView.class)
     private Boolean completeMark;
 
-
+// коли хтось відмічає проект як завршений, сюди вписується його юзернейм
     @Column
     @JsonView(Views.defaultView.class)
     private String completedBy;
