@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ Контролер дедлайнів
+ */
+
 @RestController
 @RequestMapping
 public class DeadlineController {
@@ -28,15 +32,28 @@ public class DeadlineController {
     }
 
 
+    /**
+     * Додавання дедлайна у проект
+     * @param uuid  унікальний id юзера
+     * @param projectID  унікальний id проекта
+     * @param complaintDeadline  дедлайн який ми хочемо додати
+     * @return  - дедлайн
+     */
     @PostMapping("{uuid}/{projectID}/addDeadline")
     @JsonView({Views.deadlinesDetailView.class})
     public Deadline addDeadlineToProject(@PathVariable String uuid, @PathVariable String projectID, @RequestBody ComplaintDeadline complaintDeadline) {
-
+        /**
+        В списку з бази даних по uuid знаходимо юзера
+        */
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
         Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
-
+        /**
+        Отримуємо дедлайн який хочемо додати
+        */
         Deadline deadline = complaintDeadline.deadline;
-
+        /**
+        Блок помилок
+        */
         if (!userOptional.isPresent()) {
             throw new ServiceException("User not found");
         } else if (!projectToAddOptional.isPresent()) {
@@ -46,44 +63,85 @@ public class DeadlineController {
         } else if (deadline.getDeadlineDescription() == null) {
             throw new ServiceException("Invalid deadlineDescription");
         } else {
-
+            /**
+            Отримуємо неопціонального юзера
+            */
             User user = userOptional.get();
             Project projectToAdd = projectToAddOptional.get();
-
+            /**
+            Якщо в проекті куди ми додаємо дедлайн , юзер і власник проекту мають однакові uuid то додаємо дедлайн
+            */
             if (projectToAdd.getProjectOwner().getUuid().equals(user.getUuid())) {
-
+                /**
+                Якщо в дедлайні, який додає юзер, немає поля date, воно додається з поточною датою сервера
+                */
                 if (deadline.getDeadlineCreatedTime() == 0) {
                     Date dateNow = new Date();
                     deadline.setDeadlineCreatedTime(dateNow.getTime());
                 }
+                /**
+                При створенні дедлайну
+                completeMark Boolean - відмітка про виконання == false
+                */
                 deadline.setCompleteMark(Boolean.FALSE);
                 deadline.setCompletedBy("");
+                /**
+                Проект у якому знаходиться дедлайн
+                */
                 deadline.setProject(projectToAdd);
+                /**
+                У дедлайна є projectID в полі якого він знаходиться
+                */
                 deadline.setDeadlineProjectId(projectToAdd.getProjectId());
+                /**
+                Всі дедлайни додаємо у проект (взаємний зв'язок)
+                */
                 projectToAdd.getDeadlines().add(deadline);
 
                 deadlineRepository.save(deadline);
                 projectRepository.save(projectToAdd);
 
                 List<String> usersUUIDToAdd = complaintDeadline.usersToAdd;
-
+                /**
+                Додавання юзера до дедлайна
+                */
                 for (String userToAdd : usersUUIDToAdd) {
                     Optional<User> userToAddOptional = userRepository.findByUsername(userToAdd);
                     if (!userToAddOptional.isPresent()) {
                         deadlineRepository.delete(deadline);
+                        /**
+                        ServiceException при якому юзера не існує
+                         */
                         throw new ServiceException("User to add not found");
                     }
+                    /**
+                    Якщо юзер існує додається виконавець у дедлайн
+                     */
                     addExecutorToDeadline(uuid, projectID, String.valueOf(deadline.getDeadlineId()), userToAdd);
                 }
 
                 deadline.setDeadlineExecutors(deadline.getDeadlineExecutors());
+                /**
+                 Повертає дедлайн
+                 */
                 return deadline;
             } else {
+                /**
+                 ServiceException при якому не власник проекту хоче додати дедлайн
+                 */
                 throw new ServiceException("Invalid project owner");
             }
         }
     }
 
+    /**
+     * Додавання виконавця дедлайна
+     * @param uuidOwner  uuid власника проекту
+     * @param projectID  унікальний id проекта
+     * @param deadlineId  унікальний id дедлайна
+     * @param usernameToAdd - користувач якого додаємо
+     * @return deadline - дедлайн
+     */
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{usernameToAdd}")
     @JsonView({Views.deadlinesDetailView.class})
@@ -95,7 +153,9 @@ public class DeadlineController {
         Optional<User> userToAddOptional = userRepository.findByUsername(usernameToAdd);
         Optional<User> userOwnerOptional = userRepository.findUserByUuid(UUID.fromString(uuidOwner));
         Optional<Project> projectOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
-
+        /**
+         Перевірки на помилки
+         */
         if (!userToAddOptional.isPresent()) {
             throw new ServiceException("User to add not found");
         } else if (!userOwnerOptional.isPresent()) {
@@ -129,6 +189,14 @@ public class DeadlineController {
         }
     }
 
+    /**
+     * Відмітка про виконання дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID унікальний id дедлайна
+     * @return deadlineRepository.save(deadline) - виконаний дедлайн
+     */
+
     @Modifying
     @PostMapping("{uuid}/{projectID}/{deadlineID}/setDeadlineComplete")
     @JsonView({Views.deadlinesDetailView.class})
@@ -161,6 +229,13 @@ public class DeadlineController {
         }
     }
 
+    /**
+     * Відмітка про невиконання дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID унікальний id дедлайна
+     * @return deadlineRepository.save(deadline) - невиконаний дедлайн
+     */
 
     @Modifying
     @PostMapping("{uuid}/{projectID}/{deadlineID}/setDeadlineUnComplete")
@@ -193,7 +268,14 @@ public class DeadlineController {
         }
     }
 
-
+    /**
+     * Редагування дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID унікальний id дедлайна
+     * @param deadlineEdited дедлайн який ми редагуємо
+     * @return deadlineRepository.save(deadline) збереження дедлайну який ми редагували
+     */
     @Modifying
     @PostMapping("{uuid}/{projectID}/{deadlineID}/editDeadline")
     @JsonView(Views.deadlinesDetailView.class)
@@ -231,8 +313,4 @@ public class DeadlineController {
             return deadlineRepository.save(deadline);
         }
     }
-
-
-
-
 }

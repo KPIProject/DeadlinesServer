@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Клас дедлайнів з усіма полями і описами
+ */
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "deadline")
@@ -35,13 +37,16 @@ public class Deadline {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
-
-
+    /**
+     * Зберігається номер проекту до якого цей дедлайн відноситься
+     */
     @NotNull
     @JsonView(Views.deadlinesView.class)
     private int deadlineProjectId;
 
-
+    /**
+     * Список виконавців проекту
+     */
     @Column
     @JsonView(Views.deadlinesDetailView.class)
     @ManyToMany
@@ -66,7 +71,9 @@ public class Deadline {
     @JsonView(Views.defaultView.class)
     private Boolean completeMark;
 
-
+    /**
+     * Коли один із користувачів відмічає проект як завршений, сюди вписується його ім'я
+     */
     @Column
     @JsonView(Views.defaultView.class)
     private String completedBy;
@@ -76,20 +83,35 @@ public class Deadline {
 
     }
 
+    /**
+     *
+     * @param deadlineName - ім'я дедлайну
+     * @param deadlineDescription - опис дедлайну
+     */
     public Deadline(String deadlineName, String deadlineDescription) {
         this.deadlineName = deadlineName;
         this.deadlineDescription = deadlineDescription;
-
+        /**
+         * Задавання часу створення дедлайну
+         */
         Date dateNow = new Date();
         deadlineCreatedTime = dateNow.getTime();
     }
 
+    /**
+     *
+     * @param deadlineName - назва дедлайну
+     * @param deadlineDescription - опис дедлайну
+     * @param project - проект в якому дедлайн
+     */
     public Deadline(String deadlineName, String deadlineDescription, Project project) {
         this.deadlineName = deadlineName;
         this.deadlineDescription = deadlineDescription;
         this.project = project;
         this.deadlineProjectId = project.getProjectId();
-
+        /**
+         * Задавання часу створення дедлайну
+         */
         Date dateNow = new Date();
         deadlineCreatedTime = dateNow.getTime();
     }

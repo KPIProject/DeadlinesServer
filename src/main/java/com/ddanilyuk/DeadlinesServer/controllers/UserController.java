@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * Контролер юзерів
+ */
 @RestController
 public class UserController {
 
@@ -39,14 +42,22 @@ public class UserController {
     }
 
 
-    // Test request (Delete with release)
+    /**
+     * Версія для Debug
+     * Вивід усіх юзерів
+     * @return userRepository.findAll() - всіх юзерів з uuid
+     */
     @GetMapping("/all")
     @JsonView(Views.usersViewDebugVersion.class)
     public List<User> all() {
         return userRepository.findAll();
     }
 
-
+    /**
+     * Реєєстрація
+     * @param body тіло запиту з формою реєєстрації
+     * @return userRepository.save(user) - збереження юзера
+     */
     @PostMapping("/registration")
     @JsonView(Views.loginView.class)
     public User registration(@RequestBody Map<String, String> body) {
@@ -80,7 +91,11 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Форма для входу
+     * @param body тіло запиту з формою для входу
+     * @return user - юзер що увійшов
+     */
     @PostMapping("/login")
     @JsonView(Views.loginView.class)
     public User login(@RequestBody Map<String, String> body) {
@@ -107,6 +122,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Отримання інформацію про юзера
+     * @param uuid унікальний id юзера
+     * @return optionalUser.get() - юзер про якого хочемо отримати інформацію
+     */
 
     @GetMapping("{uuid}/details")
     @JsonView(Views.loginView.class)
@@ -119,6 +139,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Знаходження юзера по username
+     * @param username username користувача якого шукаємо
+     * @return optionalUsers.get() - юзер якого знайшли
+     */
 
     @GetMapping("findByUsername/{username}")
     @JsonView(Views.defaultView.class)
@@ -132,6 +157,11 @@ public class UserController {
     }
 
 
+    /**
+     * Переглянути всі проекти у які запросили юзера
+     * @param uuid унікальний id юзера
+     * @return user.getProjectsInvited() - проекти у які запросили юзера
+     */
     @GetMapping("{uuid}/getInvitations")
     @JsonView(Views.projectView.class)
     public List<Project> getInvitations(@PathVariable String uuid) {
@@ -144,7 +174,12 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Прийняти запрошення у проект
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @return projectRepository.save(project) - проект до якого прийняли запрошення
+     */
     @PostMapping("{uuid}/acceptInvite/{projectID}")
     @JsonView(Views.projectView.class)
     public Project acceptInvite(@PathVariable String uuid, @PathVariable String projectID) {
@@ -170,7 +205,12 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Відхилити запрошення до проекту
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @return SuccessException("Done") - повідомлення про відхилення запрошення
+     */
     @PostMapping("{uuid}/rejectInvite/{projectID}")
     @JsonView(Views.projectView.class)
     public String rejectInvite(@PathVariable String uuid, @PathVariable String projectID) {
@@ -196,7 +236,12 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Редагування юзера
+     * @param uuid унікальний id юзера
+     * @param userEdited username корисувача якого редагуємо
+     * @return userRepository.save(user) - збереження юзера
+     */
     @Modifying
     @PostMapping("{uuid}/editUser")
     @JsonView(Views.usersView.class)
@@ -226,7 +271,11 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Видалення юзера
+     * @param uuid унікальний id юзера
+     * @return видалення юзера
+     */
     @DeleteMapping("{uuid}/deleteUser")
     public String deleteUser(@PathVariable String uuid)  {
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
