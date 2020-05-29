@@ -3,6 +3,7 @@ package com.ddanilyuk.DeadlinesServer.extensions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+
 @JsonPropertyOrder(value = {"type", "code", "message"})
 // клас для виводу помилки або успіху
 public class RestMessage {

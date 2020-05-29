@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ Контролер дедлайнів
+ */
+
 @RestController
 @RequestMapping
-/**
-Контролер дедлайнів
-*/
-
 public class DeadlineController {
 
     private final ProjectRepository projectRepository;
