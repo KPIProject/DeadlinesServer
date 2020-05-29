@@ -6,7 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.*;
 
-
+/**
+ * Клас проекту з усіма полями і описом
+ */
 @SuppressWarnings({"unused"})
 @Entity
 @Table(name = "project")
@@ -19,7 +21,10 @@ public class Project {
 
     @JsonView(Views.defaultView.class)
     private String projectName;
-// size, максимальна кількісь символів для опису проекту
+
+    /**
+     * Максимальна кількісь символів для опису проекту
+     */
     @Size(max = 8192)
     @JsonView(Views.defaultView.class)
     private String projectDescription;
@@ -64,7 +69,9 @@ public class Project {
     @JsonView(Views.defaultView.class)
     private long projectExecutionTime;
 
-// виконано чи не виконано. Коли ти виконуєш проект, дедлайні автоматично стають виконані
+    /**
+     * Коли ти виконуєш проект, дедлайни автоматично стають виконані
+     */
     @Column
     @JsonView(Views.defaultView.class)
     private Boolean completeMark;
@@ -73,19 +80,34 @@ public class Project {
     public Project() {
     }
 
+    /**
+     *
+     * @param projectName - назва проекту
+     * @param projectDescription - опис проекту
+     */
     public Project(String projectName, String projectDescription) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
-
+        /**
+         * Задавання часу створення проекту відповідно до часу самого сєрвака
+         */
         Date dateNow = new Date();
         projectCreationTime = dateNow.getTime();
     }
 
+    /**
+     *
+     * @param projectName - назва проекту
+     * @param projectDescription - опис проекту
+     * @param userOwner - ім'я користувача проекта
+     */
     public Project(String projectName, String projectDescription, User userOwner) {
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectOwner = userOwner;
-
+        /**
+         * Задавання часу створення проекту
+         */
         Date dateNow = new Date();
         projectCreationTime = dateNow.getTime();
     }
