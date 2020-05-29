@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-
+/**
+ * Контролер юзерів
+ */
 @RestController
 public class UserController {
 
