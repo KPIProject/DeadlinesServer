@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Контролер проектів
+ */
 
 @RestController
 @RequestMapping
@@ -49,6 +52,12 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Створення проекту з запрошенням юзера
+     * @param uuid унікальний id юзера
+     * @param complaintProject проект що створюємо
+     * @return project - створенний проект
+     */
 
     @PostMapping("{uuid}/createProject")
     @JsonView(Views.projectView.class)
@@ -92,7 +101,13 @@ public class ProjectController {
         }
     }
 
-
+    /**
+     * Додавання юзера у проект
+     * @param uuidOwner uuid власника проекту
+     * @param usernameToAdd username користувача якого додаємо
+     * @param projectID унікальний id проекта
+     * @return projectRepository.save(project) - збереження проекту у репозиторій
+     */
     @PostMapping("{uuidOwner}/{projectID}/addUserToProject/{usernameToAdd}")
     @JsonView({Views.projectView.class})
     public Project addUserToProject(@PathVariable String uuidOwner, @PathVariable String usernameToAdd, @PathVariable String projectID) {
@@ -132,7 +147,12 @@ public class ProjectController {
 
 
     /** DEBUG VERSIONS WITHOUT INVITE */
-    
+    /**
+     * Створення проекту без запрошення юзера
+     * @param uuid  унікальний id юзера
+     * @param complaintProject виконаний проект
+     * @return project - проект який створили
+     */
     @SuppressWarnings("DuplicatedCode")
     @PostMapping("{uuid}/createProjectDebug")
     @JsonView(Views.projectView.class)
@@ -174,6 +194,13 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Додавання юзера до проекту
+     * @param uuidOwner   uuid власника проекту
+     * @param usernameToAdd  username користувача якого додаємо
+     * @param projectID  унікальний id проекта
+     * @return projectRepository.save(project) - збереження проекту у репозиторій
+     */
 
     @SuppressWarnings("DuplicatedCode")
     @PostMapping("{uuidOwner}/{projectID}/addUserToProjectDebug/{usernameToAdd}")
@@ -213,7 +240,12 @@ public class ProjectController {
         }
     }
 
-
+    /**
+     * Виконання проекту
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @return projectRepository.save(project) - збереження проекту у репозиторій
+     */
 
     @Modifying
     @PostMapping("{uuid}/{projectID}/setProjectComplete")
@@ -246,6 +278,12 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Невиконання проекту
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @return projectRepository.save(project) - збереження проекту у репозиторій
+     */
 
     @Modifying
     @PostMapping("{uuid}/{projectID}/setProjectUnComplete")
@@ -273,7 +311,13 @@ public class ProjectController {
     }
 
 
-    /*********EDITING*********/
+    /**
+     * Редагування проекту
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param projectEdited проект який редагуємо
+     * @return projectRepository.save(project) - збереження проекту у репозиторій
+     */
 
     @Modifying
     @PostMapping("{uuid}/{projectID}/editProject")
@@ -309,9 +353,12 @@ public class ProjectController {
         }
     }
 
-
-    /*********DELETING*********/
-
+    /**
+     * Видалення проекту
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @return RestMessage("Success", 200, "Deleted") - повідомлення про успішне видалення проекту
+     */
     @DeleteMapping("{uuid}/{projectID}/deleteProject")
     public RestMessage deleteProject(@PathVariable String uuid, @PathVariable String projectID) {
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
@@ -333,6 +380,14 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Видалення виконавця з дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID id дедлайну
+     * @param usernameToDelete username корисувача якого видаляємо
+     * @return RestMessage("Success", 200, "Deleted") - повідомлення про успішне видалення юзера
+     */
 
     @DeleteMapping("{uuid}/{projectID}/{deadlineID}/deleteExecutorFromDeadline/{usernameToDelete}")
     public RestMessage deleteExecutorFromDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID, @PathVariable String usernameToDelete) {
@@ -372,6 +427,13 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Видалення дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID id дедлайну
+     * @return RestMessage("Success", 200, "Deleted") - повідомлення про успішне видалення дедлайну
+     */
 
     @DeleteMapping("{uuid}/{projectID}/{deadlineID}/deleteDeadline")
     public RestMessage deleteDeadline(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String deadlineID) {
@@ -407,6 +469,13 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Видалення юзера з проекту
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param usernameToDelete username корисувача якого видаляємо
+     * @return RestMessage("Success", 200, "Deleted") - повідомлення про успішне видалення юзера
+     */
 
     @DeleteMapping("{uuid}/{projectID}/deleteUserFromProject/{usernameToDelete}")
     public RestMessage deleteUserFromProject(@PathVariable String uuid, @PathVariable String projectID, @PathVariable String usernameToDelete) {
