@@ -1,7 +1,7 @@
 package com.ddanilyuk.DeadlinesServer.model;
 
 
-//@SuppressWarnings("ALL")
+@SuppressWarnings("ALL")
 /**
  * Обмеження виводу інформації для json
   */

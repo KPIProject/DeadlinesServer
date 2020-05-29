@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * Клас користувача з усіма полями
+ */
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "usr")
@@ -76,11 +79,23 @@ public class User {
     public User() {
     }
 
+    /**
+     *
+     * @param userFirstName - ім'я користувача
+     * @param userSecondName - прізвище користувача
+     */
     public User(String userFirstName, String userSecondName) {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
     }
 
+    /**
+     *
+     * @param userFirstName - ім'я користувача
+     * @param userSecondName - прізвище користувача
+     * @param username - логін користувача
+     * @param password - пароль
+     */
     public User(String userFirstName, String userSecondName, String username, String password) {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
@@ -89,6 +104,14 @@ public class User {
         this.uuid = UUID.randomUUID();
     }
 
+    /**
+     *
+     * @param userFirstName - ім'я користувача
+     * @param userSecondName - прізвище користувача
+     * @param username - логін
+     * @param password - пароль
+     * @param projects - проекти які користувач створив
+     */
     public User(String userFirstName, String userSecondName, String username, String password, List<Project> projects) {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
@@ -97,6 +120,12 @@ public class User {
         this.projectsCreated = projects;
     }
 
+    /**
+     *
+     * @param userFirstName - ім'я користувача
+     * @param userSecondName - прізвище користувача
+     * @param projects - проекти які створив користувач
+     */
     public User(String userFirstName, String userSecondName, List<Project> projects) {
         this.userFirstName = userFirstName;
         this.userSecondName = userSecondName;
