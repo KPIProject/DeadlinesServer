@@ -4,7 +4,9 @@ import java.util.List;
 
 public class ComplaintDeadline {
     public Deadline deadline;
-    // ліст стрінгів з юзернеймами які порібно додати
+    /**
+     * Список користувачів які потрібно додати до проекту
+     */
     public List<String> usersToAdd;
 
     public ComplaintDeadline(Deadline deadline, List<String> usersToAdd) {
