@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     /**
      Запит, який здійснює пошук серед користувачів зі схожим ім'ям, яке ви вводите
+     @param username користувач
+     @return опціональний список юзерів
      */
     @Query("select u from User u where u.username like %?1%")
     Optional<List<User>> findAllByUsername(String username);
