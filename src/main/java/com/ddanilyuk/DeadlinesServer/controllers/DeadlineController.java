@@ -31,15 +31,13 @@ public class DeadlineController {
         this.deadlineRepository = deadlineRepository;
     }
 
+
     /**
-    Додавання дедлайна
-    */
-    /**
-     *
-     * @param uuid
-     * @param projectID
-     * @param complaintDeadline
-     * @return
+     * Додавання дедлайна у проект
+     * @param uuid  унікальний id юзера
+     * @param projectID  унікальний id проекта
+     * @param complaintDeadline  дедлайн який ми хочемо додати
+     * @return  - дедлайн
      */
     @PostMapping("{uuid}/{projectID}/addDeadline")
     @JsonView({Views.deadlinesDetailView.class})
@@ -48,10 +46,6 @@ public class DeadlineController {
         В списку з бази даних по uuid знаходимо юзера
         */
         Optional<User> userOptional = userRepository.findUserByUuid(UUID.fromString(uuid));
-        /**
-        Знаходимо проект по projectID
-        projectID - id проекта
-        */
         Optional<Project> projectToAddOptional = projectRepository.findByProjectId(Integer.parseInt(projectID));
         /**
         Отримуємо дедлайн який хочемо додати
@@ -141,12 +135,12 @@ public class DeadlineController {
     }
 
     /**
-     *
-     * @param uuidOwner
-     * @param projectID
-     * @param deadlineId
-     * @param usernameToAdd
-     * @return
+     * Додавання виконавця дедлайна
+     * @param uuidOwner  uuid власника проекту
+     * @param projectID  унікальний id проекта
+     * @param deadlineId  унікальний id дедлайна
+     * @param usernameToAdd - користувач якого додаємо
+     * @return deadline - дедлайн
      */
 
     @PostMapping("{uuidOwner}/{projectID}/{deadlineId}/addExecutor/{usernameToAdd}")
@@ -196,11 +190,11 @@ public class DeadlineController {
     }
 
     /**
-     *
-     * @param uuid
-     * @param projectID
-     * @param deadlineID
-     * @return
+     * Відмітка про виконання дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID унікальний id дедлайна
+     * @return deadlineRepository.save(deadline) - виконаний дедлайн
      */
 
     @Modifying
@@ -236,11 +230,11 @@ public class DeadlineController {
     }
 
     /**
-     *
-     * @param uuid
-     * @param projectID
-     * @param deadlineID
-     * @return
+     * Відмітка про невиконання дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID унікальний id дедлайна
+     * @return deadlineRepository.save(deadline) - невиконаний дедлайн
      */
 
     @Modifying
@@ -275,12 +269,12 @@ public class DeadlineController {
     }
 
     /**
-     *
-     * @param uuid
-     * @param projectID
-     * @param deadlineID
-     * @param deadlineEdited
-     * @return
+     * Редагування дедлайну
+     * @param uuid унікальний id юзера
+     * @param projectID унікальний id проекта
+     * @param deadlineID унікальний id дедлайна
+     * @param deadlineEdited дедлайн який ми редагуємо
+     * @return deadlineRepository.save(deadline) збереження дедлайну який ми редагували
      */
     @Modifying
     @PostMapping("{uuid}/{projectID}/{deadlineID}/editDeadline")
