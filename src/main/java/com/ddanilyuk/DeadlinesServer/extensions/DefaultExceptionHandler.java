@@ -74,7 +74,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(value = {HttpClientErrorException.NotFound.class})
     public ResponseEntity<RestMessage> handleMethodNotFoundException(HttpClientErrorException.NotFound ex, WebRequest request) {
         RestMessage errorMessage = new RestMessage("HttpClientErrorException.NotFound", 404, "Not found");
-        return new ResponseEntity<RestMessage>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<RestMessage>(errorMessage, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -86,7 +86,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(value = {ServiceException.class})
     public ResponseEntity<RestMessage> handleServiceException(ServiceException ex, WebRequest request) {
         RestMessage errorMessage = new RestMessage("Error", 404, ex.getMessage());
-        return new ResponseEntity<RestMessage>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<RestMessage>(errorMessage, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     /**
